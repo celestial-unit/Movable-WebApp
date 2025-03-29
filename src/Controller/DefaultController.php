@@ -5,6 +5,8 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Event;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DefaultController extends AbstractController
 {
@@ -33,9 +35,13 @@ class DefaultController extends AbstractController
     }
 
     #[Route("/events", name: "events")]
-    public function events(): Response
+    public function events(EntityManagerInterface $entityManager): Response
     {
-        return $this->render('events.html');
+        $events = $entityManager->getRepository(Event::class)->findAll();
+    
+        return $this->render('event/index.html.twig', [
+            'events' => $events,
+        ]);
     }
 
     #[Route("/pricing", name: "pricing")]
@@ -47,5 +53,10 @@ class DefaultController extends AbstractController
     public function contact(): Response
     {
         return $this->render('contact.html');
+    }
+    #[Route("/eventregistration", name:"eventregistration")]
+    public function eventRegistration(): Response
+    {
+        return $this->render('eventregistration.html.twig');
     }
 }
