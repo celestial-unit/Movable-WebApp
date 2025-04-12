@@ -1,0 +1,224 @@
+{# templates/event/eventback.html.twig #}
+{% extends 'base1.html.twig' %}
+
+{% block title %}Event Management{% endblock %}
+
+{% block sidebar %}
+    <!-- Sidebar Content -->
+    <div class="menu-inner-shadow"></div>
+    <ul class="menu-inner py-1">
+        <li class="menu-item active">
+            <a href="{{ path('app_eventback_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar-event"></i>
+                <div data-i18n="Events">Events</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="{{ path('app_eventback_new') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-plus-circle"></i>
+                <div data-i18n="Create Event">Create Event</div>
+            </a>
+        </li>
+        <li class="menu-item">
+    <a href="{{ path('app_eventback_registration_index') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-list-ul"></i>
+        <div data-i18n="View Registrations">View Registrations</div>
+    </a>
+</li>
+
+    </ul>
+{% endblock %}
+
+{% block body %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold py-3 mb-0">
+            <span class="text-muted fw-light">Events /</span> Management
+        </h4>
+        <a href="{{ path('app_eventback_new') }}" class="btn btn-primary">
+            <i class="bx bx-plus me-1"></i> Add Event
+        </a>
+        <a href="{{ path('app_event_statistics') }}" class="btn btn-info ms-2">
+            <i class="bx bx-chart me-1"></i> View Statistics
+        </a>
+            <a href="{{ path('calendar') }}" class="btn btn-success ms-2">
+        <i class="bx bx-calendar me-1"></i> View Calendar
+    </a>
+
+    </div>
+
+    <!-- Search Section -->
+    <div class="search-section" style="background: #fff; border-radius: 0.75rem; box-shadow: 0 2px 6px rgba(0,0,0,0.05); padding: 1.5rem; margin-bottom: 2rem;">
+        <form method="get" action="{{ path('app_eventback_search') }}">
+            <div class="filter-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                <!-- Search Inputs -->
+                <div class="filter-group">
+                    <input type="text" name="title" placeholder="Event title..." 
+                           class="filter-input" style="width: 100%; padding: 0.675rem 1rem; border: 1px solid #ddd; border-radius: 0.5rem; font-size: 0.9rem; background-color: #f8f9fa; transition: all 0.3s ease;"
+                           value="{{ app.request.query.get('title') }}">
+                </div>
+
+                <div class="filter-group">
+                    <input type="text" name="description" placeholder="Description..." 
+                           class="filter-input" style="width: 100%; padding: 0.675rem 1rem; border: 1px solid #ddd; border-radius: 0.5rem; font-size: 0.9rem; background-color: #f8f9fa;"
+                           value="{{ app.request.query.get('description') }}">
+                </div>
+
+                <div class="filter-group">
+                    <input type="number" name="duration" placeholder="Duration (minutes)" 
+                           class="filter-input" style="width: 100%; padding: 0.675rem 1rem; border: 1px solid #ddd; border-radius: 0.5rem; font-size: 0.9rem; background-color: #f8f9fa;"
+                           value="{{ app.request.query.get('duration') }}">
+                </div>
+
+                <!-- Dropdowns -->
+                <div class="filter-group">
+                    <select name="type" class="filter-input" style="width: 100%; padding: 0.675rem 1rem; border: 1px solid #ddd; border-radius: 0.5rem; font-size: 0.9rem; background-color: #f8f9fa;">
+                        <option value="">Price Range</option>
+                        {% for price in [20, 30, 50, 100, 150] %}
+                            <option value="{{ price }}" {{ app.request.query.get('type') == price ? 'selected' }}>
+                                {{ price }} DT
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <select name="state" class="filter-input" style="width: 100%; padding: 0.675rem 1rem; border: 1px solid #ddd; border-radius: 0.5rem; font-size: 0.9rem; background-color: #f8f9fa;">
+                        <option value="">All States</option>
+                        {% for state in ['Ariana', 'Béja', 'Ben Arous', 'Bizerte', 'Gabès', 'Gafsa', 'Jendouba', 
+                                       'Kairouan', 'Kasserine', 'Kébili', 'Kef', 'Mahdia', 'Manouba', 'Medenine', 
+                                       'Monastir', 'Nabeul', 'Sfax', 'Sidi Bouzid', 'Siliana', 'Sousse', 
+                                       'Tataouine', 'Tozeur', 'Tunis', 'Zaghouan'] %}
+                            <option value="{{ state }}" {{ app.request.query.get('status') == state ? 'selected' }}>
+                                {{ state }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Date/Time Inputs -->
+                <div class="filter-group">
+                    <input type="text" name="dateevent" placeholder="YYYY-MM-DD" 
+                           class="filter-input" style="width: 100%; padding: 0.675rem 1rem; border: 1px solid #ddd; border-radius: 0.5rem; font-size: 0.9rem; background-color: #f8f9fa;"
+                           value="{{ app.request.query.get('dateevent') }}">
+                </div>
+
+                <div class="filter-group">
+                    <input type="time" name="startEvent" 
+                           class="filter-input" style="width: 100%; padding: 0.675rem 1rem; border: 1px solid #ddd; border-radius: 0.5rem; font-size: 0.9rem; background-color: #f8f9fa;"
+                           value="{{ app.request.query.get('startEvent') }}">
+                </div>
+            </div>
+
+            <!-- Search Button -->
+            <button type="submit" class="search-button" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background-color: #696cff; color: white; border: none; border-radius: 0.5rem; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                </svg>
+                Search Events
+            </button>
+        </form>
+    </div>
+
+    <!-- Events Table -->
+    <div class="card" style="border-radius: 0.75rem; overflow: hidden;">
+        <div class="card-body" style="padding: 0;">
+            <div class="table-responsive text-nowrap">
+                <table class="table table-hover" style="margin: 0;">
+                    <thead style="background-color: #f8f9fa;">
+                        <tr>
+                            <th style="padding: 1rem;">#</th>
+                            <th style="padding: 1rem;">Title</th>
+                            <th style="padding: 1rem;">Description</th>
+                            <th style="padding: 1rem;">Duration</th>
+                            <th style="padding: 1rem;">price</th>
+                            <th style="padding: 1rem;">State</th>
+                            <th style="padding: 1rem;">Date</th>
+                            <th style="padding: 1rem;">Time</th>
+                            <th style="padding: 1rem;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        {% if events is not empty %}
+                            {% for event in events %}
+                                <tr style="border-top: 1px solid #eee;">
+                                    <td style="padding: 1rem;">{{ event.id }}</td>
+                                    <td style="padding: 1rem;"><strong>{{ event.title }}</strong></td>
+                                    <td style="padding: 1rem;">{{ event.description|slice(0, 30) }}...</td>
+                                    <td style="padding: 1rem;">{{ event.duration }} mins</td>
+                                    <td style="padding: 1rem;">
+                                        <span style="background-color: #e3e2ff; color: #696cff; padding: 0.35rem 0.65rem; border-radius: 0.375rem; font-size: 0.85rem;">
+                                            {{ event.type }}
+                                        </span>
+                                    </td>
+                                    <td style="padding: 1rem;">
+                                        <span style="background-color: {{ event.status == 'Active' ? '#d1fae5' : '#fef3c7' }}; color: {{ event.status == 'Active' ? '#065f46' : '#92400e' }}; padding: 0.35rem 0.65rem; border-radius: 0.375rem; font-size: 0.85rem;">
+                                            {{ event.status }}
+                                        </span>
+                                    </td>
+                                    <td style="padding: 1rem;">{{ event.getFormattedDate() }}</td>
+                                    <td style="padding: 1rem;">{{ event.getFormattedTime() }}</td>
+                                    <td style="padding: 1rem;">
+                                        <div class="dropdown">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" style="color: #697a8d;">
+                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                            </button>
+                                            <div class="dropdown-menu" style="border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                                                <a class="dropdown-item" href="{{ path('app_eventback_edit', {'id': event.id}) }}" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                                                    <i class="bx bx-edit-alt me-1"></i> Edit
+                                                </a>
+                                                <a class="dropdown-item" href="{{ path('app_eventback_registration_new', {'eventId': event.id}) }}" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                                                    <i class="bx bx-user-plus me-1"></i> Register
+                                                </a>
+                                                <form class="dropdown-item" action="{{ path('app_eventback_delete', {'id': event.id}) }}" method="post" style="padding: 0.5rem 1rem;">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ event.id) }}">
+                                                    <button type="submit" class="btn btn-link p-0 text-danger" style="font-size: 0.9rem;"
+                                                            onclick="return confirm('Are you sure?')">
+                                                        <i class="bx bx-trash me-1"></i> Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="9" style="padding: 2rem; text-align: center;">
+                                    <div style="background-color: #fffbeb; color: #92400e; padding: 1rem; border-radius: 0.5rem;">
+                                        No events found. Create your first event!
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @media (max-width: 768px) {
+        .filter-grid {
+            grid-template-columns: 1fr !important;
+        }
+        .search-button {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+    .filter-input:focus {
+        outline: none;
+        border-color: #696cff;
+        background-color: #fff;
+        box-shadow: 0 0 0 2px rgba(105, 108, 255, 0.2);
+    }
+    .search-button:hover {
+        background-color: #5b5dff !important;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 6px rgba(105, 108, 255, 0.25);
+    }
+</style>
+{% endblock %}

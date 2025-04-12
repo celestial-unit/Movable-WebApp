@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\EventRegistrationRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EventRegistrationRepository::class)]
 
@@ -32,12 +33,23 @@ class EventRegistration
     referencedColumnName: 'id', 
     nullable: false
 )]
+#[Assert\NotNull(message: "Event cannot be null.")]
 private ?Event $event = null;// Nullable property
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $registration_date;
+#[ORM\Column(type: 'string', length: 255)]
+#[Assert\NotBlank(message: "Registration date is required.")]
+#[Assert\Regex(
+    pattern: "/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/",
+    message: "Registration date must be in YYYY-MM-DD HH:MM:SS format."
+)]
+private string $registration_date;
 
-    #[ORM\Column(type: 'string', length: 255)]
+#[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: "Status is required.")]
+    #[Assert\Choice(
+        choices: ['Pending', 'Confirmed', 'Cancelled'],
+        message: "Status must be 'Pending', 'Confirmed', or 'Cancelled'."
+    )]
     private string $status;
 
     public function getId(): int

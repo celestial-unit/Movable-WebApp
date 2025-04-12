@@ -1,0 +1,35 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Event Statistics{% endblock %}
+
+{% block body %}
+    <h1>Event Statistics</h1>
+    
+    <canvas id="eventChart" width="400" height="200"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('eventChart').getContext('2d');
+        var eventChart = new Chart(ctx, {
+            type: 'bar',  // You can also use 'line', 'pie', etc.
+            data: {
+                labels: {{ labels | raw }},
+                datasets: [{
+                    label: 'Event Count by Type',
+                    data: {{ values | raw }},
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}

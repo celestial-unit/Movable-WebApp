@@ -11,6 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Service\PdfGenerator;
+use Endroid\QrCode\Builder\Builder;
+
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 #[Route('/event/registration')]
 final class EventRegistrationController extends AbstractController
@@ -65,8 +69,20 @@ final class EventRegistrationController extends AbstractController
     }
 
     // Keep show, edit, and delete actions the same as before
+    #[Route('/{id}/pdf', name: 'app_event_registration_pdf', methods: ['GET'])]
+    public function generatePdf(int $id, EntityManagerInterface $entityManager, PdfGenerator $pdfGenerator): Response
+    {
+        $eventRegistration = $entityManager->getRepository(EventRegistration::class)->find($id);
 
-    #[Route('/{id}', name: 'app_event_registration_show', methods: ['GET'])]
+        if (!$eventRegistration) {
+            throw $this->createNotFoundException('Event registration not found');
+        }
+
+        return $pdfGenerator->generate('event_registration/pdf.html.twig', [
+            'event_registration' => $eventRegistration,
+        ]);
+    }
+    #[Route('/{id<\d+>}', name: 'app_event_registration_show', methods: ['GET'])]
     public function show(int $id, EntityManagerInterface $entityManager): Response
     {
         $eventRegistration = $entityManager->getRepository(EventRegistration::class)->find($id);
@@ -120,4 +136,40 @@ final class EventRegistrationController extends AbstractController
 
         return $this->redirectToRoute('app_event_registration_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/{id}/qrcode', name: 'app_event_registration_qrcode', methods: ['GET'])]
+    public function qrCode(int $id, EntityManagerInterface $entityManager): Response
+    {
+        $eventRegistration = $entityManager->getRepository(EventRegistration::class)->find($id);
+    
+        if (!$eventRegistration) {
+            throw $this->createNotFoundException('Event registration not found');
+        }
+    
+        // Format all details into a string
+        $data = sprintf(
+            "Registration ID: %d\nEvent: %s\nRegistration Date: %s\nStatus: %s",
+            $eventRegistration->getId(),
+            $eventRegistration->getEvent()->getTitle(),
+            $eventRegistration->getRegistrationDate(),
+            $eventRegistration->getStatus()
+        );
+    
+        $result = Builder::create()
+            ->data($data)
+            ->size(300)
+            ->margin(10)
+            ->build();
+    
+        return new Response($result->getString(), 200, [
+            'Content-Type' => $result->getMimeType(),
+            'Content-Disposition' => (new ResponseHeaderBag())->makeDisposition(
+                ResponseHeaderBag::DISPOSITION_INLINE,
+                'qrcode.png'
+            )
+        ]);
+    }
+    
+    
+    
+    
 }

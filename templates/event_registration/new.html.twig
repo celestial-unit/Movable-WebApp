@@ -3,38 +3,335 @@
 {% block title %}New Event Registration{% endblock %}
 
 {% block body %}
-<div class="container mt-4">
-    <h1 class="mb-4">Create New Registration</h1>
-    
-    <div class="card shadow">
-        <div class="card-body">
-            <div class="alert alert-info mb-4">
-                Registering for event: <strong>{{ event.title }}</strong>
-                <br>Event Date: {{ event.getFormattedDate() }}
+<style>
+    :root {
+        --primary-color: #5fcf80;
+        --primary-hover: #4cb46d;
+        --text-dark: #2a3439;
+        --text-muted: #6c757d;
+        --border-color: #e9ecef;
+        --bg-light: #f8f9fa;
+        --danger-color: #dc3545;
+        --form-icon-size: 1.4rem;
+        --card-max-width: 1200px;
+        --transition-timing: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .registration-wrapper {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 3rem 0;
+    }
+
+    .registration-card {
+        margin: 0 auto;
+        border-radius: 1.5rem;
+        overflow: hidden;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+        background: white;
+        border: none;
+        width: 95%;
+        max-width: var(--card-max-width);
+        transition: transform var(--transition-timing);
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #4cb46d 100%);
+        padding: 4rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card-header h1 {
+        margin: 0;
+        font-size: 2.75rem;
+        font-weight: 700;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+        padding: 3rem 4rem;
+    }
+
+    .event-info {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 2.5rem;
+        background: var(--bg-light);
+        border-radius: 1rem;
+        padding: 2.5rem;
+        margin: 2.5rem 0;
+        border-left: 4px solid var(--primary-color);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: transform var(--transition-timing);
+    }
+
+    .form-section {
+        padding: 2.5rem;
+        background: var(--bg-light);
+        border-radius: 1rem;
+        margin: 2.5rem 0;
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.02);
+    }
+
+    .form-group {
+        margin-bottom: 2.5rem;
+        position: relative;
+    }
+
+    .form-label {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 2rem;
+        padding: 1.25rem;
+        background: rgba(95, 207, 128, 0.05);
+        border-radius: 0.75rem;
+        border-left: 4px solid var(--primary-color);
+        font-size: 1.15rem;
+        backdrop-filter: blur(2px);
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 1.5rem 1.75rem;
+        border: 2px solid var(--border-color);
+        border-radius: 1rem;
+        transition: all var(--transition-timing);
+        padding-left: 4rem;
+        font-size: 1.05rem;
+        background: white;
+        line-height: 1.5;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 4px rgba(95, 207, 128, 0.2);
+        outline: none;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 1.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: var(--form-icon-size);
+        transition: color var(--transition-timing);
+    }
+
+    .form-control:focus ~ .input-icon {
+        color: var(--primary-color);
+    }
+
+    .submit-btn {
+        padding: 1.25rem 3.5rem;
+        font-size: 1.15rem;
+        border-radius: 1rem;
+        transition: all var(--transition-timing);
+        letter-spacing: 0.5px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(95, 207, 128, 0.3);
+    }
+
+    .back-link {
+        padding: 1rem 2.5rem;
+        border-radius: 0.75rem;
+        transition: all var(--transition-timing);
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: rgba(0, 0, 0, 0.03);
+        border: 1px solid var(--border-color);
+    }
+
+    .back-link:hover {
+        background: rgba(0, 0, 0, 0.05);
+        transform: translateX(-3px);
+    }
+
+    .form-error {
+        background: rgba(220, 53, 69, 0.1);
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        border-left: 4px solid var(--danger-color);
+        margin: 1.5rem 0;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        color: var(--danger-color);
+        font-weight: 500;
+    }
+
+    .form-error i {
+        font-size: 1.5rem;
+    }
+
+    .event-detail-badge {
+        padding: 0.5rem 1.25rem;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 0.5rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    @media (max-width: 992px) {
+        .card-body {
+            padding: 2.5rem;
+        }
+
+        .event-info {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            text-align: center;
+        }
+
+        .form-grid {
+            gap: 1.5rem;
+        }
+
+        .form-control {
+            padding: 1.25rem 1.5rem;
+            padding-left: 3.5rem;
+        }
+
+        .input-icon {
+            left: 1.25rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .registration-wrapper {
+            padding: 1.5rem 0;
+        }
+
+        .card-header {
+            padding: 3rem 1.5rem;
+        }
+
+        .card-header h1 {
+            font-size: 2.25rem;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .form-section {
+            padding: 2rem;
+        }
+
+        .submit-btn, .back-link {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .d-flex.justify-content-between {
+            flex-direction: column-reverse;
+            gap: 1.5rem;
+        }
+    }
+</style>
+
+<div class="registration-wrapper">
+    <div class="container-fluid">
+        <div class="registration-card">
+            <div class="card-header">
+                <h1>
+                    <i class="bi bi-pencil-square"></i>
+                     🃏New Registration🃏
+                </h1>
             </div>
 
-            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-                <div class="mb-3">
-                    {{ form_label(form.registrationDate) }}
-                    {{ form_widget(form.registrationDate, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_errors(form.registrationDate) }}
+            <div class="card-body">
+                <div class="event-info">
+                    <i class="bi bi-calendar-event" style="font-size: 3rem; color: var(--primary-color);"></i>
+                    <div>
+                        <h3 class="mb-4">{{ event.title }}</h3>
+                        <div class="d-flex flex-wrap gap-3 text-muted">
+                            <div class="event-detail-badge">
+                                <i class="bi bi-clock"></i>
+                                {{ event.getFormattedDate() }}
+                            </div>
+                           
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    {{ form_label(form.status) }}
-                    {{ form_widget(form.status, {'attr': {'class': 'form-select'}}) }}
-                    {{ form_errors(form.status) }}
-                </div>
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+                    <div class="form-section">
+                        <div class="form-grid">
+                            <div class="full-width-section">
+                                <label class="form-label">
+                                    <i class="bi bi-card-checklist"></i>
+                                   🪪 Registration Information🪪
+                                </label>
+                            </div>
 
-                <button type="submit" class="btn btn-primary">Save</button>
-            {{ form_end(form) }}
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <i class="bi bi-calendar2-range input-icon"></i>
+                                    {{ form_widget(form.registrationDate, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <i class="bi bi-clipboard-check input-icon"></i>
+                                    {{ form_widget(form.status, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if form_errors(form.registrationDate) or form_errors(form.status) %}
+                        <div class="form-error mt-4">
+                            <i class="bi bi-exclamation-octagon"></i>
+                            <div>
+                                Please correct the following errors:
+                                {{ form_errors(form.registrationDate) }}
+                                {{ form_errors(form.status) }}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-5 px-3">
+                        <a href="{{ path('app_event_registration_index') }}" class="back-link text-decoration-none">
+                            <i class="bi bi-arrow-left"></i>
+                            Back to Registrations
+                        </a>
+                        <button type="submit" class="submit-btn btn-primary" style="background-color: lightgreen; border-color: lightgreen;">
+    <i class="bi bi-check2-circle"></i>
+   💯 Complete Registration💯
+</button>
+
+                    </div>
+                {{ form_end(form) }}
+            </div>
         </div>
-    </div>
-
-    <div class="mt-3">
-        <a href="{{ path('app_event_registration_index') }}" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Back to List
-        </a>
     </div>
 </div>
 {% endblock %}

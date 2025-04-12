@@ -39,8 +39,27 @@ class DefaultController extends AbstractController
     {
         $events = $entityManager->getRepository(Event::class)->findAll();
     
+        // Fetch earliest upcoming event
+        $earliestEvent = $entityManager->getRepository(Event::class)->createQueryBuilder('e')
+            ->where('e.dateevent >= :today')
+            ->setParameter('today', (new \DateTime())->format('Y-m-d'))
+            ->orderBy('e.dateevent', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    
+        // Fetch finished events (past events)
+        $finishedEvents = $entityManager->getRepository(Event::class)->createQueryBuilder('e')
+            ->where('e.dateevent < :today')
+            ->setParameter('today', (new \DateTime())->format('Y-m-d'))
+            ->orderBy('e.dateevent', 'DESC')
+            ->getQuery()
+            ->getResult();
+    
         return $this->render('event/index.html.twig', [
             'events' => $events,
+            'earliestEvent' => $earliestEvent,
+            'finishedEvents' => $finishedEvents
         ]);
     }
 

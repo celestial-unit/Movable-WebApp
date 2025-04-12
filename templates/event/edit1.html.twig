@@ -1,0 +1,127 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Edit Event{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/css/pages/form-validation.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <!-- Header Section -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold mb-0">
+                    <span class="text-muted fw-light">Events /</span> Edit Event
+                </h4>
+                <a href="{{ path('app_eventback_index') }}" class="btn btn-label-secondary">
+                    <i class="bx bx-chevron-left scaleX-n1-rtl me-2"></i>
+                    Back to List
+                </a>
+            </div>
+
+            <!-- Edit Form Card -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="bx bx-edit me-2"></i>
+                        Event Details
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {{ include('event/_form.html.twig', {
+                        'button_label': 'Update',
+                        'button_class': 'btn-primary',
+                        'include_delete': true
+                    }) }}
+                </div>
+            </div>
+
+            <!-- Additional Sections -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="bx bx-user-circle me-2"></i>
+                        Registrations
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        Manage registrations for this event through the 
+                        <a href="{{ path('app_eventback_registration_index') }}" class="alert-link">
+                            registrations panel
+                        </a>.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ asset('vendor/libs/flatpickr/flatpickr.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Date/Time Pickers
+    const datepickers = document.querySelectorAll('.flatpickr-date');
+    datepickers.forEach(fp => flatpickr(fp, {dateFormat: 'Y-m-d'}));
+
+    const timepickers = document.querySelectorAll('.flatpickr-time');
+    timepickers.forEach(fp => flatpickr(fp, {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i"
+    }));
+
+    // Profanity Filter Setup
+    function debounce(func, timeout = 500) {
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => { func.apply(this, args); }, timeout);
+        };
+    }
+
+    function checkProfanity(text, callback) {
+        fetch('{{ path('app_eventback_check_profanity') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ text: text })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.censoredText) {
+                callback(data.censoredText);
+            }
+        })
+        .catch(error => console.error('Profanity check error:', error));
+    }
+
+    function setupProfanityListener(inputField) {
+        const handler = debounce((event) => {
+            const currentText = event.target.value;
+            checkProfanity(currentText, (censoredText) => {
+                if (event.target.value === currentText) {
+                    event.target.value = censoredText;
+                }
+            });
+        });
+
+        inputField.addEventListener('input', handler);
+    }
+
+    const titleField = document.querySelector('#event_title');
+    const descriptionField = document.querySelector('#event_description');
+
+    if (titleField) setupProfanityListener(titleField);
+    if (descriptionField) setupProfanityListener(descriptionField);
+});
+</script>
+{% endblock %}

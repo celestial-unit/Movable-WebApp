@@ -7,6 +7,7 @@ use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 class Event
@@ -17,21 +18,61 @@ class Event
     private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: "Title is required.")]
+    #[Assert\Length(
+        min: 5,
+        minMessage: "Title must be at least 5 characters long.",
+        max: 255,
+        maxMessage: "Title cannot be longer than 255 characters."
+    )]
     private string $title;
+    
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: "Description is required.")]
+    #[Assert\Length(
+        min: 5,
+        minMessage: "Description must be at least 5 characters long.",
+        max: 500,
+        maxMessage: "Description cannot be longer than 500 characters."
+    )]
     private string $description;
+    
 
     #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank(message: "Duration is required.")]
+    #[Assert\Positive(message: "Duration must be a positive number.")]
     private int $duration;
 
     #[ORM\Column(type: 'integer')]
-    private int $type;
+#[Assert\NotBlank(message: "Type is required.")]
+#[Assert\GreaterThanOrEqual(
+    value: 30,
+    message: "Type must be at least 30."
+)]
+private int $type;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $status;
+
+#[ORM\Column(type: 'string', length: 255)]
+#[Assert\NotBlank(message: "Governorate is required.")]
+#[Assert\Choice(
+    choices: [
+        'Ariana', 'Béja', 'Ben Arous', 'Bizerte', 'Gabès', 'Gafsa', 
+        'Jendouba', 'Kairouan', 'Kasserine', 'Kébili', 'Kef', 'Mahdia', 
+        'Manouba', 'Medenine', 'Monastir', 'Nabeul', 'Sfax', 'Sidi Bouzid', 
+        'Siliana', 'Sousse', 'Tataouine', 'Tozeur', 'Tunis', 'Zaghouan'
+    ],
+    message: "Invalid governorate selected."
+)]
+private string $status;
+
 
     #[ORM\Column(type: 'string', length: 255, name: 'dateevent')]
+    #[Assert\NotBlank(message: "Date is required.")]
+    #[Assert\Regex(
+        pattern: "/^\d{4}-\d{2}-\d{2}$/",
+        message: "Date must be in YYYY-MM-DD format."
+    )]
     private string $dateevent;
 
     #[ORM\Column(type: 'time', name: 'startEvent', nullable: true)]
@@ -183,4 +224,6 @@ private Collection $registrations;
     {
         return $this->startEvent ? $this->startEvent->format('g:i A') : 'N/A';
     }
+    
+    
 }

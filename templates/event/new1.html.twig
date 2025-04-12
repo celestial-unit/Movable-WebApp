@@ -1,0 +1,77 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}New Event{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/css/pages/form-validation.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h1>Create new Event</h1>
+
+    {{ include('event/_form.html.twig') }}
+
+    <a href="{{ path('app_eventback_index') }}" class="btn btn-label-secondary">
+        <i class="bx bx-chevron-left scaleX-n1-rtl me-2"></i>
+        Back to list
+    </a>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Debounce function for input delay
+    function debounce(func, timeout = 500) {
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => { func.apply(this, args); }, timeout);
+        };
+    }
+
+    // Profanity check API call
+    function checkProfanity(text, callback) {
+        fetch('{{ path('app_eventback_check_profanity') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ text: text })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.censoredText) {
+                callback(data.censoredText);
+            }
+        })
+        .catch(error => console.error('Profanity check error:', error));
+    }
+
+    // Setup profanity listener for a field
+    function setupProfanityListener(inputField) {
+        const handler = debounce((event) => {
+            const currentText = event.target.value;
+            checkProfanity(currentText, (censoredText) => {
+                if (event.target.value === currentText) {
+                    event.target.value = censoredText;
+                }
+            });
+        });
+
+        inputField.addEventListener('input', handler);
+    }
+
+    // Initialize for title and description fields
+    const titleField = document.querySelector('#event_title');
+    const descriptionField = document.querySelector('#event_description');
+
+    if (titleField) setupProfanityListener(titleField);
+    if (descriptionField) setupProfanityListener(descriptionField);
+});
+</script>
+{% endblock %}
