@@ -1,0 +1,15 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}New Destination{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Create New Destination</h1>
+
+        <div class="mb-3">
+            {{ include('Destinations/destination/_form.html.twig') }}
+        </div>
+
+        <a href="{{ path('Destinations_page') }}" class="btn btn-secondary">Back to List</a>
+    </div>
+{% endblock %}

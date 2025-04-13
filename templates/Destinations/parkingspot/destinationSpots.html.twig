@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ destination.name }} Parking Details{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/parkingDestination.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Main Parking Section -->
+        <div class="col-md-8">
+            <h3 class="mb-4">
+                <i class="fas fa-parking me-2"></i> Parking Spots
+                <span class="badge bg-secondary">{{ destination.parkingSpots|length }}</span>
+            </h3>
+
+            {% if destination.parkingSpots is not empty %}
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+                    {% for spot in destination.parkingSpots %}
+                        <div class="col">
+                            <div class="card h-100 parking-spot-card {{ spot.isAvailable == 'no' ? 'occupied' : '' }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="fas fa-car-side detail-icon"></i>
+                                        Spot #{{ spot.spotNumber }}
+                                    </h5>
+
+                                    <div class="spot-detail">
+                                        <span class="spot-status bg-{{ spot.isAvailable == 'yes' ? 'success' : 'danger' }}">
+                                            {{ spot.isAvailable|capitalize }}
+                                        </span>
+                                    </div>
+
+                                    <div class="spot-detail">
+                                        <i class="fas fa-wheelchair detail-icon"></i>
+                                        Accessibility: {{ spot.isAccessible|capitalize }}
+                                    </div>
+
+                                    <div class="spot-detail">
+                                        <i class="fas fa-coins detail-icon"></i>
+                                        Fees: {{ spot.parkingFees }} DT/hour
+                                    </div>
+
+                                    <div class="spot-detail">
+                                        <i class="fas fa-ruler-combined detail-icon"></i>
+                                        Size: {{ spot.size|upper }}
+                                    </div>
+
+                                    {% if spot.notes %}
+                                        <div class="spot-detail mt-3">
+                                            <i class="fas fa-sticky-note detail-icon"></i>
+                                            <small class="text-muted">{{ spot.notes }}</small>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    No parking spots available for this destination.
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-info-circle me-2"></i> Quick Info
+                    </h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="fas fa-tag me-2"></i>
+                            Category: {{ destination.category }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-star me-2"></i>
+                            Rating: {{ destination.rating ?: 'N/A' }}/5
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-phone me-2"></i>
+                            Contact: {{ destination.contactInformation ?: 'N/A' }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="{{ path('app_destination_cards') }}" class="btn btn-secondary mt-4">
+        <i class="fas fa-arrow-left me-2"></i> Back to Destinations
+    </a>
+</div>
+{% endblock %}

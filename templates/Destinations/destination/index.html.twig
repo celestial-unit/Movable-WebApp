@@ -1,0 +1,53 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Destination list{% endblock %}
+
+
+
+{% block body %}
+    <h1>Destinations</h1>
+
+    <table class="table ">
+        <thead>
+            <tr>
+                <th>IdDestination</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Routes</th>
+                <th>ContactInformation</th>
+                <th>Image</th>
+                <th>Rating</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for destination in destinations %}
+            <tr>
+                <td>{{ destination.idDestination }}</td>
+                <td>{{ destination.name }}</td>
+                <td>{{ destination.location }}</td>
+                <td>{{ destination.category }}</td>
+                <td>{{ destination.status }}</td>
+                <td>{{ destination.routes }}</td>
+                <td>{{ destination.contactInformation }}</td>
+                <td>{{ destination.image }}</td>
+                <td>{{ destination.rating }}</td>
+                <td>{{ destination.description }}</td>
+                <td>
+                    <a href="{{ path('app_destination_back', {'idDestination': destination.idDestination}) }}">show</a>
+                    <a href="{{ path('app_destination_edit', {'idDestination': destination.idDestination}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_destination_new') }}">Create new</a>
+{% endblock %}

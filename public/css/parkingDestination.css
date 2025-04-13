@@ -1,0 +1,47 @@
+.parking-spot-card {
+    border-left: 4px solid #4CAF50;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+}
+
+.parking-spot-card.occupied {
+    border-left-color: #f44336;
+}
+
+.parking-spot-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.spot-status {
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.3em 0.6em;
+    border-radius: 0.4em;
+    color: white;
+}
+
+.spot-detail {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.detail-icon {
+    width: 24px;
+    margin-right: 0.5rem;
+    color: #4a4a4a;
+    text-align: center;
+}
+
+.card-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.card-body {
+    padding: 1.2rem;
+}

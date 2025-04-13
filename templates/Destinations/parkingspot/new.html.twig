@@ -1,0 +1,11 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}New Parkingspot{% endblock %}
+
+{% block body %}
+    <h1>Create new Parkingspot</h1>
+
+    {{ include('Destinations/parkingspot/_form.html.twig') }}
+
+    <a href="{{ path('app_parkingspot_index') }}">back to list</a>
+{% endblock %}

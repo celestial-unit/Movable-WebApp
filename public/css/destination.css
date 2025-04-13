@@ -1,0 +1,98 @@
+
+
+body {
+    background: #f0f8ff;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.card-container {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.destination-card {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease-in-out;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden; /* Added for image containment */
+}
+
+.destination-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Modified image section */
+.destination-image {
+    width: 100%;
+    height: 250px; /* Increased from 100px */
+    object-fit: cover;
+    border-radius: 15px 15px 0 0; /* Only round top corners */
+    transition: transform 0.3s ease; /* Add hover zoom effect */
+}
+
+
+.destination-content {
+    padding: 20px;
+    flex-grow: 1;
+}
+
+/* Rest of your existing styles remain the same */
+.destination-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.destination-location {
+    font-size: 14px;
+    color: #3498db;
+    margin-bottom: 10px;
+}
+
+.destination-description {
+    font-size: 14px;
+    color: #34495e;
+    margin-bottom: 15px;
+}
+
+/* ... (keep the rest of your existing styles) ... */
+
+/* Modified select button color */
+.btn-select.custom-select-button {
+    background-color: #39d661 !important; /* Changed to blue */
+    border-color: #66db34 !important;
+    color: white !important;
+}
+
+/* Heart button active state */
+.btn-heart.active i {
+    color: #dc3545 !important;
+}
+
+/* Heart button transitions */
+.btn-heart i {
+    transition: all 0.3s ease;
+    color: #c94347; /* Initial gray color */
+}
+
+.btn-heart .fas.text-danger {
+    color: #dc3545 !important; /* Red color when active */
+    
+}
+
+/* Hover effects */
+.btn-heart:hover i {
+    color: #dc3545 !important;
+}
+
+.btn-select.custom-select-button:hover {
+    background-color: #218838 !important;
+    border-color: #1e7e34 !important;
+}

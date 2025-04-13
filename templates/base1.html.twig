@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
     <title>{% block title %}Dashboard - Analytics | Sneat{% endblock %}</title>
-
+    
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon/favicon.ico') }}" />
 
@@ -18,9 +18,10 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="{{ asset('vendor/css/core.css') }}" />
-    <link rel="stylesheet" href="{{ asset('vendor/css/theme-default.css') }}" />
+    <link rel="stylesheet" href="{{ asset('back_css/core.css') }}" />
+    <link rel="stylesheet" href="{{ asset('back_css/theme-default.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/demo.css') }}" />
+   
 
     {% block stylesheets %}{% endblock %}
 </head>
@@ -31,7 +32,43 @@
         <div class="layout-container">
             <!-- Menu -->
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-                {% block sidebar %}{% endblock %}
+            
+                {% block sidebar %}
+                <div class="app-brand demo">
+        <a href="index.html" class="app-brand-link">
+            <span class="app-brand-logo demo">
+                <!-- Your logo SVG here -->
+            </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">Sneat</span>
+        </a>
+    </div>
+                    <ul class="menu-inner py-1">
+        <li class="menu-item active">
+            <a href="{{ path('home') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div>Dashboard</div>
+            </a>
+        </li>
+        <li class="menu-item active ">
+            <a href="{{ path('Destinations_page') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-map"></i>
+        <div data-i18n="Destinations">Destinations</div>
+            </a>
+        </li>
+            <li class="menu-item active">
+            <a href="{{ path('app_parkingspot_index') }}" class="menu-link">
+                 <i class="menu-icon tf-icons bx bx-car"></i>
+            <div data-i18n="Parking Spots">Parking Spots</div>
+            </a>
+        </li>
+
+        </ul>
+
+                
+                
+                {% endblock %}
+
+                
             </aside>
             <!-- / Menu -->
 
@@ -39,7 +76,12 @@
             <div class="layout-page">
                 <!-- Navbar -->
                 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
-                    {% block navbar %}{% endblock %}
+                
+                    {% block navbar %}
+            
+                    
+                    
+                    {% endblock %}
                 </nav>
                 <!-- / Navbar -->
 
