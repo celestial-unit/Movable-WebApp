@@ -2,6 +2,31 @@
 
 {% block title %}Event Registration Details{% endblock %}
 
+{% block sidebar %}
+    <!-- Sidebar Content -->
+    <div class="menu-inner-shadow"></div>
+    <ul class="menu-inner py-1">
+        <li class="menu-item active">
+            <a href="{{ path('app_eventback_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar-event"></i>
+                <div data-i18n="Events">Events</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="{{ path('app_eventback_new') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-plus-circle"></i>
+                <div data-i18n="Create Event">Create Event</div>
+            </a>
+        </li>
+        <li class="menu-item">
+    <a href="{{ path('app_eventback_registration_index') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-list-ul"></i>
+        <div data-i18n="View Registrations">View Registrations</div>
+    </a>
+</li>
+
+    </ul>
+{% endblock %}
 {% block body %}
     <div class="container mt-4">
         <h1 class="mb-4">Registration Details</h1>

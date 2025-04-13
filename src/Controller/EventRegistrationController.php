@@ -56,6 +56,7 @@ final class EventRegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $eventRegistration->setStatus('Pending');
             $entityManager->persist($eventRegistration);
             $entityManager->flush();
 
@@ -109,6 +110,7 @@ final class EventRegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $eventRegistration->setStatus('Pending');
             $entityManager->flush();
 
             return $this->redirectToRoute('app_event_registration_index', [], Response::HTTP_SEE_OTHER);

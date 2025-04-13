@@ -17,7 +17,11 @@ class EventRegistrationType extends AbstractType
             ->add('registrationDate', TextType::class, [
                 'label' => 'Registration Date',
                 'required' => true,
-                'attr' => ['placeholder' => 'Enter date as text'],
+                'attr' => [
+                    'placeholder' => 'YYYY-MM-DD HH:MM:SS',
+                    'class' => 'form-control'
+                ],
+                'error_bubbling' => false,
             ])
             ->add('status', ChoiceType::class, [
                 'choices' => [
@@ -27,6 +31,8 @@ class EventRegistrationType extends AbstractType
                 ],
                 'label' => 'Status',
                 'required' => true,
+                'attr' => ['class' => 'form-control'],
+                'error_bubbling' => false,
             ]);
     }
 
@@ -34,6 +40,7 @@ class EventRegistrationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => EventRegistration::class,
+            'attr' => ['novalidate' => 'novalidate'],
         ]);
     }
 }
