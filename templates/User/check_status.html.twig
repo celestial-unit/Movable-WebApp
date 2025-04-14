@@ -1,48 +1,6 @@
-{% extends 'base1.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Check Reservation Status{% endblock %}
-{% block sidebar %}
-    <div class="app-brand demo">
-        <a href="index.html" class="app-brand-link">
-            <span class="app-brand-logo demo">
-                <!-- Your logo SVG here -->
-            </span>
-            <span class="app-brand-text demo menu-text fw-bolder ms-2">Dashboard</span>
-        </a>
-    </div>
-
-    <div class="menu-inner-shadow"></div>
-
-    <ul class="menu-inner py-1">
-        <li class="menu-item">
-            <a href="{{ path('home') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                <div>Dashboard</div>
-            </a>
-        </li>
-
-        <li class="menu-item active">
-            <a href="{{ path('app_reservation_index') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-bus"></i>
-                <div>Reservation</div>
-            </a>
-        </li>
-
-        <li class="menu-item">
-            <a href="{{ path('app_ticket_index') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-id-card"></i>
-                <div>Ticket</div>
-            </a>
-        </li>
-
-        <li class="menu-item">
-            <a href="{{ path('app_check_status') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-id-card"></i>
-                <div>Check Status</div>
-            </a>
-        </li>
-    </ul>
-{% endblock %}
 
 {% block body %}
 <div class="container-xxl flex-grow-1 container-p-y">
@@ -58,30 +16,33 @@
                     
                     {{ form_start(form, {'attr': {'id': 'statusForm', 'class': 'mb-4'}}) }}
                         <div class="mb-3">
-                            {{ form_label(form.email) }}
-                            {{ form_widget(form.email) }}
+                            {{ form_label(form.email, 'Email Address', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.email, {'attr': {
+                                'class': 'form-control',
+                                'placeholder': 'Enter your email address'
+                            }}) }}
                             <div class="invalid-feedback" id="emailError"></div>
                         </div>
                         
                         <div class="d-flex justify-content-center gap-3">
-                            {{ form_widget(form.check) }}
-                            <a href="{{ path('app_reservation_index') }}" class="btn btn-primary px-4 py-2">
+                            {{ form_widget(form.check, {'attr': {
+                                'class': 'btn btn-success px-4 py-2'
+                            }}) }}
+                            <a href="{{ path('app_reservation_new') }}" class="btn btn-primary px-4 py-2">
                                 Back to Reservation
                             </a>
                         </div>
                     {{ form_end(form) }}
                     
-                    <div id="resultContainer" class="d-none">
-                        <div class="alert alert-success" id="statusMessage"></div>
+                    <div id="resultContainer" class="d-none mt-4">
+                        <div class="alert" id="statusMessage"></div>
                         <div class="card mt-3">
                             <div class="card-header">
                                 <h5>Reservation Details</h5>
                             </div>
                             <div class="card-body">
-                                <dl class="row" id="reservationDetails">
-                                    <!-- Details will be populated by JavaScript -->
-                                </dl>
-                                <div class="d-flex justify-content-end gap-2">
+                                <dl class="row" id="reservationDetails"></dl>
+                                <div class="d-flex justify-content-end gap-2 mt-3">
                                     <a href="#" class="btn btn-warning" id="ticketButton">View Ticket</a>
                                     <a href="#" class="btn btn-purple" id="calendarButton">View Calendar</a>
                                 </div>
@@ -114,34 +75,49 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultContainer = document.getElementById('resultContainer');
     const statusMessage = document.getElementById('statusMessage');
     const reservationDetails = document.getElementById('reservationDetails');
-    const ticketButton = document.getElementById('ticketButton');
-    const calendarButton = document.getElementById('calendarButton');
+    const emailField = form.querySelector('input[name="email"]');
+    const emailError = document.getElementById('emailError');
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        const formData = new FormData(form);
-        const email = formData.get('email');
         
         // Reset UI
-        form.classList.remove('was-validated');
-        document.getElementById('emailError').textContent = '';
-        
-        // Simple client-side validation
+        emailError.textContent = '';
+        emailField.classList.remove('is-invalid');
+        resultContainer.classList.add('d-none');
+        statusMessage.className = 'alert';
+        statusMessage.textContent = '';
+
+        // Validate email
+        const email = emailField.value.trim();
         if (!email) {
-            document.getElementById('emailError').textContent = 'Please enter your email address';
+            emailError.textContent = 'Please enter your email address';
+            emailField.classList.add('is-invalid');
             return;
         }
 
-        fetch("{{ path('app_reservation_check') }}", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({email: email})
-        })
-        .then(response => response.json())
-        .then(data => {
+        try {
+            // Show loading state
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Checking...';
+            submitBtn.disabled = true;
+
+            const response = await fetch("{{ path('app_reservation_check') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({email: email})
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Request failed');
+            }
+
             if (data.success) {
                 // Display reservation details
                 const res = data.reservation;
@@ -162,17 +138,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     <dd class="col-sm-9">${res.location}</dd>
                     <dt class="col-sm-3">Seats</dt>
                     <dd class="col-sm-9">${res.seats}</dd>
-                    <dt class="col-sm-3">Agent Type</dt>
-                    <dd class="col-sm-9">${res.agentType}</dd>
-                    <dt class="col-sm-3">Payment Mode</dt>
-                    <dd class="col-sm-9">${res.paymentMode}</dd>
                 `;
                 
                 // Update buttons
-                ticketButton.href = `/ticket/${res.id}`;
-                calendarButton.href = `/calendar?date=${res.date.split(' ')[0]}`;
+                document.getElementById('ticketButton').href = `/ticket/${res.id}`;
+                document.getElementById('calendarButton').href = `/calendar?date=${res.date.split(' ')[0]}`;
                 
                 // Show results
+                statusMessage.className = 'alert alert-success';
                 statusMessage.textContent = 'Reservation found!';
                 resultContainer.classList.remove('d-none');
             } else {
@@ -180,13 +153,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 statusMessage.textContent = data.message;
                 resultContainer.classList.remove('d-none');
             }
-        })
-        .catch(error => {
+        } catch (error) {
             statusMessage.className = 'alert alert-danger';
-            statusMessage.textContent = 'An error occurred while checking your reservation.';
+            statusMessage.textContent = error.message || 'An error occurred while checking your reservation.';
             resultContainer.classList.remove('d-none');
             console.error('Error:', error);
-        });
+        } finally {
+            // Reset button state
+            const submitBtn = form.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+        }
     });
 });
 </script>

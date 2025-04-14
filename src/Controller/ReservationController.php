@@ -28,6 +28,8 @@ class ReservationController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $reservation = new Reservation();
+        $reservation->setStatus(Reservation::STATUS_PENDING); // Add this line
+        $reservation->setCreatedAt(new \DateTimeImmutable());
         $form = $this->createForm(ReservationType::class, $reservation);
         $form->handleRequest($request);
 
@@ -217,11 +219,11 @@ class ReservationController extends AbstractController
                 $this->addFlash('success', 'Reservation deleted successfully!');
             } catch (\Exception $e) {
                 $this->logger->debug('Delete attempt', [
-                    'received_token' => $request->request->get('_token'),
-                    'expected_token' => $this->container->get('security.csrf.token_manager')
-                                         ->getToken('delete'.$reservation->getId())->getValue(),
-                    'token_valid' => $this->isCsrfTokenValid('delete'.$reservation->getId(), $request->request->get('_token'))
-                ]);
+    'received_token' => $request->request->get('_token'),
+    'expected_token' => $this->container->get('security.csrf.token_manager')
+                         ->getToken('delete'.$reservation->getId())->getValue(),
+    'token_valid' => $this->isCsrfTokenValid('delete'.$reservation->getId(), $request->request->get('_token'))
+]);
                 $this->addFlash('error', 'Error deleting reservation: ' . $e->getMessage());
             }
         }

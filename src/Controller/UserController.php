@@ -35,10 +35,16 @@ class UserController extends AbstractController
     #[Route('/api/check-reservation', name: 'app_reservation_check', methods: ['POST'])]
     public function checkReservation(Request $request, ReservationRepository $reservationRepository): JsonResponse
     {
+        $this->logger->info('Reservation check initiated', [
+            'ip' => $request->getClientIp(),
+            'user_agent' => $request->headers->get('User-Agent')
+        ]);
+
         $data = json_decode($request->getContent(), true);
         $email = $data['email'] ?? null;
 
         if (!$email) {
+            $this->logger->warning('Empty email submitted');
             return $this->json([
                 'success' => false,
                 'message' => 'Email is required.',
@@ -46,14 +52,21 @@ class UserController extends AbstractController
         }
 
         try {
-            $reservation = $reservationRepository->findOneByEmail($email);
+            $this->logger->debug('Searching reservation for email', ['email' => $email]);
+            $reservation = $reservationRepository->findOneBy(['email' => $email]);
 
             if (!$reservation) {
+                $this->logger->info('No reservation found', ['email' => $email]);
                 return $this->json([
                     'success' => false,
                     'message' => 'No reservation found with this email address.',
                 ], Response::HTTP_NOT_FOUND);
             }
+
+            $this->logger->info('Reservation found', [
+                'id' => $reservation->getId(),
+                'status' => $reservation->getStatus()
+            ]);
 
             return $this->json([
                 'success' => true,
@@ -68,13 +81,16 @@ class UserController extends AbstractController
                     'seats' => $reservation->getSeats(),
                     'agentType' => $reservation->getAgentType(),
                     'paymentMode' => $reservation->getPaymentMode(),
-                    'transport' => $reservation->getTransport(),
+                    'transport' => $reservation->getTransportType(),
                     'age' => $reservation->getAge()
                 ]
             ]);
 
         } catch (\Exception $e) {
-            $this->logger->error('Reservation check error: '.$e->getMessage());
+            $this->logger->error('Reservation check failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             return $this->json([
                 'success' => false,
                 'message' => 'An error occurred while checking your reservation.',

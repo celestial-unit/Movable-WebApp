@@ -18,8 +18,8 @@ class CheckStatusType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Email Address',
                 'attr' => [
-                    'placeholder' => 'Enter your email',
-                    'class' => 'form-control-lg'
+                    'placeholder' => 'Enter your email address',
+                    'class' => 'form-control'
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -36,5 +36,12 @@ class CheckStatusType extends AbstractType
                     'class' => 'btn btn-success px-4 py-2'
                 ]
             ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            // Configure your form options here
+        ]);
     }
 }
