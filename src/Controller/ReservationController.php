@@ -24,7 +24,7 @@ class ReservationController extends AbstractController
         $this->reservationRepository = $reservationRepository;
     }
 
-    #[Route('/', name: 'app_reservation_new', methods: ['GET', 'POST'])]
+    #[Route('/', name: 'new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $reservation = new Reservation();
@@ -117,7 +117,7 @@ class ReservationController extends AbstractController
 
         // Verify location
         if ($original->getDestination() && 
-            $stored->geLocation() !== $original->getDestination()->getLocation()) {
+            $stored->getLocation() !== $original->getDestination()->getLocation()) {
             $errors[] = 'Location mismatch';
         }
 
@@ -167,7 +167,7 @@ class ReservationController extends AbstractController
                 }
                 
                 if ($reservation->getDestination()) {
-                    $reservation->setSLocation($reservation->getDestination()->getLocation());
+                    $reservation->setLocation($reservation->getDestination()->getLocation());
                 }
                 
                 $reservation->setUpdatedAt(new \DateTime());
@@ -216,11 +216,16 @@ class ReservationController extends AbstractController
                 
                 $this->addFlash('success', 'Reservation deleted successfully!');
             } catch (\Exception $e) {
-                $this->logger->error('Reservation deletion failed: ' . $e->getMessage());
+                $this->logger->debug('Delete attempt', [
+                    'received_token' => $request->request->get('_token'),
+                    'expected_token' => $this->container->get('security.csrf.token_manager')
+                                         ->getToken('delete'.$reservation->getId())->getValue(),
+                    'token_valid' => $this->isCsrfTokenValid('delete'.$reservation->getId(), $request->request->get('_token'))
+                ]);
                 $this->addFlash('error', 'Error deleting reservation: ' . $e->getMessage());
             }
         }
 
-        return $this->redirectToRoute('app_reservation_index');
+        return $this->redirectToRoute('app_reservation_new');
     }
 }

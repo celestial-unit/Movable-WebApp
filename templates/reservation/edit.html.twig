@@ -68,8 +68,8 @@
                         </div>
                         
                         <div class="mb-3">
-                            {{ form_label(form.location, 'LOCATION', {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.location, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_label(form.destination, 'LOCATION', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.destination, {'attr': {'class': 'form-control'}}) }}
                         </div>
                         
                         <div class="mb-3">
@@ -100,8 +100,8 @@
                         </div>
                         
                         <div class="mb-3">
-                            {{ form_label(form.agentType, 'AGENT TYPE', {'label_attr': {'class': 'form-label'}}) }}
-                            {{ form_widget(form.agentType, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_label(form.agent, 'AGENT TYPE', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.agent, {'attr': {'class': 'form-control'}}) }}
                         </div>
                         
                         <div class="mb-3">
@@ -115,7 +115,7 @@
                     <button type="submit" class="btn btn-primary me-2">
                         <i class="bx bx-save me-1"></i> Update Reservation
                     </button>
-                    <a href="{{ path('app_reservation_index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ path('app_reservation_new') }}" class="btn btn-outline-secondary">
                         <i class="bx bx-arrow-back me-1"></i> Cancel
                     </a>
                 </div>

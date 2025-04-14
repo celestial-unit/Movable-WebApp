@@ -31,7 +31,7 @@ class WaitlistController extends AbstractController
         $ticket
             ->setReservation($reservation)
             ->setPaymentMode($reservation->getPaymentMode())
-            ->setTransport($reservation->getTransport())
+            ->setTransport($reservation->getTransportType())
             ->setPrice($this->calculatePrice($reservation))
             ->setDestination($reservation->getLocation())
             ->setBookingDate(new \DateTime());
