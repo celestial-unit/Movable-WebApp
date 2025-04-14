@@ -1,0 +1,83 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Ticket Details{% endblock %}
+
+{% block sidebar %}
+    <div class="app-brand demo">
+        <a href="index.html" class="app-brand-link">
+            <span class="app-brand-logo demo">
+                <!-- Your logo SVG here -->
+            </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">Dashboard</span>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+        <li class="menu-item">
+            <a href="{{ path('home') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div>Dashboard</div>
+            </a>
+        </li>
+
+        <li class="menu-item">
+            <a href="{{ path('app_reservation_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-bus"></i>
+                <div>Reservation</div>
+            </a>
+        </li>
+
+        <li class="menu-item active">
+            <a href="{{ path('app_ticket_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-id-card"></i>
+                <div>Ticket</div>
+            </a>
+        </li>
+
+    
+{% endblock %}
+
+{% block body %}
+    <div class="content-card">
+        <h1>Ticket Details</h1>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="h5">Ticket #{{ ticket.id }}</h2>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">Payment Mode</dt>
+                    <dd class="col-sm-9">{{ ticket.paymentMode }}</dd>
+                    
+                    <dt class="col-sm-3">Transport</dt>
+                    <dd class="col-sm-9">{{ ticket.transport }}</dd>
+                    
+                    <dt class="col-sm-3">Price</dt>
+                    <dd class="col-sm-9">{{ ticket.price }}</dd>
+                    
+                    <dt class="col-sm-3">Destination</dt>
+                    <dd class="col-sm-9">{{ ticket.destination }}</dd>
+                    
+                    <dt class="col-sm-3">Booking Date</dt>
+                    <dd class="col-sm-9">{{ ticket.bookingDate ? ticket.bookingDate|date('Y-m-d H:i:s') : '' }}</dd>
+                </dl>
+            </div>
+        </div>
+        
+        <div class="d-flex justify-content-between">
+            <a href="{{ path('app_ticket_index') }}" class="btn btn-outline-secondary">
+                Back to list
+            </a>
+            <div>
+                <a href="{{ path('app_ticket_edit', {'id': ticket.id}) }}" 
+                   class="btn btn-primary me-2">
+                    Edit
+                </a>
+                {{ include('ticket/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

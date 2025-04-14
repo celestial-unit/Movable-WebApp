@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Events - Mentor{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
+  <style>
+    /* Ensure the header is centered */
+    #header .container-fluid {
+      display: flex;
+      justify-content: center;  /* Center the content horizontally */
+      align-items: center;      /* Center the content vertically */
+      height: 100%;             /* Ensure the container takes the full height */
+    }
+
+    #header .logo {
+      margin-right: 30px; /* Adjust spacing between logo and nav items */
+    }
+
+    #header #navmenu {
+      display: flex;
+      gap: 20px; /* Adjust the space between the navigation items */
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <!-- Page Title -->
+  <div class="page-title" data-aos="fade">
+    <div class="heading">
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1>Events</h1>
+            <p class="mb-0">Stay updated with our latest events and activities.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Registration Button -->
+  <div class="text-center mt-4">
+    <a href="{{ path('eventregistration') }}" class="btn btn-success">Register for an Event</a>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('assets/js/main.js') }}"></script>
+{% endblock %}

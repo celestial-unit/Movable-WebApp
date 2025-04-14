@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<header id="header" class="header d-flex align-items-center sticky-top">
+  <div class="container-fluid container-xl position-relative d-flex align-items-center">
+    <a href="{{ path('homepage') }}" class="logo d-flex align-items-center me-auto">
+      <h1 class="sitename">Mentor</h1>
+    </a>
+
+    <nav id="navmenu" class="navmenu">
+      <ul>
+        <li><a href="{{ path('homepage') }}" class="active">Home</a></li>
+        <li><a href="{{ path('about') }}">aziz</a></li>
+        <li><a href="{{ path('courses') }}">ranim</a></li>
+        <li><a href="{{ path('trainers') }}">imen</a></li>
+        <li><a href="{{ path('events') }}">ayoub</a></li>
+        <li><a href="{{ path('app_reservation_new') }}">mariem</a></li>
+      </ul>
+      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+    </nav>
+    <a class="btn-getstarted" href="{{ path('courses') }}">Get Started</a>
+  </div>
+</header>
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>{% block title %}Mentor{% endblock %}</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+    <link rel="stylesheet" href="{{ asset('back_cass/css_halimaa.css') }}">
+<link rel="stylesheet" href="{{ asset('back_cass/css_halima.css') }}">
+
+  <!-- Favicons -->
+  <link href="{{ asset('img/favicon.png') }}" rel="icon">
+  <link href="{{ asset('img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/aos.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/glightbox.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/swiper-bundle.min.css') }}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{{ asset('css/main.css') }}" rel="stylesheet">
+
+  {% block stylesheets %}{% endblock %}
+</head>
+
+<body class="index-page">
+  
+  <main class="main">
+    {% block body %}{% endblock %}
+  </main>
+
+  <footer id="footer" class="footer position-relative light-background">
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="{{ path('homepage') }}" class="logo d-flex align-items-center">
+            <span class="sitename">Mentor</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Vendor JS Files -->
+  <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('js/validate.js') }}"></script>
+  <script src="{{ asset('js/aos.js') }}"></script>
+  <script src="{{ asset('js/glightbox.min.js') }}"></script>
+  <script src="{{ asset('js/purecounter_vanilla.js') }}"></script>
+  <script src="{{ asset('js/swiper-bundle.min.js') }}"></script>
+
+  <!-- Main JS File -->
+  <script src="{{ asset('js/main.js') }}"></script>
+
+  {% block javascripts %}{% endblock %}
+</body>
+</html>

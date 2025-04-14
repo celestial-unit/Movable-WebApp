@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pending Reservations{% endblock %}
+
+{% block body %}
+    <h1>Pending Reservations</h1>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Seats</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reservation in pending_reservations %}
+            <tr>
+                <td>{{ reservation.id }}</td>
+                <td>{{ reservation.firstName }} {{ reservation.lastName }}</td>
+                <td>{{ reservation.email }}</td>
+                <td>{{ reservation.seats }}</td>
+                <td>
+                    <a href="{{ path('admin_waitlist_accept', {'id': reservation.id}) }}" 
+                       class="btn btn-success">Accept</a>
+                    <a href="{{ path('admin_waitlist_reject', {'id': reservation.id}) }}" 
+                       class="btn btn-danger">Reject</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">No pending reservations found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

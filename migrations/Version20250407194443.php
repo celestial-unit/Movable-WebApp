@@ -1,0 +1,45 @@
+<?php
+
+declare(strict_types=1);
+
+namespace DoctrineMigrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20250407194443 extends AbstractMigration
+{
+    public function getDescription(): string
+    {
+        return '';
+    }
+
+    public function up(Schema $schema): void
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('CREATE TABLE event (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, duration INT NOT NULL, type INT NOT NULL, status VARCHAR(255) NOT NULL, dateevent VARCHAR(255) NOT NULL, startEvent TIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`');
+        $this->addSql('CREATE TABLE event_registration (id INT AUTO_INCREMENT NOT NULL, registration_date VARCHAR(255) NOT NULL, status VARCHAR(255) NOT NULL, event_id INT NOT NULL, INDEX IDX_8FBBAD5471F7E88B (event_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`');
+        $this->addSql('CREATE TABLE person (id VARCHAR(255) NOT NULL, firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, age VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`');
+        $this->addSql('CREATE TABLE messenger_messages (id BIGINT AUTO_INCREMENT NOT NULL, body LONGTEXT NOT NULL, headers LONGTEXT NOT NULL, queue_name VARCHAR(190) NOT NULL, created_at DATETIME NOT NULL, available_at DATETIME NOT NULL, delivered_at DATETIME DEFAULT NULL, INDEX IDX_75EA56E0FB7336F0 (queue_name), INDEX IDX_75EA56E0E3BD61CE (available_at), INDEX IDX_75EA56E016BA31DB (delivered_at), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`');
+        $this->addSql('ALTER TABLE event_registration ADD CONSTRAINT FK_8FBBAD5471F7E88B FOREIGN KEY (event_id) REFERENCES event (id)');
+        $this->addSql('ALTER TABLE ticket DROP FOREIGN KEY ticket_ibfk_1');
+        $this->addSql('DROP TABLE ticket');
+        $this->addSql('ALTER TABLE reservation ADD first_name VARCHAR(255) NOT NULL, ADD agent_type VARCHAR(255) NOT NULL, ADD payment_mode VARCHAR(255) NOT NULL, DROP firstName, DROP lastName, DROP agentType, DROP paymentMode, CHANGE email email VARCHAR(255) NOT NULL, CHANGE date date DATETIME NOT NULL, CHANGE location location VARCHAR(255) NOT NULL, CHANGE age age VARCHAR(255) NOT NULL, CHANGE transport transport VARCHAR(255) NOT NULL');
+    }
+
+    public function down(Schema $schema): void
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('CREATE TABLE ticket (id INT AUTO_INCREMENT NOT NULL, reservationId INT NOT NULL, paymentMode VARCHAR(50) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_general_ci`, transport VARCHAR(50) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_general_ci`, price DOUBLE PRECISION NOT NULL, destination VARCHAR(100) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_general_ci`, bookingDate DATE NOT NULL, INDEX reservationId (reservationId), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB COMMENT = \'\' ');
+        $this->addSql('ALTER TABLE ticket ADD CONSTRAINT ticket_ibfk_1 FOREIGN KEY (reservationId) REFERENCES reservation (id)');
+        $this->addSql('ALTER TABLE event_registration DROP FOREIGN KEY FK_8FBBAD5471F7E88B');
+        $this->addSql('DROP TABLE event');
+        $this->addSql('DROP TABLE event_registration');
+        $this->addSql('DROP TABLE person');
+        $this->addSql('DROP TABLE messenger_messages');
+        $this->addSql('ALTER TABLE reservation ADD firstName VARCHAR(50) NOT NULL, ADD lastName VARCHAR(50) NOT NULL, ADD agentType VARCHAR(50) NOT NULL, ADD paymentMode VARCHAR(50) NOT NULL, DROP first_name, DROP agent_type, DROP payment_mode, CHANGE email email VARCHAR(100) NOT NULL, CHANGE date date DATE NOT NULL, CHANGE location location VARCHAR(100) NOT NULL, CHANGE age age INT NOT NULL, CHANGE transport transport VARCHAR(50) NOT NULL');
+    }
+}

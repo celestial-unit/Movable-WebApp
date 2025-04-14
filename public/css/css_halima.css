@@ -1,0 +1,172 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Header Styling */
+header {
+    background-color: #004aad;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header nav ul {
+    list-style-type: none;
+}
+
+header nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Main Container */
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    margin-top: 20px;
+    gap: 30px;
+    flex-wrap: wrap; /* Allow for wrapping on smaller screens */
+}
+
+/* Form Container */
+.form-container {
+    background-color: white;
+    width: 45%; /* Adjust the width */
+    padding: 30px; /* Increased padding for more spacing */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.form-container h2 {
+    text-align: center;
+    color: #004aad;
+    margin-bottom: 20px; /* Spacing between title and form */
+}
+
+.form-group {
+    margin-bottom: 20px; /* Increased spacing between fields */
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    color: #004aad;
+    margin-bottom: 5px; /* Spacing between label and input */
+}
+
+input[type="text"], input[type="number"], select {
+    width: 100%;
+    padding: 12px; /* Increased padding for more space */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    margin-bottom: 10px; /* Space between input and button */
+}
+
+button.btn-primary {
+    background-color: #47a4f2;
+    color: white;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button.btn-primary:hover {
+    background-color: #004aad;
+}
+
+/* Table Container */
+.table-container {
+    width: 45%;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 12px 20px; /* Increased padding for better spacing */
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #004aad;
+    color: white;
+    font-size: 16px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px; /* Rounded corners for the header */
+}
+
+table td {
+    background-color: #f9f9f9;
+    font-size: 16px;
+}
+
+/* Add hover effect for rows */
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+table td a {
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+table td a.btn-warning {
+    background-color: #ffcc00;
+    color: white;
+}
+
+table td a.btn-danger {
+    background-color: #e63946;
+    color: white;
+}
+
+table td a.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+table td a.btn-danger:hover {
+    background-color: #d32f2f;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Stack the elements vertically on small screens */
+        align-items: center;
+    }
+
+    .form-container, .table-container {
+        width: 100%;  /* Full width for both the form and table */
+        margin-bottom: 20px;
+    }
+}
