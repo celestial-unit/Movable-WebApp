@@ -1,0 +1,61 @@
+{% extends 'index1.html.twig' %}
+
+{% block title %}{{ form.vars.value.id is defined ? 'Edit Agent' : 'Add New Agent' }}{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">{{ form.vars.value.id is defined ? 'Edit Agent' : 'Add New Agent' }}</h1>
+
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+        <div class="mb-3">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.name) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.email) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.type) }}
+            {{ form_widget(form.type, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.type) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.phone) }}
+            {{ form_widget(form.phone, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.phone) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.birthdate) }}
+            {{ form_widget(form.birthdate, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.birthdate) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.pictureP) }}
+            {% if form.vars.value.pictureP is not empty %}
+                <img src="{{ asset(form.vars.value.pictureP) }}" alt="Current picture" class="img-thumbnail" width="100">
+            {% endif %}
+            {{ form_widget(form.pictureP, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.pictureP) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.office) }}
+            {{ form_widget(form.office, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.office) }}
+        </div>
+
+        <button class="btn btn-primary">Save</button>
+
+    {{ form_end(form) }}
+
+    <a href="{{ path('agent_list_admin') }}" class="btn btn-secondary mt-3">Back to list</a>
+{% endblock %}
+

@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="text-center my-4">Dashboard</h1>
+
+    <!-- Buttons to Toggle Between Agents, Offices, and Agent Details -->
+    <div class="text-center mb-3">
+        <button class="btn btn-primary" onclick="showSection('agents')">Show Agents</button>
+        <button class="btn btn-secondary" onclick="showSection('offices')">Show Offices</button>
+        <button class="btn btn-info" id="agent-details-btn" onclick="showSection('agent-details')" style="display: none;">Back to Agent Details</button>
+    </div>
+
+    <!-- Agents Section -->
+    <div id="agents-section" class="row">
+        {% for agent in agents %}
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <img src="{{ asset(agent.pictureP) }}" class="card-img-top" alt="{{ agent.name }}" style="height: 250px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ agent.name }}</h5>
+                    <p class="card-text"><strong>Email:</strong> {{ agent.email }}</p>
+                    <p class="card-text"><strong>Phone:</strong> {{ agent.phone }}</p>
+                    
+                    <!-- View Agent Button - Fixed image path passing -->
+                    <button class="btn btn-info" onclick="viewAgent('{{ agent.id }}', '{{ agent.name }}', '{{ agent.email }}', '{{ agent.phone }}', '{{ asset(agent.pictureP)|e('js') }}')">
+                        View Agent
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <p class="text-center">No agents found.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Offices Section (Initially Hidden) -->
+    <div id="offices-section" class="row" style="display: none;">
+        {% for office in offices %}
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ office.name }}</h5>
+                    <p class="card-text"><strong>Location:</strong> {{ office.location }}</p>
+                    <p class="card-text"><strong>Phone:</strong> {{ office.phone }}</p> <!-- Office Phone -->
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <p class="text-center">No offices found.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Agent Details Section (Initially Hidden) -->
+    <div id="agent-details-section" class="row justify-content-center" style="display: none;">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <img id="agent-image-detail" src="" class="card-img-top" alt="Agent Image" style="height: 350px; object-fit: cover;">
+                <div class="card-body text-center">
+                    <h3 id="agent-name-detail" class="card-title mb-3"></h3>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <p class="card-text"><strong>Email:</strong> <span id="agent-email-detail"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="card-text"><strong>Phone:</strong> <span id="agent-phone-detail"></span></p>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary mt-3" onclick="showSection('agents')">Back to Agents List</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showSection(section) {
+        // Hide all sections first
+        document.getElementById('agents-section').style.display = 'none';
+        document.getElementById('offices-section').style.display = 'none';
+        document.getElementById('agent-details-section').style.display = 'none';
+        
+        // Show the button for agent details only when needed
+        document.getElementById('agent-details-btn').style.display = 'none';
+        
+        // Show the requested section
+        if (section === 'agents') {
+            document.getElementById('agents-section').style.display = 'flex';
+        } else if (section === 'offices') {
+            document.getElementById('offices-section').style.display = 'flex';
+        } else if (section === 'agent-details') {
+            document.getElementById('agent-details-section').style.display = 'flex';
+            document.getElementById('agent-details-btn').style.display = 'inline-block';
+        }
+    }
+
+    function viewAgent(id, name, email, phone, image) {
+        // For debugging - log the image path to console
+        console.log("Image path:", image);
+        
+        // Set the agent details in the detail section
+        document.getElementById('agent-name-detail').innerText = name;
+        document.getElementById('agent-email-detail').innerText = email;
+        document.getElementById('agent-phone-detail').innerText = phone;
+        document.getElementById('agent-image-detail').src = image;
+        
+        // Show the agent details section
+        showSection('agent-details');
+    }
+    
+    // Add event handler for image error to help debug
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('agent-image-detail').onerror = function() {
+            console.error("Error loading image:", this.src);
+            this.src = ''; // Clear the broken image
+            this.alt = 'Image failed to load';
+        };
+    });
+</script>
+
+<style>
+    /* Additional styles for the agent details section */
+    #agent-details-section .card {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    #agent-details-section .card-body {
+        padding: 25px;
+    }
+</style>
+
+{% endblock %}
+
+
+
+
