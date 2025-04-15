@@ -1,0 +1,234 @@
+{% extends 'layouts/auth.html.twig' %}
+
+{% block title %}Register - Movable{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .form-control-lg {
+        min-height: calc(1.5em + 1rem + 2px);
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        border-radius: 0.5rem;
+    }
+    
+    .form-label {
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #566a7f;
+    }
+    
+    .form-password-toggle .input-group-text {
+        cursor: pointer;
+    }
+    
+    .form-check-input:checked {
+        background-color: #696cff;
+        border-color: #696cff;
+    }
+    
+    .btn-primary {
+        background-color: #696cff;
+        color: #fff;
+        border-color: #696cff;
+    }
+    
+    .btn-primary:hover {
+        background-color: #5f65f1;
+        border-color: #5f65f1;
+    }
+    
+    .app-brand {
+        margin-bottom: 1.5rem;
+    }
+    
+    .app-brand-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background-color: #696cff;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 700;
+    }
+    
+    .text-primary {
+        color: #696cff !important;
+    }
+    
+    .authentication-wrapper {
+        max-width: 500px; /* Wider for registration form */
+    }
+    
+    .password-requirements {
+        font-size: 0.75rem;
+        color: #697a8d;
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+        background-color: #f9fafb;
+        border-radius: 0.25rem;
+    }
+    
+    .password-requirements ul {
+        padding-left: 1.25rem;
+        margin-bottom: 0;
+    }
+    
+    .is-invalid {
+        border-color: #ff4d4f !important;
+    }
+    
+    .invalid-feedback {
+        display: block;
+        width: 100%;
+        margin-top: 0.25rem;
+        font-size: 0.75rem;
+        color: #ff4d4f;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="card">
+    <div class="card-body">
+        <!-- Logo -->
+        <div class="app-brand justify-content-center mb-4">
+            <a href="{{ path("app_front_home") }}" class="app-brand-link gap-2">
+                <span class="app-brand-logo">
+                    <i class="bx bx-car text-primary fs-2"></i>
+                </span>
+                <span class="app-brand-text fw-bold ms-2">Movable</span>
+            </a>
+        </div>
+
+        <h4 class="mb-2 text-center">Adventure starts here 🚀</h4>
+        <p class="mb-4 text-center">Make your transportation easy and accessible!</p>
+
+        <!-- Flash messages -->
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        {{ form_start(registrationForm, {"attr": {"class": "mb-3"}}) }}
+            {% if form_errors(registrationForm) %}
+                <div class="alert alert-danger">
+                    {{ form_errors(registrationForm) }}
+                </div>
+            {% endif %}
+
+            <!-- Email field -->
+            <div class="mb-3">
+                {{ form_label(registrationForm.email, "Email", {"label_attr": {"class": "form-label"}}) }}
+                {{ form_widget(registrationForm.email, {
+                    "attr": {
+                        "class": "form-control form-control-lg" ~ (form_errors(registrationForm.email) ? ' is-invalid' : ''),
+                        "placeholder": "Enter your email"
+                    }
+                }) }}
+                {{ form_errors(registrationForm.email) }}
+            </div>
+            
+            <!-- Password field -->
+            <div class="mb-3 form-password-toggle">
+                {{ form_label(registrationForm.plainPassword.first, 'Password', {'label_attr': {'class': 'form-label'}}) }}
+                <div class="input-group">
+                    {{ form_widget(registrationForm.plainPassword.first, {
+                        'attr': {
+                            'class': 'form-control form-control-lg' ~ (form_errors(registrationForm.plainPassword.first) ? ' is-invalid' : ''),
+                            'placeholder': '••••••••',
+                            'aria-describedby': 'password'
+                        }
+                    }) }}
+                    <span class="input-group-text cursor-pointer toggle-password">
+                        <i class="bx bx-hide"></i>
+                    </span>
+                </div>
+                {{ form_errors(registrationForm.plainPassword.first) }}
+                
+                <!-- Password requirements -->
+                <div class="password-requirements">
+                    <strong>Password must:</strong>
+                    <ul>
+                        <li>Be at least 8 characters long</li>
+                        <li>Contain at least one uppercase letter</li>
+                        <li>Contain at least one number</li>
+                        <li>Contain at least one special character</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Confirm Password field -->
+            <div class="mb-3 form-password-toggle">
+                {{ form_label(registrationForm.plainPassword.second, 'Confirm Password', {'label_attr': {'class': 'form-label'}}) }}
+                <div class="input-group">
+                    {{ form_widget(registrationForm.plainPassword.second, {
+                        'attr': {
+                            'class': 'form-control form-control-lg' ~ (form_errors(registrationForm.plainPassword.second) ? ' is-invalid' : ''),
+                            'placeholder': '••••••••',
+                            'aria-describedby': 'password-confirm'
+                        }
+                    }) }}
+                    <span class="input-group-text cursor-pointer toggle-password">
+                        <i class="bx bx-hide"></i>
+                    </span>
+                </div>
+                {{ form_errors(registrationForm.plainPassword.second) }}
+            </div>
+            
+            <!-- Terms & Conditions -->
+            <div class="mb-3">
+                <div class="form-check">
+                    {{ form_widget(registrationForm.agreeTerms, {
+                        'attr': {'class': 'form-check-input' ~ (form_errors(registrationForm.agreeTerms) ? ' is-invalid' : '')}
+                    }) }}
+                    {{ form_label(registrationForm.agreeTerms, 'I agree to privacy policy & terms', {'label_attr': {'class': 'form-check-label'}}) }}
+                </div>
+                {{ form_errors(registrationForm.agreeTerms) }}
+            </div>
+            
+            <!-- Submit button -->
+            <button class="btn btn-primary d-grid w-100 mb-3" type="submit">
+                Sign up
+            </button>
+        {{ form_end(registrationForm) }}
+        
+        <!-- Login link -->
+        <p class="text-center mt-4">
+            <span>Already have an account?</span>
+            <a href="{{ path('app_login') }}" class="text-decoration-none">
+                <span>Sign in instead</span>
+            </a>
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Password visibility toggle
+        const togglePasswordButtons = document.querySelectorAll('.toggle-password');
+        
+        togglePasswordButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                
+                // Toggle icon
+                const icon = this.querySelector('i');
+                icon.classList.toggle('bx-hide');
+                icon.classList.toggle('bx-show');
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends "layouts/auth.html.twig" %}
+
+{% block title %}Login - Movable{% endblock %}
+
+{% block body %}
+<div class="card">
+    <div class="card-body">
+        <!-- Logo -->
+        <div class="app-brand justify-content-center mb-4">
+            <a href="{{ path('app_front_home') }}" class="app-brand-link">
+                <span class="app-brand-logo">
+                    <i class="bx bx-car text-primary fs-2"></i>
+                </span>
+                <span class="app-brand-text fw-bold ms-2">Movable</span>
+            </a>
+        </div>
+        
+        <h4 class="mb-2 text-center">Welcome to Movable!</h4>
+        <p class="mb-4 text-center">Please sign in to your account</p>
+        
+        <!-- Flash messages -->
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        
+        <!-- Error message -->
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+        
+        <!-- Login Form -->
+        <form id="formAuthentication" method="post" class="mb-3">
+            <!-- Email field -->
+            <div class="mb-3">
+                <label for="inputEmail" class="form-label">Email</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" 
+                       class="form-control form-control-lg" 
+                       placeholder="Enter your email" 
+                       autofocus required>
+            </div>
+            
+            <!-- Password field -->
+            <div class="mb-3 form-password-toggle">
+                <div class="d-flex justify-content-between">
+                    <label for="inputPassword" class="form-label">Password</label>
+                    <a href="{{ path('app_forgot_password') }}" class="text-decoration-none">
+                        <small>Forgot Password?</small>
+                    </a>
+                </div>
+                <div class="input-group">
+                    <input type="password" name="password" id="inputPassword" 
+                           class="form-control form-control-lg" 
+                           placeholder="••••••••" 
+                           aria-describedby="password" required>
+                    <span class="input-group-text cursor-pointer" id="togglePassword">
+                        <i class="bx bx-hide"></i>
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Remember me -->
+            <div class="mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="_remember_me" id="remember-me">
+                    <label class="form-check-label" for="remember-me">Remember Me</label>
+                </div>
+            </div>
+            
+            <!-- CSRF token -->
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            
+            <!-- Submit button -->
+            <div class="mb-3">
+                <button class="btn btn-primary d-grid w-100" type="submit">
+                    Sign in
+                </button>
+            </div>
+        </form>
+        
+        <!-- Register link -->
+        <p class="text-center">
+            <span>New on our platform?</span>
+            <a href="{{ path('app_register') }}" class="text-decoration-none">
+                <span>Create an account</span>
+            </a>
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Password visibility toggle
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('inputPassword');
+        
+        if (togglePassword && password) {
+            togglePassword.addEventListener('click', function() {
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                
+                // Toggle icon
+                const icon = this.querySelector('i');
+                icon.classList.toggle('bx-hide');
+                icon.classList.toggle('bx-show');
+            });
+        }
+    });
+</script>
+{% endblock %}
