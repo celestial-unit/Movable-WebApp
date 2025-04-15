@@ -128,10 +128,9 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav mx-auto py-0">
                         <a href="{{ path('app_front_home') }}" class="nav-item nav-link {{ app.request.attributes.get('_route') == 'app_front_home' ? 'active' : '' }}">Home</a>
-                        <a href="#" class="nav-item nav-link">Reservations</a>
+                        <a href="{{ path('app_reservation_new') }}" class="nav-item nav-link {{ app.request.attributes.get('_route') == 'app_reservation_new' ? 'active' : '' }}">Book a Ride</a>
                         <a href="#" class="nav-item nav-link">Destinations</a>
-                        <a href="#" class="nav-item nav-link">Agents</a>
-                        <a href="#" class="nav-item nav-link">Events</a>
+                        <a href="{{ path('app_event_index') }}" class="nav-item nav-link {{ app.request.attributes.get('_route') starts with 'app_event_' ? 'active' : '' }}">Events</a>
                         <a href="#" class="nav-item nav-link">Transportation</a>
                         <a href="{{ path('app_front_contact') }}" class="nav-item nav-link {{ app.request.attributes.get('_route') == 'app_front_contact' ? 'active' : '' }}">Contact</a>
                     </div>
@@ -193,6 +192,7 @@
                         <a class="btn btn-link" href="{{ path('app_front_home') }}">Home</a>
                         <a class="btn btn-link" href="{{ path('app_front_services') }}">Services</a>
                         <a class="btn btn-link" href="{{ path('app_front_portfolio') }}">Portfolio</a>
+                        <a class="btn btn-link" href="{{ path('app_event_index') }}">Events</a>
                         <a class="btn btn-link" href="{{ path('app_front_contact') }}">Contact</a>
                         <a class="btn btn-link" href="{{ path('app_login') }}">Login</a>
                     </div>

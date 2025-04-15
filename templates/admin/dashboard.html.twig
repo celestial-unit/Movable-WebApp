@@ -7,8 +7,13 @@
     <!-- User Statistics -->
     <div class="col-lg-3 col-sm-6 mb-4">
         <div class="card">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <a href="{{ path('app_reservation_index') }}" class="btn btn-primary">
+                                    <i class="fas fa-calendar"></i> Manage Reservations
+                                </a>
+                            </div>
+                            <div class="row">
                     <div class="card-info">
                         <p class="card-text">Total Users</p>
                         <div class="d-flex align-items-end mb-2">
@@ -176,15 +181,23 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="d-grid">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-grid">
+                            <a href="{{ path('app_eventback_index') }}" class="btn btn-outline-primary">
+                                <i class="bx bx-calendar mb-1 d-block fs-4"></i>
+                                Manage Events
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-grid">
                             <a href="{{ path('app_front_home') }}" class="btn btn-outline-primary">
                                 <i class="bx bx-world mb-1 d-block fs-4"></i>
                                 View Website
                             </a>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 {% endblock %}

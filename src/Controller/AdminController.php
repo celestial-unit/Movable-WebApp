@@ -34,9 +34,10 @@ class AdminController extends AbstractController
         $this->passwordHasher = $passwordHasher;
     }
 
-    #[Route('/dashboard', name: 'app_admin_dashboard')]
+    #[Route('/', name: 'app_admin_dashboard')]
     public function dashboard(): Response
     {
+        // Get user statistics
         $stats = [
             'users' => [
                 'total' => $this->userRepository->count([]),
@@ -46,9 +47,9 @@ class AdminController extends AbstractController
             ],
             'claims' => [
                 'total' => $this->reclamationRepository->count([]),
-                'pending' => $this->reclamationRepository->count(['status' => 'Pending']),
-                'resolved' => $this->reclamationRepository->count(['status' => 'Resolved']),
-                'rejected' => $this->reclamationRepository->count(['status' => 'Rejected']),
+                'pending' => $this->reclamationRepository->count(['status' => 'pending']),
+                'resolved' => $this->reclamationRepository->count(['status' => 'resolved']),
+                'rejected' => $this->reclamationRepository->count(['status' => 'rejected']),
             ],
         ];
 
@@ -72,7 +73,7 @@ class AdminController extends AbstractController
             // Apply manual pagination
             $users = array_slice($users, ($page - 1) * $limit, $limit);
         } elseif ($role) {
-            $criteria = ['role' => $role];
+            $criteria = ['role' => strtoupper($role)];
             $total = $this->userRepository->count($criteria);
             $users = $this->userRepository->findBy($criteria, ['lastName' => 'ASC'], $limit, ($page - 1) * $limit);
         } else {
@@ -193,6 +194,34 @@ class AdminController extends AbstractController
         return $this->render('admin/roles.html.twig', [
             'user' => $user,
         ]);
+    }
+
+    #[Route('/users/create', name: 'app_admin_user_create', methods: ['GET', 'POST'])]
+    public function createUser(Request $request): Response
+    {
+        if ($request->isMethod('POST')) {
+            $user = new User();
+            $user->setFirstName($request->request->get('firstName'));
+            $user->setLastName($request->request->get('lastName'));
+            $user->setEmail($request->request->get('email'));
+            $user->setRole($request->request->get('role', 'USER'));
+            
+            // Hash the password
+            $hashedPassword = $this->passwordHasher->hashPassword(
+                $user,
+                $request->request->get('password')
+            );
+            $user->setPassword($hashedPassword);
+            
+            // Save the user
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+            
+            $this->addFlash('success', 'User created successfully.');
+            return $this->redirectToRoute('app_admin_users');
+        }
+        
+        return $this->render('admin/create_user.html.twig');
     }
 
     #[Route('/banned-users', name: 'app_admin_banned_users')]

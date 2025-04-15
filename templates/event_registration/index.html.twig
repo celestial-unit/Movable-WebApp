@@ -1,0 +1,276 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Registrations List{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+{% endblock %}
+
+{% block body %}
+<style>
+    .registration-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .management-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2rem;
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+    }
+
+    .management-header h1 {
+        color: white;
+        margin: 0;
+        font-size: 2.25rem;
+        font-weight: 600;
+    }
+
+    .create-registration-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: white;
+        color: #4f46e5;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    .create-registration-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .registrations-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .registrations-table th {
+        background-color: #f8fafc;
+        color: #64748b;
+        padding: 1.25rem 1.5rem;
+        text-align: left;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.875rem;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .registrations-table td {
+        padding: 1.25rem 1.5rem;
+        color: #334155;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .registrations-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .registrations-table tr:hover td {
+        background-color: #f8fafc;
+    }
+
+    .badge-status {
+        display: inline-block;
+        padding: 0.375rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .status-confirmed { background: #d1fae5; color: #065f46; }
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-cancelled { background: #fee2e2; color: #991b1b; }
+
+    .action-group {
+    display: flex;
+    gap: 0.5rem;  /* Reduce spacing between buttons */
+    align-items: center; /* Ensure proper alignment */
+}
+
+
+    .btn {
+    width: 32px;  /* Reduce size */
+    height: 32px;
+    padding: 0.3rem;  /* Less padding */
+    font-size: 0.875rem; /* Slightly smaller icons */
+}
+
+    .btn-info { background: #e0f2fe; color: #0369a1; }
+    .btn-info:hover { background: #bae6fd; }
+
+    .btn-primary { background: #e0e7ff; color: #4338ca; }
+    .btn-primary:hover { background: #c7d2fe; }
+
+    .btn-danger { background: #fee2e2; color: #dc2626; }
+    .btn-danger:hover { background: #fecaca; }
+
+    .empty-state {
+        padding: 3rem;
+        text-align: center;
+        color: #64748b;
+    }
+
+    .empty-state svg {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 1rem;
+        color: #cbd5e1;
+    }
+
+    @media (max-width: 768px) {
+        .management-header {
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: flex-start;
+            padding: 1.5rem;
+        }
+
+        .registrations-table th,
+        .registrations-table td {
+            padding: 1rem;
+        }
+
+        .action-group {
+            flex-wrap: wrap;
+        }
+    }
+    .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-btn {
+    background: #4f46e5;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    z-index: 10;
+}
+
+.dropdown-content a,
+.dropdown-content .delete-btn {
+    color: #4f46e5;
+    padding: 10px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    border: none;
+    background: none;
+    width: 100%;
+}
+
+.dropdown-content .delete-btn {
+    color: #dc2626;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+</style>
+
+<div class="registration-container">
+    <div class="management-header">
+        <h1>📋  YOUR Registrations </h1>
+        <a href="{{ path('app_event_registration_new_no_event') }}" class="create-registration-btn">
+            <i class="fas fa-plus"></i> New Registration
+        </a>
+    </div>
+
+    <div class="content-card">
+        <div class="table-responsive">
+            <table class="registrations-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Event Title</th>
+                        <th>Registration Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for event_registration in event_registrations %}
+                    <tr>
+                        <td>{{ event_registration.id }}</td>
+                        <td>{{ event_registration.event.title }}</td>
+                        <td>{{ event_registration.registrationDate|date('Y-m-d H:i') }}</td>
+                        <td>
+                            <span class="badge badge-status status-{{ event_registration.status|lower }}">
+                                {{ event_registration.status }}
+                            </span>
+                        </td>
+            <td class="actions">
+    <div class="dropdown">
+    <button class="dropdown-btn">Actions</button>
+    <div class="dropdown-content">
+        <a href="{{ path('app_event_registration_show', {'id': event_registration.id}) }}">
+            <i class="bx bx-show"></i> View
+        </a>
+        <a href="{{ path('app_event_registration_edit', {'id': event_registration.id}) }}">
+            <i class="bx bx-edit"></i> Edit
+        </a>
+        <a href="{{ path('app_event_registration_pdf', {'id': event_registration.id}) }}">
+            <i class="bx bx-file"></i> Download PDF
+        </a>
+        <a href="{{ path('app_event_registration_qrcode', {'id': event_registration.id}) }}">
+            <i class="bx bx-qr"></i> QR Code
+        </a>
+        <!-- Delete Button inside dropdown -->
+        <form action="{{ path('app_event_registration_delete', {'id': event_registration.id}) }}" method="post" class="delete-form">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ event_registration.id) }}">
+            <button type="submit" class="delete-btn" onclick="return confirm('Are you sure?');">
+                <i class="bx bx-trash"></i> Delete
+            </button>
+        </form>
+    </div>
+</div>
+
+
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="empty-state">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                            <p>No registrations found. Create your first registration! 🎉</p>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

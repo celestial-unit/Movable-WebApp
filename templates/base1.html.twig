@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>{% block title %}Dashboard | Movable{% endblock %}</title>
+    <title>{% block title %}Dashboard - Analytics | Sneat{% endblock %}</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon/favicon.ico') }}" />
@@ -21,16 +21,6 @@
     <link rel="stylesheet" href="{{ asset('back_css/core.css') }}" />
     <link rel="stylesheet" href="{{ asset('back_css/theme-default.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/demo.css') }}" />
-    
-    <!-- Vendors CSS -->
-    <link href="{{ asset('vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendor/libs/apex-charts/apex-charts.css') }}" rel="stylesheet">
-
-    <!-- Animation CSS -->
-    <link href="{{ asset('vendor/libs/animate.css/animate.min.css') }}" rel="stylesheet">
-
-    <!-- Page CSS -->
-    {% block page_css %}{% endblock %}
 
     {% block stylesheets %}{% endblock %}
 </head>
@@ -56,17 +46,7 @@
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
                     <!-- Content -->
-                    <div class="container-xxl flex-grow-1 container-p-y animate__animated animate__fadeIn">
-                        <!-- Flash Messages -->
-                        {% for label, messages in app.flashes %}
-                            {% for message in messages %}
-                                <div class="alert alert-{{ label }} alert-dismissible animate__animated animate__fadeInDown" role="alert">
-                                    {{ message }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                            {% endfor %}
-                        {% endfor %}
-
+                    <div class="container-xxl flex-grow-1 container-p-y">
                         {% block body %}{% endblock %}
                     </div>
                     <!-- / Content -->
@@ -76,67 +56,20 @@
                         {% block footer %}{% endblock %}
                     </footer>
                     <!-- / Footer -->
-
-                    <div class="content-backdrop fade"></div>
                 </div>
                 <!-- / Content wrapper -->
             </div>
             <!-- / Layout page -->
         </div>
-
-        <!-- Overlay -->
-        <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
 
     <!-- Core JS -->
     <script src="{{ asset('vendor/libs/jquery/jquery.js') }}"></script>
-    <script src="{{ asset('vendor/libs/popper/popper.js') }}"></script>
-    <script src="{{ asset('vendor/libs/bootstrap/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('vendor/js/bootstrap.js') }}"></script>
     <script src="{{ asset('vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
-    <script src="{{ asset('vendor/libs/apex-charts/apexcharts.min.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
 
-    <!-- Dashboard JS -->
-    <script src="{{ asset('js/dashboard.js') }}"></script>
-
-    <!-- Animation JS -->
-    <script src="{{ asset('vendor/libs/wow/wow.min.js') }}"></script>
-
-    <!-- Page JS -->
     {% block javascripts %}{% endblock %}
-
-    <script>
-        // Initialize animations
-        new WOW().init();
-
-        // Initialize menu
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add fade-in animation to cards
-            document.querySelectorAll('.card').forEach(card => {
-                card.classList.add('animate__animated', 'animate__fadeInUp');
-            });
-
-            // Initialize tooltips
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl)
-            });
-
-            // Menu toggle for mobile
-            const menuToggle = document.querySelector('.layout-menu-toggle');
-            const menu = document.querySelector('.layout-menu');
-            const overlay = document.querySelector('.layout-overlay');
-            
-            if (menuToggle && menu && overlay) {
-                menuToggle.addEventListener('click', () => {
-                    document.querySelector('body').classList.toggle('layout-menu-expanded');
-                });
-
-                overlay.addEventListener('click', () => {
-                    document.querySelector('body').classList.remove('layout-menu-expanded');
-                });
-            }
-        });
-    </script>
 </body>
 </html>

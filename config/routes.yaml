@@ -9,36 +9,40 @@ app_user_settings:
 
 app_user_view:
     path: /user/{id}
-    controller: App\Controller\UserController::viewUser
+    controller: App\Controller\UserController::view
     requirements:
         id: '\d+'
 
 # Admin user management routes
 app_admin_users:
     path: /admin/users
-    controller: App\Controller\UserController::adminUsersList
+    controller: App\Controller\AdminController::users
 
 app_admin_user_edit:
     path: /admin/users/{id}/edit
-    controller: App\Controller\UserController::adminEditUser
+    controller: App\Controller\AdminController::editUser
     requirements:
         id: '\d+'
 
+app_admin_user_create:
+    path: /admin/users/create
+    controller: App\Controller\AdminController::createUser
+
 app_admin_user_ban:
     path: /admin/users/{id}/ban
-    controller: App\Controller\UserController::banUser
+    controller: App\Controller\AdminController::banUser
     requirements:
         id: '\d+'
 
 app_admin_user_unban:
     path: /admin/users/{id}/unban
-    controller: App\Controller\UserController::unbanUser
+    controller: App\Controller\AdminController::unbanUser
     requirements:
         id: '\d+'
 
 app_admin_user_change_role:
     path: /admin/users/{id}/change-role
-    controller: App\Controller\UserController::changeUserRole
+    controller: App\Controller\AdminController::changeRole
     requirements:
         id: '\d+'
 

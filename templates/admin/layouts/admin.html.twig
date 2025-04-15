@@ -122,6 +122,22 @@
             </a>
         </li>
 
+        <!-- Events Management -->
+        <li class="menu-item {{ app.request.get('_route') starts with 'app_event' ? 'active' : '' }}">
+            <a href="{{ path('app_eventback_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar"></i>
+                <div>Events</div>
+            </a>
+        </li>
+
+        <!-- Reservation Management -->
+        <li class="menu-item {{ app.request.get('_route') starts with 'admin_waitlist_' ? 'active' : '' }}">
+            <a href="{{ path('admin_waitlist_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar-check"></i>
+                <div>Reservations</div>
+            </a>
+        </li>
+
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">System</span>
         </li>
@@ -129,12 +145,6 @@
 {% endblock %}
 
 {% block navbar %}
-    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
-            <i class="bx bx-menu bx-sm"></i>
-        </a>
-    </div>
-
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <div class="navbar-nav align-items-center">
             <div class="nav-item d-flex align-items-center">
