@@ -1,15 +1,20 @@
 # Movable WebApp
 
 ## Overview
-Movable WebApp is a Symfony-based web application that integrates front-end and back-end templates, CRUD operations with relationships, input validation, additional functionalities, a censored API, and a QR code bundle.
+Movable WebApp is a Symfony-based web application designed to provide a seamless experience for managing educational content. It integrates front-end and back-end templates, CRUD operations, input validation, and additional functionalities such as QR code generation and API integration.
 
 ## Features
-- **Integrated Templates**: Seamless integration of front-end and back-end templates.
+- **Integrated Templates**: Combines front-end and back-end templates for a cohesive user experience.
 - **CRUD Operations**: Full Create, Read, Update, and Delete functionality with database relationships.
 - **Input Validation**: Ensures data integrity and user-friendly error handling.
-- **Additional Functionalities**: Includes advanced features to enhance user experience.
-- **Censored API**: Secure and filtered API implementation.
 - **QR Code Bundle**: Generate and display QR codes for various use cases.
+- **Censored API**: Secure and filtered API implementation.
+- **Responsive Design**: Built with Bootstrap for mobile-friendly layouts.
+
+## File Structure
+- **templates/index.html.twig**: Contains the main structure for the homepage, including a hero section and custom content.
+- **assets/css/custom.css**: Custom styles for the application.
+- **assets/js/custom.js**: Custom JavaScript for additional interactivity.
 
 ## Installation
 1. Clone the repository:
@@ -37,7 +42,7 @@ Movable WebApp is a Symfony-based web application that integrates front-end and 
 
 ## Usage
 - Access the application at `http://localhost:8000`.
-- Explore the features, including CRUD operations, QR code generation, and more.
+- Explore features such as CRUD operations, QR code generation, and more.
 
 ## Branches
 - **EVENTS**: Contains the latest updates and features.
