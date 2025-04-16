@@ -3,33 +3,246 @@
 {% block title %}Event Statistics{% endblock %}
 
 {% block body %}
-    <h1>Event Statistics</h1>
-    
-    <canvas id="eventChart" width="400" height="200"></canvas>
+<div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold py-3 mb-0">
+            <span class="text-muted fw-light">Events /</span> Statistics
+        </h4>
+        <a href="{{ path('app_eventback_index') }}" class="btn btn-primary">
+            <i class="bx bx-arrow-back me-1"></i> Back to Events
+        </a>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        var ctx = document.getElementById('eventChart').getContext('2d');
-        var eventChart = new Chart(ctx, {
-            type: 'bar',  // You can also use 'line', 'pie', etc.
+    <!-- Stats Cards Row -->
+    <div class="row mb-4">
+        <!-- Upcoming Events Card -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar flex-shrink-0 p-3 rounded bg-primary">
+                            <i class="bx bx-calendar-event text-white fs-3"></i>
+                        </div>
+                        <div class="ml-3 ms-3">
+                            <h5 class="mb-1">Upcoming Events</h5>
+                            <span class="badge bg-label-primary rounded-pill">{{ upcomingEvents }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registration Status Cards -->
+        {% for regStatus in registrationsByStatus %}
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar flex-shrink-0 p-3 rounded 
+                            {% if regStatus.status == 'Pending' %}bg-warning
+                            {% elseif regStatus.status == 'Confirmed' %}bg-success
+                            {% elseif regStatus.status == 'Cancelled' %}bg-danger
+                            {% else %}bg-info{% endif %}">
+                            <i class="bx bx-user-check text-white fs-3"></i>
+                        </div>
+                        <div class="ml-3 ms-3">
+                            <h5 class="mb-1">{{ regStatus.status }} Registrations</h5>
+                            <span class="badge bg-label-{% if regStatus.status == 'Pending' %}warning
+                                {% elseif regStatus.status == 'Confirmed' %}success
+                                {% elseif regStatus.status == 'Cancelled' %}danger
+                                {% else %}info{% endif %} rounded-pill">{{ regStatus.count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Chart Section -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Event Distribution by Type</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="eventChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Event Types Breakdown</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Count</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for eventType in eventsByType %}
+                                <tr>
+                                    <td>
+                                        <span class="badge bg-primary">Type {{ eventType.type }}</span>
+                                    </td>
+                                    <td>{{ eventType.count }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<style>
+    .bg-label-primary {
+        background-color: #e7e7ff !important;
+        color: #696cff !important;
+    }
+    
+    .bg-label-success {
+        background-color: #e8fadf !important;
+        color: #71dd37 !important;
+    }
+    
+    .bg-label-warning {
+        background-color: #fff5e0 !important;
+        color: #ffab00 !important;
+    }
+    
+    .bg-label-danger {
+        background-color: #ffe5e5 !important;
+        color: #ff3e1d !important;
+    }
+    
+    .bg-label-info {
+        background-color: #d7f5fc !important;
+        color: #03c3ec !important;
+    }
+    
+    .avatar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.375rem;
+        width: 38px;
+        height: 38px;
+    }
+</style>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var ctx = document.getElementById('eventChart').getContext('2d');
+    var eventChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ labels | raw }},
+            datasets: [{
+                label: 'Event Count by Type',
+                data: {{ values | raw }},
+                backgroundColor: [
+                    'rgba(105, 108, 255, 0.8)',
+                    'rgba(3, 195, 236, 0.8)',
+                    'rgba(113, 221, 55, 0.8)',
+                    'rgba(255, 171, 0, 0.8)',
+                    'rgba(255, 62, 29, 0.8)'
+                ],
+                borderColor: [
+                    'rgba(105, 108, 255, 1)',
+                    'rgba(3, 195, 236, 1)',
+                    'rgba(113, 221, 55, 1)',
+                    'rgba(255, 171, 0, 1)',
+                    'rgba(255, 62, 29, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+    
+    // Optional: Add a pie chart for event type distribution
+    if (document.getElementById('eventPieChart')) {
+        var ctxPie = document.getElementById('eventPieChart').getContext('2d');
+        var eventPieChart = new Chart(ctxPie, {
+            type: 'pie',
             data: {
                 labels: {{ labels | raw }},
                 datasets: [{
-                    label: 'Event Count by Type',
                     data: {{ values | raw }},
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: [
+                        'rgba(105, 108, 255, 0.8)',
+                        'rgba(3, 195, 236, 0.8)',
+                        'rgba(113, 221, 55, 0.8)',
+                        'rgba(255, 171, 0, 0.8)',
+                        'rgba(255, 62, 29, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(105, 108, 255, 1)',
+                        'rgba(3, 195, 236, 1)',
+                        'rgba(113, 221, 55, 1)',
+                        'rgba(255, 171, 0, 1)',
+                        'rgba(255, 62, 29, 1)'
+                    ],
                     borderWidth: 1
                 }]
             },
             options: {
                 responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right'
                     }
                 }
             }
         });
-    </script>
+    }
+});
+</script>
+{% endblock %}
+
+{% block sidebar %}
+    {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+    {{ parent() }}
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
 {% endblock %}

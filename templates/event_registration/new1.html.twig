@@ -1,5 +1,6 @@
 {% extends 'base1.html.twig' %}
 
+{% block title %}New Event Registration{% endblock %}
 
 {% block sidebar %}
     <!-- Sidebar Content -->
@@ -18,15 +19,13 @@
             </a>
         </li>
         <li class="menu-item">
-    <a href="{{ path('app_eventback_registration_index') }}" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-list-ul"></i>
-        <div data-i18n="View Registrations">View Registrations</div>
-    </a>
-</li>
-
+            <a href="{{ path('app_eventback_registration_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-list-ul"></i>
+                <div data-i18n="View Registrations">View Registrations</div>
+            </a>
+        </li>
     </ul>
 {% endblock %}
-{% block title %}New Event Registration{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -65,7 +64,7 @@
                         <dd class="col-sm-9">{{ event.getFormattedDate() }}</dd>
                         
                         <dt class="col-sm-3">Event Type:</dt>
-                        <dd class="col-sm-9">
+                        <dd class="col-sm-9 ">
                             <span class="badge bg-label-primary">{{ event.type }}</span>
                         </dd>
                     </dl>
@@ -82,33 +81,33 @@
                         
                         <!-- Registration Date -->
                         <div class="mb-4">
-                            {{ form_label(form.registrationDate, null, {
+                            {{ form_label(form.registration_date, null, {
                                 'label_attr': {'class': 'form-label'}
                             }) }}
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bx bx-calendar"></i></span>
-                                {{ form_widget(form.registrationDate, {
+                                {{ form_widget(form.registration_date, {
                                     'attr': {
                                         'class': 'form-control flatpickr-date',
                                         'placeholder': 'Select registration date'
                                     }
                                 }) }}
                             </div>
-                            {{ form_errors(form.registrationDate, {
+                            {{ form_errors(form.registration_date, {
                                 'attr': {'class': 'invalid-feedback'}
                             }) }}
                         </div>
-
+                        
                         <!-- Status Field -->
                         <div class="mb-4">
                             {{ form_label(form.status, null, {
                                 'label_attr': {'class': 'form-label'}
                             }) }}
                             <div class="input-group">
+                                <span class="input-group-text"><i class="bx bx-check-circle"></i></span>
                                 {{ form_widget(form.status, {
                                     'attr': {
-                                        'class': 'form-select',
-                                        'data-allow-clear': 'true'
+                                        'class': 'form-select'
                                     }
                                 }) }}
                             </div>
@@ -116,7 +115,29 @@
                                 'attr': {'class': 'invalid-feedback'}
                             }) }}
                         </div>
+                        
+                        {% if form.user is defined %}
+                        <!-- User Field (Admin only) -->
+                        <div class="mb-4">
+                            {{ form_label(form.user, null, {
+                                'label_attr': {'class': 'form-label'}
+                            }) }}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bx bx-user"></i></span>
+                                {{ form_widget(form.user, {
+                                    'attr': {
+                                        'class': 'form-select'
+                                    }
+                                }) }}
+                            </div>
+                            {{ form_errors(form.user, {
+                                'attr': {'class': 'invalid-feedback'}
+                            }) }}
+                            <small class="form-text text-muted">Select a user or leave empty for manual registration</small>
+                        </div>
+                        {% endif %}
 
+                        <!-- Form Actions -->
                         <!-- Form Actions -->
                         <div class="d-flex justify-content-between align-items-center mt-5">
                             <button type="reset" class="btn btn-label-secondary">
@@ -136,21 +157,15 @@
     </div>
 </div>
 {% endblock %}
-
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('vendor/libs/flatpickr/flatpickr.js') }}"></script>
-    <script>
-        // Initialize datepicker
-        document.addEventListener('DOMContentLoaded', function() {
-            const datepickers = document.querySelectorAll('.flatpickr-date');
-            datepickers.forEach(function(datepicker) {
-                flatpickr(datepicker, {
-                    dateFormat: 'Y-m-d',
-                    allowInput: true,
-                    minDate: 'today'
-                });
-            });
-        });
-    </script>
+    <!-- Removed flatpickr initialization as registration_date is now read-only -->
+{% endblock %}
+
+{% block navbar %}
+    {{ parent() }}
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
 {% endblock %}

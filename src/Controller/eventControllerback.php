@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Form\EventType;
+use App\Controller\EventRegistrationBackOfficeController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,7 @@ final class eventControllerback extends AbstractController
         $this->httpClient = $httpClient;
     }
 
-    #[Route(name: 'app_eventback_index', methods: ['GET'])]
+    #[Route('/', name: 'app_eventback_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
         $events = $entityManager
@@ -34,7 +35,7 @@ final class eventControllerback extends AbstractController
         ]);
     }
 
-    #[Route('/newback1', name: 'app_eventback_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'app_eventback_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $event = new Event();
@@ -58,7 +59,7 @@ final class eventControllerback extends AbstractController
         ]);
     }
 
-    #[Route('/back1event/{id<\d+>}', name: 'app_eventback_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_eventback_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(int $id, EntityManagerInterface $entityManager): Response
     {
         $event = $entityManager->getRepository(Event::class)->find($id);
@@ -72,7 +73,7 @@ final class eventControllerback extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/editevent', name: 'app_eventback_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_eventback_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Event $event, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(EventType::class, $event);
@@ -94,7 +95,7 @@ final class eventControllerback extends AbstractController
         ]);
     }
 
-    #[Route('/event/{id}', name: 'app_eventback_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_eventback_delete', methods: ['POST'])]
     public function delete(Request $request, Event $event, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->getPayload()->getString('_token'))) {
@@ -146,7 +147,7 @@ final class eventControllerback extends AbstractController
     // Remaining methods unchanged (searchback, statistics)
     // ... [Keep the existing searchback and statistics methods as they were] ...
 
-    #[Route('/searchback', name: 'app_eventback_search', methods: ['GET'])]
+    #[Route('/search', name: 'app_eventback_search', methods: ['GET'])]
     public function search(Request $request, EntityManagerInterface $entityManager): Response
     {
         $queryBuilder = $entityManager->getRepository(Event::class)->createQueryBuilder('e');
@@ -186,32 +187,97 @@ final class eventControllerback extends AbstractController
             'events' => $events, // Reusing index.html.twig
         ]);
     }
-    #[Route('/statistics', name: 'app_event_statistics', methods: ['GET'])]
+    #[Route('/statistics', name: 'app_eventback_statistics', methods: ['GET'])]
 public function statistics(EntityManagerInterface $entityManager): Response
 {
-    // Example: Get the count of events grouped by 'type'
-    $query = $entityManager->createQuery(
-        'SELECT e.type, COUNT(e.id) as event_count
+    // Get events count by type
+    $eventsByType = $entityManager->createQuery(
+        'SELECT e.type, COUNT(e.id) as count
          FROM App\Entity\Event e
          GROUP BY e.type'
-    );
+    )->getResult();
     
-    $statistics = $query->getResult();
+    // Get upcoming events count
+    $upcomingEvents = $entityManager->createQuery(
+        'SELECT COUNT(e.id)
+         FROM App\Entity\Event e
+         WHERE e.dateevent >= :today'
+    )->setParameter('today', new \DateTime('today'))
+     ->getSingleScalarResult();
+
+    // Get registrations by status
+    $registrationsByStatus = $entityManager->createQuery(
+        'SELECT er.status, COUNT(er.id) as count
+         FROM App\Entity\EventRegistration er
+         GROUP BY er.status'
+    )->getResult();
     
     // Prepare data for the chart (e.g., labels and values)
     $labels = [];
     $values = [];
     
-    foreach ($statistics as $stat) {
+    foreach ($eventsByType as $stat) {
         $labels[] = 'Type ' . $stat['type'];  // Customize the label
-        $values[] = $stat['event_count'];
+        $values[] = $stat['count'];
     }
 
     return $this->render('event/statistics.html.twig', [
         'labels' => json_encode($labels),
         'values' => json_encode($values),
+        'eventsByType' => $eventsByType,
+        'upcomingEvents' => $upcomingEvents,
+        'registrationsByStatus' => $registrationsByStatus
     ]);
 }
+#[Route('/registration/new/{eventId}', name: 'app_eventback_registration_new', methods: ['GET', 'POST'])]
+public function newRegistration(
+    int $eventId,
+    Request $request,
+    EntityManagerInterface $entityManager
+): Response {
+    // Check if user has admin role
+    if (!$this->isGranted('ROLE_ADMIN')) {
+        $this->addFlash('error', 'Only administrators can access this page.');
+        return $this->redirectToRoute('app_eventback_index');
+    }
+
+    // Find the event
+    $event = $entityManager->getRepository(Event::class)->find($eventId);
+    
+    // If event doesn't exist, redirect to event list with error message
+    if (!$event) {
+        $this->addFlash('error', 'Event not found. It may have been deleted.');
+        return $this->redirectToRoute('app_eventback_index');
+    }
+
+    // Create new registration
+    $registration = new \App\Entity\EventRegistration();
+    $registration->setEvent($event);
+    $registration->setRegistrationDate((new \DateTime())->format('Y-m-d H:i:s'));
+    $registration->setStatus('Pending');
+
+    // Create and handle the form
+    $form = $this->createForm(\App\Form\EventRegistrationType::class, $registration);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        try {
+            $entityManager->persist($registration);
+            $entityManager->flush();
+            
+            $this->addFlash('success', 'Registration created successfully.');
+            return $this->redirectToRoute('app_eventback_index');
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'An error occurred while creating the registration.');
+        }
+    }
+
+    return $this->render('event_registration/new1.html.twig', [
+        'event' => $event,
+        'form' => $form->createView()
+    ]);
+}
+
 // In your controller
 #[Route('/events-json', name: 'app_eventback_events_json', methods: ['GET'])]
 public function getEventsJson(Request $request, EntityManagerInterface $entityManager): JsonResponse

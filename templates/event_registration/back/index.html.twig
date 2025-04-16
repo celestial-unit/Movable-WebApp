@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Event Registrations Management{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Event Registrations Management</h1>
+        
+        <div class="mb-3">
+            <a href="{{ path('app_admin_dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+        
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+        
+        <div class="card">
+            <div class="card-header">
+                <h5>All Registrations</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Event</th>
+                            <th>User</th>
+                            <th>Registration Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for registration in event_registrations %}
+                            <tr>
+                                <td>{{ registration.id }}</td>
+                                <td>{{ registration.event.title }}</td>
+                                <td>
+                                    {% if registration.user %}
+                                        {{ registration.user.email }}
+                                    {% else %}
+                                        <span class="text-muted">Manual registration</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ registration.registrationDate }}</td>
+                                <td>
+                                    <span class="badge {% if registration.status == 'Confirmed' %}bg-success{% elseif registration.status == 'Pending' %}bg-warning{% else %}bg-danger{% endif %}">
+                                        {{ registration.status }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="{{ path('app_event_registration_show', {'id': registration.id}) }}" class="btn btn-sm btn-info">View</a>
+                                        <a href="{{ path('app_event_registration_edit', {'id': registration.id}) }}" class="btn btn-sm btn-primary">Edit</a>
+                                        <a href="{{ path('app_event_registration_pdf', {'id': registration.id}) }}" class="btn btn-sm btn-secondary" target="_blank">PDF</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center">No registrations found</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

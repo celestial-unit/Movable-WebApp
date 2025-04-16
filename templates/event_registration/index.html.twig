@@ -196,14 +196,65 @@
 .dropdown:hover .dropdown-content {
     display: block;
 }
+.actions .btn-action {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 6px;
+    padding: 6px 10px;
+    font-size: 14px;
+    color: #333;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.actions .btn-action {
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    margin: 2px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+/* Icons spacing */
+.actions .btn-action i {
+    margin-right: 4px;
+    font-size: 16px;
+}
+
+/* Fixed background colors (no hover) */
+.actions .btn-action:nth-child(1) { background-color: #3498db; } /* View - blue */
+.actions .btn-action:nth-child(2) { background-color: #f39c12; } /* Edit - orange */
+.actions .btn-action:nth-child(3) { background-color: #9b59b6; } /* PDF - purple */
+.actions .btn-action:nth-child(4) { background-color: #27ae60; } /* QR - green */
+
+/* Delete button */
+.actions .delete-btn {
+    background-color: #b00020;
+    color: white;
+}
+
+/* Remove hover effect for all */
+.actions .btn-action:hover,
+.actions .delete-btn:hover {
+    background-color: inherit;
+}
+
+
 
 </style>
 
 <div class="registration-container">
     <div class="management-header">
         <h1>📋  YOUR Registrations </h1>
-        <a href="{{ path('app_event_registration_new_no_event') }}" class="create-registration-btn">
-            <i class="fas fa-plus"></i> New Registration
+        <a href="{{ path('app_event_index') }}" class="create-registration-btn">
+            <i class="fas fa-plus"></i> Register for an Event
         </a>
     </div>
 
@@ -230,31 +281,27 @@
                                 {{ event_registration.status }}
                             </span>
                         </td>
-            <td class="actions">
-    <div class="dropdown">
-    <button class="dropdown-btn">Actions</button>
-    <div class="dropdown-content">
-        <a href="{{ path('app_event_registration_show', {'id': event_registration.id}) }}">
-            <i class="bx bx-show"></i> View
-        </a>
-        <a href="{{ path('app_event_registration_edit', {'id': event_registration.id}) }}">
-            <i class="bx bx-edit"></i> Edit
-        </a>
-        <a href="{{ path('app_event_registration_pdf', {'id': event_registration.id}) }}">
-            <i class="bx bx-file"></i> Download PDF
-        </a>
-        <a href="{{ path('app_event_registration_qrcode', {'id': event_registration.id}) }}">
-            <i class="bx bx-qr"></i> QR Code
-        </a>
-        <!-- Delete Button inside dropdown -->
-        <form action="{{ path('app_event_registration_delete', {'id': event_registration.id}) }}" method="post" class="delete-form">
-            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ event_registration.id) }}">
-            <button type="submit" class="delete-btn" onclick="return confirm('Are you sure?');">
-                <i class="bx bx-trash"></i> Delete
-            </button>
-        </form>
-    </div>
-</div>
+    <td class="actions">
+    <a href="{{ path('app_event_registration_show', {'id': event_registration.id}) }}" class="btn-action">
+        <i class="bx bx-show"></i> View
+    </a>
+    <a href="{{ path('app_event_registration_edit', {'id': event_registration.id}) }}" class="btn-action">
+        <i class="bx bx-edit"></i> Edit
+    </a>
+    <a href="{{ path('app_event_registration_pdf', {'id': event_registration.id}) }}" class="btn-action">
+        <i class="bx bx-file"></i> PDF
+    </a>
+    <a href="{{ path('app_event_registration_qrcode', {'id': event_registration.id}) }}" class="btn-action">
+        <i class="bx bx-qr"></i> QR Code
+    </a>
+    <form action="{{ path('app_event_registration_delete', {'id': event_registration.id}) }}" method="post" class="delete-form" style="display: inline;">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ event_registration.id) }}">
+        <button type="submit" class="btn-action delete-btn" onclick="return confirm('Are you sure?');">
+            <i class="bx bx-trash"></i> Delete
+        </button>
+    </form>
+</td>
+
 
 
                     </tr>

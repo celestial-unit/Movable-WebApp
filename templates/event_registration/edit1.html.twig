@@ -3,10 +3,9 @@
 {% block title %}Edit Event Registration{% endblock %}
 
 {% block stylesheets %}
-    { parent() %}
+    {{ parent() }}
     <style>
         :root {
-            --primary-color: #696cff;
             --primary-hover: #5b5dcc;
             --danger-color: #ff3e1d;
             --success-color: #71dd37;
@@ -238,37 +237,39 @@
 
             <!-- Registration Date Field -->
             <div class="mb-4">
-                {{ form_label(form.registrationDate, null, {
+                {{ form_label(form.registration_date, null, {
                     'label_attr': {'class': 'form-label'}
                 }) }}
                 <div class="input-group">
-                    {{ form_widget(form.registrationDate, {
+                    {{ form_widget(form.registration_date, {
                         'attr': {
-                            'class': 'form-control flatpickr-input ' ~ (form.registrationDate.vars.errors|length ? 'is-invalid' : ''),
+                            'class': 'form-control flatpickr-input ' ~ (form.registration_date.vars.errors|length ? 'is-invalid' : ''),
                             'placeholder': 'Select date & time'
                         }
                     }) }}
                 </div>
                 <div class="invalid-feedback">
-                    {{ form_errors(form.registrationDate) }}
+                    {{ form_errors(form.registration_date) }}
                 </div>
             </div>
 
             <!-- Status Field -->
+            <!-- Status Field -->
             <div class="mb-4">
-                {{ form_label(form.status, null, {
-                    'label_attr': {'class': 'form-label'}
-                }) }}
-                {{ form_widget(form.status, {
-                    'attr': {
-                        'class': 'form-select ' ~ (form.status.vars.errors|length ? 'is-invalid' : '')
-                    }
-                }) }}
-                <div class="invalid-feedback">
-                    {{ form_errors(form.status) }}
-                </div>
+                {% if form.status is defined %}
+                    {{ form_label(form.status, null, {
+                        'label_attr': {'class': 'form-label'}
+                    }) }}
+                    {{ form_widget(form.status, {
+                        'attr': {
+                            'class': 'form-select ' ~ (form.status.vars.errors|length ? 'is-invalid' : '')
+                        }
+                    }) }}
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.status) }}
+                    </div>
+                {% endif %}
             </div>
-
             <!-- Form Actions -->
             <div class="d-flex justify-content-between align-items-center mt-5">
                 <button type="submit" class="btn btn-update">

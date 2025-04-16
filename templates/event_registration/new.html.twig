@@ -1,28 +1,29 @@
-{% extends 'front/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Register for Event{% endblock %}
 
-{% block hero_banner %}
-<div class="container-xxl py-5 bg-primary hero-header mb-5">
-    <div class="container my-5 py-5 px-lg-5">
-        <div class="row g-5 py-5">
-            <div class="col-12 text-center">
-                <h1 class="text-white animated zoomIn">Event Registration</h1>
-                <hr class="bg-white mx-auto mt-0" style="width: 90px;">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center">
-                        <li class="breadcrumb-item"><a class="text-white" href="{{ path('app_front_home') }}">Home</a></li>
-                        <li class="breadcrumb-item"><a class="text-white" href="{{ path('app_event_index') }}">Events</a></li>
-                        <li class="breadcrumb-item text-white active" aria-current="page">Register</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-    </div>
-</div>
+{% block stylesheets %}
+    {{ parent() }}
+    {# Add registration-specific styles here #}
 {% endblock %}
 
-{% block content %}
+{% block body %}
+<div class="container-xxl bg-white p-0">
+    <!-- Hero banner -->
+    <div class="container-xxl py-5 bg-primary hero-header mb-5">
+        <div class="container my-5 py-5 px-lg-5">
+            <hr class="bg-white mx-auto mt-0" style="width: 90px;">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb justify-content-center">
+                    <li class="breadcrumb-item"><a class="text-white" href="{{ path('app_front_home') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a class="text-white" href="{{ path('app_event_index') }}">Events</a></li>
+                    <li class="breadcrumb-item text-white active" aria-current="page">Register</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main content -->
 <style>
     :root {
         --primary-color: #0066cc;
@@ -57,13 +58,7 @@
     }
 
     .card-header {
-        background: linear-gradient(135deg, var(--primary-color) 0%, #4cb46d 100%);
-        padding: 4rem 2rem;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-    }
-
+        /* Card header styles */
     .card-header h1 {
         margin: 0;
         font-size: 2.75rem;
@@ -368,14 +363,14 @@
                             <div class="form-group">
                                 <div class="position-relative">
                                     <i class="bi bi-calendar2-range input-icon"></i>
-                                    {{ form_widget(form.registrationDate, {
+                                    {{ form_widget(form.registration_date, {
                                         'attr': {
-                                            'class': 'form-control ' ~ (form.registrationDate.vars.errors|length ? 'is-invalid' : '')
+                                            'class': 'form-control ' ~ (form.registration_date.vars.errors|length ? 'is-invalid' : '')
                                         }
                                     }) }}
-                                    {% if form.registrationDate.vars.errors|length %}
+                                    {% if form.registration_date.vars.errors|length %}
                                         <div class="invalid-feedback">
-                                            {{ form_errors(form.registrationDate) }}
+                                            {{ form_errors(form.registration_date) }}
                                         </div>
                                     {% endif %}
                                 </div>
@@ -398,7 +393,8 @@
                                         <div class="invalid-feedback">
                                             {{ form_errors(form.status) }}
                                         </div>
-                                    {% endif %}
+                                    
+                                {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -429,4 +425,5 @@
         </div>
     </div>
 </div>
+
 {% endblock %}

@@ -17,63 +17,39 @@ final class EventController extends AbstractController
 {
     #[Route(name: 'app_event_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
-{
-    // Get all events
-    $events = $entityManager->getRepository(Event::class)->findAll();
+    {
+        $user = $this->getUser();
+        $isAdmin = $user && in_array('ROLE_ADMIN', $user->getRoles());
+        
+        $currentDate = new \DateTime();
+        $currentDateStr = $currentDate->format('Y-m-d');
+        
+        // Get upcoming events
+        $events = $entityManager->getRepository(Event::class)
+            ->createQueryBuilder('e')
+            ->where('e.dateevent >= :today')
+            ->setParameter('today', $currentDateStr)
+            ->orderBy('e.dateevent', 'ASC')
+            ->getQuery()
+            ->getResult();
+        
+        // Get finished events
+        $finishedEvents = $entityManager->getRepository(Event::class)
+            ->createQueryBuilder('e')
+            ->where('e.dateevent < :today')
+            ->setParameter('today', $currentDateStr)
+            ->orderBy('e.dateevent', 'DESC')
+            ->getQuery()
+            ->getResult();
 
-    // Get the earliest future event (find the one with the earliest 'dateevent' and 'startEvent' in case of a tie)
-    $earliestEvent = null;
-    $earliestYear = $earliestMonth = $earliestDay = null;
-    $earliestStartTime = null; // To store the earliest start time in case of a tie
-    $currentDate = new \DateTime();  // Get the current date
-
-    foreach ($events as $event) {
-        $eventDate = $event->getDateevent();
-        if ($eventDate) {
-            // Split the date string into year, month, and day
-            list($year, $month, $day) = explode('-', $eventDate);
-
-            // Convert to integers for proper comparison
-            $year = (int)$year;
-            $month = (int)$month;
-            $day = (int)$day;
-
-            // Check if the event is not finished (i.e., its date is in the future)
-            $eventDateTime = \DateTime::createFromFormat('Y-m-d', $eventDate);
-            if ($eventDateTime && $eventDateTime >= $currentDate) {
-                // Compare parts (year, month, day) to find the earliest future event
-                if (!$earliestYear || $year < $earliestYear || ($year == $earliestYear && $month < $earliestMonth) || ($year == $earliestYear && $month == $earliestMonth && $day < $earliestDay)) {
-                    // Update if we found a truly earlier event
-                    $earliestYear = $year;
-                    $earliestMonth = $month;
-                    $earliestDay = $day;
-                    $earliestEvent = $event;
-                    $earliestStartTime = $event->getStartEvent();  // Store the startEvent time for tie-breaking
-                } elseif ($year == $earliestYear && $month == $earliestMonth && $day == $earliestDay) {
-                    // If the dates are the same, break the tie by comparing startEvent time
-                    if ($event->getStartEvent() < $earliestStartTime) {
-                        $earliestEvent = $event;
-                        $earliestStartTime = $event->getStartEvent();  // Update the start time
-                    }
-                }
-            }
-        }
-    }
-
-    // Get finished events (those with 'dateevent' before today)
-    $finishedEvents = [];
-
-    foreach ($events as $event) {
-        $eventDate = \DateTime::createFromFormat('Y-m-d', $event->getDateevent());
-        if ($eventDate && $eventDate < $currentDate) {
-            $finishedEvents[] = $event;
-        }
-    }
+        // Get earliest upcoming event (first from the sorted upcoming events)
+        $earliestEvent = !empty($events) ? $events[0] : null;
 
     return $this->render('event/index.html.twig', [
         'events' => $events,
         'earliestEvent' => $earliestEvent,  // Pass the earliest future event
         'finishedEvents' => $finishedEvents,
+        'is_admin' => $isAdmin
     ]);
 }
 
@@ -123,8 +99,14 @@ final class EventController extends AbstractController
 
 
     #[Route('/{id}/edit', name: 'app_event_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Event $event, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, int $id, EntityManagerInterface $entityManager): Response
     {
+        $event = $entityManager->getRepository(Event::class)->find($id);
+        
+        if (!$event) {
+            throw $this->createNotFoundException('Event not found.');
+        }
+        
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
@@ -141,8 +123,14 @@ final class EventController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_event_delete', methods: ['POST'])]
-    public function delete(Request $request, Event $event, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, int $id, EntityManagerInterface $entityManager): Response
     {
+        $event = $entityManager->getRepository(Event::class)->find($id);
+        
+        if (!$event) {
+            throw $this->createNotFoundException('Event not found.');
+        }
+        
         if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($event);
             $entityManager->flush();
@@ -150,10 +138,20 @@ final class EventController extends AbstractController
 
         return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
     }
+
     #[Route('/search', name: 'app_event_search', methods: ['GET'])]
     public function search(Request $request, EntityManagerInterface $entityManager): Response 
     {
+        $user = $this->getUser();
+        $isAdmin = $user && in_array('ROLE_ADMIN', $user->getRoles());
+        
         $queryBuilder = $entityManager->getRepository(Event::class)->createQueryBuilder('e');
+        
+        // If not admin, only show upcoming events
+        if (!$isAdmin) {
+            $queryBuilder->andWhere('e.dateevent >= :today')
+                ->setParameter('today', (new \DateTime())->format('Y-m-d'));
+        }
     
         $filters = [
             'title' => $request->query->get('title'),
@@ -179,30 +177,32 @@ final class EventController extends AbstractController
             }
         }
     
-        // Fetch events based on search filters
         $events = $queryBuilder->getQuery()->getResult();
     
-        // Fetch earliest upcoming event
-        $earliestEvent = $entityManager->getRepository(Event::class)->createQueryBuilder('e')
-            ->where('e.dateevent >= :today')
-            ->setParameter('today', (new \DateTime())->format('Y-m-d'))
-            ->orderBy('e.dateevent', 'ASC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
-    
-        // Fetch finished events (past events)
-        $finishedEvents = $entityManager->getRepository(Event::class)->createQueryBuilder('e')
-            ->where('e.dateevent < :today')
-            ->setParameter('today', (new \DateTime())->format('Y-m-d'))
-            ->orderBy('e.dateevent', 'DESC')
-            ->getQuery()
-            ->getResult();
+        // Get earliest upcoming event
+        $earliestEvent = null;
+        $finishedEvents = [];
+
+        if ($events) {
+            $now = new \DateTime();
+            $upcomingEvents = array_filter($events, function($event) use ($now) {
+                return \DateTime::createFromFormat('Y-m-d', $event->getDateevent()) >= $now;
+            });
+            
+            $finishedEvents = array_filter($events, function($event) use ($now) {
+                return \DateTime::createFromFormat('Y-m-d', $event->getDateevent()) < $now;
+            });
+
+            if (!empty($upcomingEvents)) {
+                $earliestEvent = reset($upcomingEvents);
+            }
+        }
     
         return $this->render('event/index.html.twig', [
             'events' => $events,
             'earliestEvent' => $earliestEvent,
-            'finishedEvents' => $finishedEvents
+            'finishedEvents' => $finishedEvents,
+            'is_admin' => $isAdmin
         ]);
     }
     #[Route('coordinates/{city}', name: 'app_event_coordinates', methods: ['GET'])]

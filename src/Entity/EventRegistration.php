@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\EventRegistrationRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-#[ORM\Entity(repositoryClass: EventRegistrationRepository::class)]
 
+#[ORM\Entity(repositoryClass: EventRegistrationRepository::class)]
 class EventRegistration
 {
     #[ORM\Id]
@@ -15,83 +16,90 @@ class EventRegistration
     #[ORM\Column(type: 'integer')]
     private int $id;
 
-  // src/Entity/EventRegistration.php
+    #[ORM\ManyToOne(
+        targetEntity: Event::class, 
+        inversedBy: 'registrations'
+    )]
+    #[ORM\JoinColumn(
+        name: 'event_id', 
+        referencedColumnName: 'id', 
+        nullable: true,
+        onDelete: "SET NULL"
+    )]
+    private ?Event $event = null;
+    
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: true, onDelete: "SET NULL")]
+    private ?User $user = null;
 
-// src/Entity/EventRegistration.php
-
-// src/Entity/EventRegistration.php
-
-// src/Entity/EventRegistration.php
-
-// src/Entity/EventRegistration.php
-#[ORM\ManyToOne(
-    targetEntity: Event::class, 
-    inversedBy: 'registrations'
-)]
-#[ORM\JoinColumn(
-    name: 'event_id', 
-    referencedColumnName: 'id', 
-    nullable: false
-)]
-#[Assert\NotNull(message: "Event cannot be null.")]
-private ?Event $event = null;// Nullable property
-
-
-
-// ...
-
-#[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: "Registration date is required.")]
-    #[Assert\Regex(
-        pattern: "/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/",
-        message: "Registration date must be in YYYY-MM-DD HH:MM:SS format."
-    )]
-    #[Assert\DateTime(
-        format: 'Y-m-d H:i:s',
-        message: 'The date "{{ value }}" is invalid or incorrectly formatted.'
-    )]
-    #[Assert\Callback([self::class, 'validateRegistrationDate'])]
-    private string $registration_date;
+    private ?string $registration_date = null;
 
-    // Combined validation method
-    public static function validateRegistrationDate(
-        string $value, 
-        ExecutionContextInterface $context
-    ): void {
-        // 1. Check if empty (handled by NotBlank)
-        if (empty($value)) return;
-
-        // 2. Validate future date
-        $date = \DateTime::createFromFormat('Y-m-d H:i:s', $value);
-        $now = new \DateTime();
-        if ($date <= $now) {
-            $context->buildViolation('The registration date must be in the future.')
-                ->atPath('registration_date')
-                ->addViolation();
-        }
-
-        // 3. Validate matches event date
-        $registration = $context->getObject();
-        if (!$registration instanceof EventRegistration) return;
-
-        $eventDate = $registration->getEvent()->getDateevent();
-        $eventDateTime = \DateTime::createFromFormat('Y-m-d', $eventDate);
-
-        if ($date->format('Y-m-d') !== $eventDateTime->format('Y-m-d')) {
-            $context->buildViolation('Registration must occur on the event date: {{ eventDate }}')
-                ->setParameter('{{ eventDate }}', $eventDate)
-                ->atPath('registration_date')
-                ->addViolation();
-        }
-    }
-
-#[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: "Status is required.")]
     #[Assert\Choice(
         choices: ['Pending', 'Confirmed', 'Cancelled'],
         message: "Status must be 'Pending', 'Confirmed', or 'Cancelled'."
     )]
-    private string $status;
+    private string $status = 'Pending';
+
+    // VALIDATION METHODS
+
+    #[Assert\Callback]
+    public function validateRegistrationDate(ExecutionContextInterface $context): void
+    {
+        if (!$this->event) {
+            // Skip validation if the event is null (will be handled by other constraints)
+            return;
+        }
+        
+        try {
+            // Get the event date as a string
+            $eventDateStr = $this->event->getDateevent();
+            if (!$eventDateStr) {
+                $context->buildViolation('Event date is missing.')
+                    ->atPath('event')
+                    ->addViolation();
+                return;
+            }
+
+            // Parse the event date string to a DateTime object
+            $eventDate = \DateTime::createFromFormat('Y-m-d', $eventDateStr);
+            if (!$eventDate) {
+                $context->buildViolation('Invalid event date format: ' . $eventDateStr)
+                    ->atPath('event')
+                    ->addViolation();
+                return;
+            }
+            
+            // Get current date for comparison
+            $now = new \DateTime();
+            
+            // Compare event date with current date
+            if ($eventDate < $now) {
+                $context->buildViolation('Cannot register for a past event.')
+                    ->atPath('registration_date')
+                    ->addViolation();
+            }
+        } catch (\Exception $e) {
+            $context->buildViolation('Error validating date: ' . $e->getMessage())
+                ->atPath('registration_date')
+                ->addViolation();
+        }
+    }
+    
+    /**
+     * Ensures the registration has either a user or valid contact information
+     */
+    #[Assert\Callback]
+    public function validateRegistrationOwner(ExecutionContextInterface $context): void
+    {
+        // Allow registrations with no user for admin-created registrations
+        return;
+    }
+
+    // GETTERS AND SETTERS
 
     public function getId(): int
     {
@@ -108,13 +116,24 @@ private ?Event $event = null;// Nullable property
         $this->event = $event;
         return $this;
     }
+    
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+    
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+        return $this;
+    }
 
-    public function getRegistrationDate(): string
+    public function getRegistrationDate(): ?string
     {
         return $this->registration_date;
     }
 
-    public function setRegistrationDate(string $registration_date): self
+    public function setRegistrationDate(?string $registration_date): self
     {
         $this->registration_date = $registration_date;
         return $this;

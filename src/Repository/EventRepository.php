@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Event;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -12,13 +13,12 @@ class EventRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Event::class);
     }
-
-    public function findUpcomingEvents(): array
+    public function findEventsByUser(User $user): array
     {
         return $this->createQueryBuilder('e')
-            ->where('e.date > :now')
-            ->setParameter('now', new \DateTime())
-            ->orderBy('e.date', 'ASC')
+            ->join('e.registrations', 'r')
+            ->where('r.user = :user')
+            ->setParameter('user', $user)
             ->getQuery()
             ->getResult();
     }

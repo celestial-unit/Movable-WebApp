@@ -1,10 +1,8 @@
-{# templates/event_registration/index.html.twig #}
 {% extends 'base1.html.twig' %}
 
 {% block title %}Registrations Management{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <style>
         .registration-status {
@@ -92,11 +90,16 @@
                     <tr>
                         <td>#{{ event_registration.id }}</td>
                         <td>
-                            <div class="d-flex flex-column">
-                                <span class="fw-semibold">{{ event_registration.event.title }}</span>
-                                <small class="text-muted">{{ event_registration.event.getFormattedDate() }}</small>
-                            </div>
-                        </td>
+    <div class="d-flex flex-column">
+        {% if event_registration.event is not null %}
+            <span class="fw-semibold">{{ event_registration.event.title }}</span>
+            <small class="text-muted">{{ event_registration.event.getFormattedDate() }}</small>
+        {% else %}
+            <span class="text-muted">No Event Linked</span>
+        {% endif %}
+    </div>
+</td>
+
                         <td>{{ event_registration.registrationDate }}</td>
                         <td>
                             <span class="badge rounded-pill badge-status status-{{ event_registration.status|lower }}">

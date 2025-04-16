@@ -33,11 +33,11 @@
             </tr>
             <tr>
                 <th>Dateevent</th>
-                <td>{{ event.dateevent }}</td>
+                <td>{{ event.dateevent|date('F j, Y') }}</td>
             </tr>
             <tr>
                 <th>StartEvent</th>
-                <td>{{ event.startEvent }}</td>
+                <td>{{ event.startEvent|date('g:i a') }}</td>
             </tr>
         </tbody>
     </table>
