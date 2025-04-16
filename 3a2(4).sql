@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 15, 2025 at 10:44 PM
+-- Generation Time: Apr 16, 2025 at 11:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -112,11 +112,10 @@ CREATE TABLE `event` (
 --
 
 INSERT INTO `event` (`id`, `title`, `description`, `duration`, `type`, `status`, `dateevent`, `startEvent`) VALUES
-(166, 'marketing', 'this edited marketing', 36, 50, 'Siliana', '2025-05-08', '18:18:00'),
-(167, 'travelling in a bus', 'trip to ben arous', 36, 30, 'Ben Arous', '2025-04-07', '18:18:00'),
-(170, 'ayoub', 'aaaaaaaaaaaaaa', 37, 50, 'Sfax', '2025-03-10', '18:18:00'),
-(171, 'travelling in a car', 'trip sfax with dogs', 35, 50, 'Sidi Bouzid', '2025-05-10', '19:13:00'),
-(172, 'aljdoiau', 'akldlkfh', 45, 50, 'Medenine', '2025-06-12', '22:22:00');
+(170, 'ayouba', 'aaaaaaaaaaaaaa', 37, 50, 'Sfax', '2025-03-10', '18:18:00'),
+(175, 'aoaoda', 'lm,dalmpdpapof,efkp,emf,epkg,epg,mkeg,mek,g', 80, 50, 'Sfax', '2025-07-21', '00:01:00'),
+(178, 'blabla', 'aaaaaaaaaaaaaaa', 58, 100, 'Siliana', '2025-06-12', '23:25:00'),
+(179, 'pleaseno', '****555555', 35, 30, 'Sousse', '2025-06-12', '23:25:00');
 
 -- --------------------------------------------------------
 
@@ -128,40 +127,20 @@ CREATE TABLE `event_registration` (
   `id` int(11) NOT NULL,
   `event_id` int(11) DEFAULT NULL,
   `registration_date` varchar(255) NOT NULL,
-  `status` varchar(255) NOT NULL
+  `status` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `event_registration`
 --
 
-INSERT INTO `event_registration` (`id`, `event_id`, `registration_date`, `status`) VALUES
-(195, 166, '2025-03-26 23:57:24', 'Confirmed'),
-(196, 167, '2025-03-26 23:57:29', 'Cancelled'),
-(197, 167, '2025-03-26 23:57:29', 'Confirmed'),
-(198, 166, '2025-03-26 23:57:29', 'Cancelled'),
-(199, 166, '2025-03-26 23:57:29', 'Pending'),
-(200, 167, '2025-03-26 23:57:29', 'Pending'),
-(201, 166, '2025-03-26 23:57:24', 'Confirmed'),
-(202, 166, '2025-03-26 23:57:24', 'Confirmed'),
-(203, 166, '2025-03-26 23:57:29', 'Pending'),
-(204, 166, '2025-03-26 23:57:29', 'pending'),
-(205, 167, '2025-03-26 23:57:29', 'pending'),
-(206, 166, '2025-03-26 23:57:24', 'Confirmed'),
-(207, 166, '2025-03-26 23:57:24', 'Pending'),
-(208, 166, '2025-03-26 23:57:24', 'Confirmed'),
-(210, 166, '2025-03-26 23:57:55', 'Cancelled'),
-(213, 166, '2025-03-26 23:57:29', 'Pending'),
-(214, 166, '2025-03-26 23:57:24', 'Pending'),
-(215, 166, '2025-03-26 23:57:24', 'Pending'),
-(216, 166, '2025-03-26 23:57:24', 'Pending'),
-(217, 166, '2025-03-26 23:57:24', 'Pending'),
-(219, 166, '2025-03-26 23:57:24', 'Cancelled'),
-(220, 166, '2025-03-26 23:57:29', 'Pending'),
-(221, 166, '2025-05-26 23:57:29', 'Pending'),
-(222, 166, '2025-05-08 23:57:29', 'Pending'),
-(223, 166, '2025-05-08 23:57:29', 'Pending'),
-(224, 166, '2025-05-08 23:57:24', 'Pending');
+INSERT INTO `event_registration` (`id`, `event_id`, `registration_date`, `status`, `user_id`) VALUES
+(236, 178, '2025-04-16 05:49:42', 'Cancelled', 1),
+(237, 178, '2025-04-16 06:25:27', 'Confirmed', 19),
+(238, 179, '2025-04-16 06:55:17', 'Pending', 1),
+(240, 179, '2025-04-16', 'Pending', 19),
+(241, 178, '2025-04-16', 'Pending', 75);
 
 -- --------------------------------------------------------
 
@@ -233,8 +212,9 @@ INSERT INTO `reclamations` (`id`, `title`, `description`, `status`, `user_id`, `
 (3, 'RANIM JET', 'AKEK', 'Rejected', 8, '2025-03-05 21:52:50', '2025-03-05 21:52:50', 'General', NULL),
 (4, 'rrbonjou', 'bonjour', 'Resolved', 16, '2025-03-07 08:42:07', '2025-03-07 08:42:07', 'General', '2025-04-15 14:05:29'),
 (5, 'aslema', 'Contact from: aziz\nEmail: azizghadhoun1@gmail.com\n\nMessage:\njawek behy', 'Resolved', 19, '2025-04-15 14:23:38', '2025-04-15 14:23:38', 'Contact', '2025-04-15 18:01:27'),
-(6, 'wazaaaap', 'jawna behy', 'Pending', 19, '2025-04-15 14:53:50', '2025-04-15 14:53:50', 'Billing', NULL),
-(7, 'aslema', 'Contact from: aziz\nEmail: azizghadhoun1@gmail.com\n\nMessage:\naslema jawna ahla jao', 'Pending', 1, '2025-04-15 18:00:36', '2025-04-15 18:00:36', 'Contact', NULL);
+(6, 'wazaaaap', 'jawna behy', 'Resolved', 19, '2025-04-15 14:53:50', '2025-04-15 14:53:50', 'Billing', '2025-04-16 06:27:26'),
+(7, 'aslema', 'Contact from: aziz\nEmail: azizghadhoun1@gmail.com\n\nMessage:\naslema jawna ahla jao', 'Pending', 1, '2025-04-15 18:00:36', '2025-04-15 18:00:36', 'Contact', NULL),
+(8, 'ty chnowa tw', 'ty chnowa tw chbik', 'Pending', 19, '2025-04-16 09:36:53', '2025-04-16 09:36:53', 'Billing', NULL);
 
 -- --------------------------------------------------------
 
@@ -297,18 +277,19 @@ CREATE TABLE `reservation` (
   `transport_id` int(11) DEFAULT NULL,
   `driver_id` int(11) DEFAULT NULL,
   `agent_id` int(11) DEFAULT NULL,
-  `destination_id` int(11) DEFAULT NULL
+  `destination_id` int(11) DEFAULT NULL,
+  `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `reservation`
 --
 
-INSERT INTO `reservation` (`id`, `firstName`, `email`, `date`, `location`, `seats`, `agentType`, `paymentMode`, `TransportType`, `age`, `lastName`, `status`, `created_at`, `updated_at`, `DriverName`, `transport_id`, `driver_id`, `agent_id`, `destination_id`) VALUES
-(1, 'ridha', 'brmariem7@gmail.com', '2025-04-10 00:00:00', 'nabeul', 3, 'medical assistance agent', 'cash', 'car', 11, 'Brik', 'approved', NULL, '2025-04-10 22:11:22', NULL, NULL, NULL, NULL, NULL),
-(2, 'Maryem', 'brmariem7@gmail.com', '2025-04-14 00:00:00', 'nabeul', 3, 'medical assistance agent', 'cash', 'car', 11, 'Brik', 'approved', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, 'mouna', 'b@gmail.com', '2025-04-23 00:00:00', 'Downtown', 7, 'female', 'cash', 'Bus', 40, 'Brik', NULL, NULL, NULL, 'azert', 20, 7, 10, 6),
-(5, 'ridha', 'brridha@gmail.com', '2025-04-24 00:00:00', 'EEE', 3, 'male', 'mobile_payment', 'Car', 50, 'Brik', NULL, NULL, '2025-04-14 16:37:17', 'Mohamed', 21, 13, 15, 15);
+INSERT INTO `reservation` (`id`, `firstName`, `email`, `date`, `location`, `seats`, `agentType`, `paymentMode`, `TransportType`, `age`, `lastName`, `status`, `created_at`, `updated_at`, `DriverName`, `transport_id`, `driver_id`, `agent_id`, `destination_id`, `id_user`) VALUES
+(1, 'ridha', 'brmariem7@gmail.com', '2025-04-10 00:00:00', 'nabeul', 3, 'medical assistance agent', 'cash', 'car', 11, 'Brik', 'approved', NULL, '2025-04-10 22:11:22', NULL, NULL, NULL, NULL, NULL, 0),
+(2, 'Maryem', 'brmariem7@gmail.com', '2025-04-14 00:00:00', 'nabeul', 3, 'medical assistance agent', 'cash', 'car', 11, 'Brik', 'approved', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
+(4, 'mouna', 'b@gmail.com', '2025-04-23 00:00:00', 'Downtown', 7, 'female', 'cash', 'Bus', 40, 'Brik', NULL, NULL, NULL, 'azert', 20, 7, 10, 6, 0),
+(5, 'ridha', 'brridha@gmail.com', '2025-04-24 00:00:00', 'EEE', 3, 'male', 'mobile_payment', 'Car', 50, 'Brik', NULL, NULL, '2025-04-14 16:37:17', 'Mohamed', 21, 13, 15, 15, 0);
 
 -- --------------------------------------------------------
 
@@ -382,14 +363,14 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstName`, `lastName`, `email`, `password`, `role`, `created_at`, `faceIdEnabled`, `isBanned`, `banReason`, `banExpiryDate`, `lastLogin`) VALUES
-(1, 'aziz', 'Ghadhoun', 'azizghadhoun1@gmail.com', '$2y$13$5osiQVPXvVbL23kGbBe.i.JvCvy4qB9GU8QM2YCcg/iT4ANYaGUn.', 'ADMIN', '2025-03-05 00:26:08', 0, 0, NULL, NULL, '2025-04-15 19:00:11'),
-(3, 'aziz', 'ghadhoun', 'aziz@gmail.com', '$2a$10$kVV2x2flxnmmIkJk2nOqguaH8nurJ2C8cG8rlUuTO6JwkA612CoYq', 'USER', '2025-03-05 00:41:16', 0, 1, NULL, NULL, NULL),
+(1, 'aziz', 'Ghadhoun', 'azizghadhoun1@gmail.com', '$2y$13$5osiQVPXvVbL23kGbBe.i.JvCvy4qB9GU8QM2YCcg/iT4ANYaGUn.', 'ADMIN', '2025-03-05 00:26:08', 0, 0, NULL, NULL, '2025-04-16 09:33:32'),
+(3, 'aziz', 'ghadhoun', 'aziz@gmail.com', '$2a$10$kVV2x2flxnmmIkJk2nOqguaH8nurJ2C8cG8rlUuTO6JwkA612CoYq', 'USER', '2025-03-05 00:41:16', 0, 0, NULL, NULL, NULL),
 (4, 'Google', 'User', 'aziz.7mimouna@gmail.com', '$2a$10$dzFj74v1I1jhw53GTDXXxeO9bGvRp2n6Rm0rtepdtYjwYDC9dL7.e', 'USER', '2025-03-05 00:41:45', 0, 0, NULL, NULL, NULL),
 (5, 'aziz', 'ghadhoun', 'aziz1@gmail.com', '$2a$10$/2puXe6QwP.A3NU37PxnPuLIR/B36INJVGGPn3YXGs3lEn/Yh5mzC', 'USER', '2025-03-05 01:09:33', 0, 1, NULL, NULL, NULL),
 (6, 'aziz', 'ghadhoun', 'zizou@gmail.Com', '$2a$10$gZaBPoeqjBMXwH1/eiVcYeMG8X6UT4q1i8ld2ZfaOWHZv1Hr45wmq', 'USER', '2025-03-05 01:33:20', 1, 0, NULL, NULL, NULL),
 (7, 'aziz', 'ghadhoun', 'ziwziw@gmail.com', '$2a$10$htQ1pVnEdlGTueoCUvKMGe5HbR8wTa1ZW0ILgtkjR5XsJ/w37js.6', 'USER', '2025-03-05 02:01:33', 1, 0, NULL, NULL, NULL),
 (8, 'aziz', 'ghaadhoun', 'samir@gmail.com', '$2a$10$b6EVRDS2YWiMejBAQtx6BegUc42qUR.1pyaFVwAl01iA3IICLKVaO', 'USER', '2025-03-05 02:07:40', 0, 0, NULL, NULL, NULL),
-(9, 'ayoub', 'frikha', 'ayoub@gmail.com', '$2a$10$jS6f4LaNauLFA0moag3B4OwXLntv8WIagOB0Xt90kAf0pHuvdqXIu', 'USER', '2025-03-05 03:34:46', 1, 0, NULL, NULL, NULL),
+(9, 'ayoub', 'frikha', 'ayoub@gmail.com', '$2a$10$jS6f4LaNauLFA0moag3B4OwXLntv8WIagOB0Xt90kAf0pHuvdqXIu', 'USER', '2025-03-05 03:34:46', 1, 1, 'ban ala khouya', NULL, NULL),
 (10, 'aziz', 'mimouna', 'mimouna@gmail.com', '$2a$10$BacgQQ93Ehdc8kz4fkzxceGjdFNQtrFbl8hFsoTQQOJ1pt3SHl9wq', 'USER', '2025-03-07 04:44:44', 0, 0, NULL, NULL, NULL),
 (11, 'aziz', 'mimouna', 'mimouna1@gmail.com', '$2a$10$kORET4OA1vgOQ0U9C58vgeZ4sQivLIpOrvModNcuM1OaiK3Nd.aBm', 'USER', '2025-03-07 04:45:07', 1, 0, NULL, NULL, NULL),
 (12, 'mimouna', 'aziz', 'azizmimou@gmail.com', '$2a$10$vWlgWYoIx81.RvWI.AARCOPY0iM6GSXVuLiSnPS6.D1nmgMgM08Qy', 'USER', '2025-03-07 04:49:54', 1, 0, NULL, NULL, NULL),
@@ -399,7 +380,11 @@ INSERT INTO `users` (`id`, `firstName`, `lastName`, `email`, `password`, `role`,
 (16, 'farid', 'latrash', 'farid@gmail.com', '$2a$10$fj5GCh2mI1YvAmiVM8i.VOTSrQP/jeJUvZe9dg4mLQk8ml2MZBEXK', 'USER', '2025-03-07 08:31:56', 1, 0, NULL, NULL, NULL),
 (17, 'mourad', 'ghadhoun', 'mourad@gmail.com', '$2a$10$ZIVFlkDL9Tb3S.EofCffS.6G1AFc3US9Z4M2fM1VR5Vc8LZc33JSO', 'USER', '2025-03-07 08:40:07', 0, 0, NULL, NULL, NULL),
 (18, 'aziz', 'samir', 'azizsamir@gmail.com', '$2y$13$w.2ycixl3hVIRxjKmfTq.OTol0iT5qzLmekOzc.XsdINzwkw3VlWS', 'DRIVER', '2025-04-15 13:29:52', 0, 0, NULL, NULL, NULL),
-(19, 'aziz', 'lem3i', 'azuzgde@gmail.Com', '$2y$13$dKIuSrbnOaPe7BNMc/nupue9H.0YEkQduiN90LAeKrxxQqvNmej6e', 'USER', '2025-04-15 14:16:04', 0, 0, NULL, NULL, '2025-04-15 18:56:01');
+(19, 'aziz', 'lem3i', 'azuzgde@gmail.Com', '$2y$13$dKIuSrbnOaPe7BNMc/nupue9H.0YEkQduiN90LAeKrxxQqvNmej6e', 'USER', '2025-04-15 14:16:04', 0, 0, NULL, NULL, '2025-04-16 09:38:24'),
+(20, 'ayoub', 'frikha', 'ayoub.frikha22@gmail.com', '$2y$13$5osiQVPXvVbL23kGbBe.i.JvCvy4qB9GU8QM2YCcg/i...', 'USER', '2025-04-15 22:33:59', 0, 0, NULL, NULL, NULL),
+(75, 'AYOUBA', 'AYOUBA', 'ayoub.frikha23@gmail.com', '$2y$13$xys.nQPwe/bupsy3NilXbestW749D/vx4QwDt/9tCc0bO7B8jC4Ze', 'USER', '2025-04-15 21:39:56', 0, 0, NULL, NULL, '2025-04-16 06:12:11'),
+(76, 'aslema', 'ghadhoun', 'aslemaghadhoun@gmail.com', '$2y$13$7fo.d44qQsTTJ.rTAIy5heSRKIQ61tJS5EsZKRVKn9rm5JVhROKDa', 'DRIVER', '2025-04-16 02:04:45', 0, 0, NULL, NULL, '2025-04-16 06:27:47'),
+(77, 'balha', 'balha', 'ayoub.frikha225@gmail.com', '$2y$13$/NPwO9676DinXJuR6Gbrm.xXTrDF4VJ.ncCigJWhuhjcm1bG8HynG', 'USER', '2025-04-16 06:26:48', 0, 0, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -533,13 +518,13 @@ ALTER TABLE `destination`
 -- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=173;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=181;
 
 --
 -- AUTO_INCREMENT for table `event_registration`
 --
 ALTER TABLE `event_registration`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=242;
 
 --
 -- AUTO_INCREMENT for table `messenger_messages`
@@ -563,7 +548,7 @@ ALTER TABLE `rate`
 -- AUTO_INCREMENT for table `reclamations`
 --
 ALTER TABLE `reclamations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `reservation`
@@ -587,7 +572,7 @@ ALTER TABLE `transport`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- Constraints for dumped tables
