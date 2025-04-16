@@ -1,0 +1,128 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Edit Reservation{% endblock %}
+{% block sidebar %}
+    <div class="app-brand demo">
+        <a href="index.html" class="app-brand-link">
+            <span class="app-brand-logo demo">
+                <!-- Your logo SVG here -->
+            </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">Dashboard</span>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+        <li class="menu-item">
+            <a href="{{ path('home') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div>Dashboard</div>
+            </a>
+        </li>
+
+        <li class="menu-item active">
+            <a href="{{ path('app_reservation_new') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-bus"></i>
+                <div>Reservation</div>
+            </a>
+        </li>
+
+        <li class="menu-item">
+            <a href="{{ path('app_ticket_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-id-card"></i>
+                <div>Ticket</div>
+            </a>
+        </li>
+
+        <li class="menu-item">
+            <a href="{{ path('admin_waitlist_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-id-card"></i>
+                <div>Reservation (Admin)</div>
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+{% block body %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Reservation /</span> Edit Reservation
+    </h4>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Edit Reservation #{{ reservation.id }}</h5>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            {{ form_label(form.firstName, 'FIRST NAME', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form_label(form.email, 'EMAIL', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form_label(form.location, 'LOCATION', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.location, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form_label(form.age, 'AGE', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.age, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form_label(form.paymentMode, 'PAYMENT MODE', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.paymentMode, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            {{ form_label(form.lastName, 'LAST NAME', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form_label(form.date, 'DATE', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.date, {'attr': {'class': 'form-control', 'placeholder': 'jj/mm/aaaa'}}) }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form_label(form.seats, 'SEATS', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.seats, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form_label(form.agentType, 'AGENT TYPE', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.agentType, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form_label(form.transport, 'TRANSPORT', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.transport, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="bx bx-save me-1"></i> Update Reservation
+                    </button>
+                    <a href="{{ path('app_reservation_index') }}" class="btn btn-outline-secondary">
+                        <i class="bx bx-arrow-back me-1"></i> Cancel
+                    </a>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    {{ include('reservation/_delete_form.html.twig') }}
+</div>
+{% endblock %}

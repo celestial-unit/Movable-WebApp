@@ -1,0 +1,145 @@
+{% extends "base1.html.twig" %}
+
+{% block title %}Account Settings - Movable{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<style>
+.settings-card {
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">Account Settings</h4>
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Account Settings Card -->
+            <div class="card settings-card mb-4">
+                <h5 class="card-header">General Settings</h5>
+                <div class="card-body">
+                    <form id="formAccountSettings" method="POST">
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label for="emailNotifications" class="form-label">Email Notifications</label>
+                                <select class="form-select" id="emailNotifications" name="emailNotifications">
+                                    <option value="all">All Notifications</option>
+                                    <option value="important">Important Only</option>
+                                    <option value="none">None</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="language" class="form-label">Language</label>
+                                <select class="form-select" id="language" name="language">
+                                    <option value="en">English</option>
+                                    <option value="fr">Français</option>
+                                    <option value="ar">العربية</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-primary me-2">Save changes</button>
+                            <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Security Settings Card -->
+            <div class="card settings-card mb-4">
+                <h5 class="card-header">Security Settings</h5>
+                <div class="card-body">
+                    <form id="formSecuritySettings" method="POST">
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" id="twoFactorAuth">
+                                    <label class="form-check-label" for="twoFactorAuth">Two-factor Authentication</label>
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" id="loginAlerts">
+                                    <label class="form-check-label" for="loginAlerts">Login Alerts</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-primary me-2">Save changes</button>
+                            <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Connected Accounts Card -->
+            <div class="card settings-card">
+                <h5 class="card-header">Connected Accounts</h5>
+                <div class="card-body">
+                    <div class="d-flex mb-3">
+                        <div class="flex-shrink-0">
+                            <i class="bx bxl-google me-2 text-danger" style="font-size: 2rem;"></i>
+                        </div>
+                        <div class="flex-grow-1 row">
+                            <div class="col-9">
+                                <h6 class="mb-0">Google</h6>
+                                <small class="text-muted">Calendar and Contacts</small>
+                            </div>
+                            <div class="col-3 text-end">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input float-end" type="checkbox" checked>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <i class="bx bxl-facebook-circle me-2 text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                        <div class="flex-grow-1 row">
+                            <div class="col-9">
+                                <h6 class="mb-0">Facebook</h6>
+                                <small class="text-muted">Social Integration</small>
+                            </div>
+                            <div class="col-3 text-end">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input float-end" type="checkbox">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle form reset
+    document.querySelectorAll('button[type="reset"]').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.closest('form').reset();
+        });
+    });
+
+    // Add form submission handlers
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Add your form submission logic here
+            // For now, just show a success message
+            alert('Settings saved successfully!');
+        });
+    });
+});
+</script>
+{% endblock %}

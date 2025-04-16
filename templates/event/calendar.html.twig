@@ -1,0 +1,272 @@
+{# templates/event/calendar.html.twig #}
+{% extends 'base1.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
+    <style>
+        .calendar-container {
+            background: linear-gradient(145deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .calendar-container:hover {
+            transform: translateY(-2px);
+        }
+
+        .fc-toolbar-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #2c3e50;
+            letter-spacing: -0.5px;
+            padding: 0.5rem 1rem;
+        }
+
+        .fc-button-primary {
+            background-color: #4a90e2 !important;
+            border-color: #4a90e2 !important;
+            transition: all 0.2s ease;
+        }
+
+        .fc-button-primary:hover {
+            background-color: #357abd !important;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+        }
+
+        .fc-daygrid-event {
+            cursor: pointer;
+            border-radius: 6px;
+            padding: 2px 6px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .fc-daygrid-event:hover {
+            filter: brightness(110%);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .event-tooltip {
+            position: fixed;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 1px solid rgba(0,0,0,0.1);
+            max-width: 300px;
+            z-index: 9999;
+            backdrop-filter: blur(2px);
+        }
+
+        .event-tooltip strong {
+            color: #2c3e50;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .event-tooltip br + * {
+            margin-top: 0.5rem;
+        }
+
+        #eventModal .modal-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        #eventModal .modal-title {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        #eventModal .modal-body p {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        #eventModal .modal-body strong {
+            color: #4a90e2;
+            min-width: 120px;
+            font-weight: 500;
+        }
+
+        #eventModal .btn-primary {
+            background-color: #4a90e2;
+            border-color: #4a90e2;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+        }
+
+        .no-event {
+            color: #95a5a6 !important;
+            font-style: italic;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .fc-toolbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .fc-toolbar-title {
+                font-size: 1.25rem;
+            }
+            
+            .fc-button {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="calendar-container">
+            <div id="calendar" class="p-3"></div>
+        </div>
+
+        <!-- Event Modal -->
+        <div class="modal fade" id="eventModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eventTitle"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Description:</strong> <span id="eventDescription" class="text-muted"></span></p>
+                        <p><strong>Duration:</strong> <span id="eventDuration" class="text-muted"></span> minutes</p>
+                        <p><strong>Governorate:</strong> <span id="eventGovernorate" class="text-muted"></span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <a id="eventDetailsLink" href="#" class="btn btn-primary">
+                            <i class="fas fa-info-circle me-2"></i>View Details
+                        </a>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,dayGridWeek,dayGridDay'
+                },
+                events: function(fetchInfo, successCallback, failureCallback) {
+                    fetch(`/eventback/events-json?start=${fetchInfo.startStr}&end=${fetchInfo.endStr}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.length === 0) {
+                                successCallback([
+                                    { 
+                                        title: "No events", 
+                                        start: fetchInfo.startStr, 
+                                        color: "transparent",
+                                        textColor: "#95a5a6"
+                                    }
+                                ]);
+                            } else {
+                                successCallback(data);
+                            }
+                        })
+                        .catch(error => failureCallback(error));
+                },
+                eventContent: function(arg) {
+                    let contentEl = document.createElement("div");
+                    if (arg.event.title === "No events") {
+                        contentEl.innerHTML = `
+                            <div class="no-event">
+                                <i class="fas fa-calendar-times me-2"></i>${arg.event.title}
+                            </div>
+                        `;
+                    } else {
+                        contentEl.innerHTML = `
+                            <div class="d-flex align-items-center">
+                                <div class="event-bullet me-2" style="
+                                    width: 8px;
+                                    height: 8px;
+                                    background: ${arg.event.backgroundColor};
+                                    border-radius: 50%;
+                                "></div>
+                                <span>${arg.event.title}</span>
+                            </div>
+                        `;
+                    }
+                    return { domNodes: [contentEl] };
+                },
+                eventMouseEnter: function(info) {
+                    const event = info.event;
+                    if (event.title !== "No events") {
+                        const tooltip = document.createElement("div");
+                        tooltip.classList.add("event-tooltip");
+                        tooltip.innerHTML = `
+                            <strong>${event.title}</strong>
+                            <div class="text-muted mt-2">${event.extendedProps.description || "No description"}</div>
+                            <div class="d-flex justify-content-between mt-3">
+                                <span><i class="fas fa-clock me-2"></i>${event.extendedProps.duration || "N/A"} min</span>
+                                <span><i class="fas fa-map-marker-alt me-2"></i>${event.extendedProps.governorate || "N/A"}</span>
+                            </div>
+                        `;
+                        
+                        // Position tooltip with boundary checks
+                        const x = info.jsEvent.clientX + 15;
+                        const y = info.jsEvent.clientY + 15;
+                        
+                        tooltip.style.left = `${Math.min(x, window.innerWidth - tooltip.offsetWidth - 20)}px`;
+                        tooltip.style.top = `${Math.min(y, window.innerHeight - tooltip.offsetHeight - 20)}px`;
+                        
+                        document.body.appendChild(tooltip);
+                        info.el.tooltip = tooltip;
+                    }
+                },
+                eventMouseLeave: function(info) {
+                    if (info.el.tooltip) {
+                        document.body.removeChild(info.el.tooltip);
+                        delete info.el.tooltip;
+                    }
+                },
+                height: 'auto',
+                navLinks: true,
+                nowIndicator: true,
+                editable: false,
+                selectable: false,
+                eventDisplay: 'block',
+                eventTimeFormat: {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    meridiem: 'short'
+                },
+                windowResize: function(view) {
+                    if (window.innerWidth < 768) {
+                        calendar.changeView('dayGridDay');
+                    } else {
+                        calendar.changeView('dayGridMonth');
+                    }
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
+{% endblock %}
