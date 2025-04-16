@@ -21,7 +21,7 @@ Movable is a comprehensive transportation management system built with Symfony, 
 ## Technical Requirements
 
 - PHP 8.1 or higher
-- MySQL/MariaDB
+- MariaDB 10.4.32 or higher (or MySQL 8.0.32+)
 - Symfony 6.x
 - Composer
 - XAMPP (for local development)
@@ -41,7 +41,7 @@ composer install
 
 3. Configure your database in `.env`:
 ```
-DATABASE_URL="mysql://username:password@127.0.0.1:3306/movable?serverVersion=8.0.32&charset=utf8mb4"
+DATABASE_URL="mysql://username:password@127.0.0.1:3306/movable?serverVersion=10.4.32-MariaDB&charset=utf8mb4"
 ```
 
 4. Create database and run migrations:
@@ -87,8 +87,81 @@ Movable/
 │       ├── users.html.twig
 │       └── reclamation_dashboard.html.twig
 └── public/
-    └── assets/
+     └── assets/
 ```
+
+## Database Schema
+
+### Core Tables
+
+1. **Users** (`users`)
+   - Primary user management table
+   - Fields: id, firstName, lastName, email, password, role
+   - Roles: USER, ADMIN, DRIVER
+   - Tracks: ban status, login history, face ID enablement
+   - Primary authentication and authorization store
+
+2. **Reclamations** (`reclamations`)
+   - Claims and feedback management
+   - Fields: id, title, description, status, category, user_id
+   - Status options: Pending, Resolved, Rejected
+   - Categories: General, Contact, Billing
+   - Links to users for tracking ownership
+
+3. **Events** (`event`)
+   - Transportation event management
+   - Fields: id, title, description, duration, type, status
+   - Includes date and time tracking
+   - Status tracking for event lifecycle
+
+4. **Event Registrations** (`event_registration`)
+   - Event participation tracking
+   - Fields: id, event_id, registration_date, status
+   - Status options: Confirmed, Cancelled, Pending
+   - Links events to participants
+
+5. **Destinations** (`destination`)
+   - Location and route management
+   - Fields: id_destination, name, location, category, status
+   - Includes: rating system, route information
+   - Stores contact details and descriptions
+
+6. **Transport** (`transport`)
+   - Vehicle and transport management
+   - Fields: id, type, capacity, disponibility, destination
+   - Tracks availability and capacity
+   - Links to specific destinations
+
+7. **Reservations** (`reservation`)
+   - Booking management system
+   - Fields: id, firstName, email, date, seats, status
+   - Links: transport_id, driver_id, destination_id
+   - Handles payment tracking and seat allocation
+
+### Statistical Views
+
+1. **Reclamation Category Distribution** (`reclamation_category_distribution`)
+   - Analyzes claim distribution by category
+   - Calculates percentages and counts
+   - Helps identify common issues
+
+2. **Reclamation Monthly Trends** (`reclamation_monthly_trends`)
+   - Tracks claims over time
+   - Monthly aggregation of data
+   - Useful for trend analysis
+
+3. **Reclamation Statistics** (`reclamation_statistics`)
+   - Overall claims metrics
+   - Tracks resolution rates
+   - Daily statistical summaries
+
+### Key Relationships
+
+- Users → Reclamations: One-to-many
+- Events → Event Registrations: One-to-many
+- Transport → Reservations: One-to-many
+- Destinations → Transport: One-to-many
+- Users → Reservations: One-to-many (for drivers)
 
 ## User Roles
 
