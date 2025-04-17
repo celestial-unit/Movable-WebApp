@@ -1,0 +1,203 @@
+{% extends "admin/layouts/admin.html.twig" %}
+
+{% block title %}Admin Dashboard - Movable{% endblock %}
+
+{% block body %}
+<div class="row">
+    <!-- User Statistics -->
+    <div class="col-lg-3 col-sm-6 mb-4">
+        <div class="card">
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <a href="{{ path('app_reservation_index') }}" class="btn btn-primary">
+                                    <i class="fas fa-calendar"></i> Manage Reservations
+                                </a>
+                            </div>
+                            <div class="row">
+                    <div class="card-info">
+                        <p class="card-text">Total Users</p>
+                        <div class="d-flex align-items-end mb-2">
+                            <h4 class="card-title mb-0 me-2">{{ stats.users.total }}</h4>
+                        </div>
+                    </div>
+                    <div class="card-icon">
+                        <span class="badge bg-label-primary rounded p-2">
+                            <i class="bx bx-user-circle bx-sm"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-3 col-sm-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="card-info">
+                        <p class="card-text">Administrators</p>
+                        <div class="d-flex align-items-end mb-2">
+                            <h4 class="card-title mb-0 me-2">{{ stats.users.admin }}</h4>
+                        </div>
+                    </div>
+                    <div class="card-icon">
+                        <span class="badge bg-label-success rounded p-2">
+                            <i class="bx bx-shield-quarter bx-sm"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-3 col-sm-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="card-info">
+                        <p class="card-text">Drivers</p>
+                        <div class="d-flex align-items-end mb-2">
+                            <h4 class="card-title mb-0 me-2">{{ stats.users.driver }}</h4>
+                        </div>
+                    </div>
+                    <div class="card-icon">
+                        <span class="badge bg-label-info rounded p-2">
+                            <i class="bx bx-car bx-sm"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-3 col-sm-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="card-info">
+                        <p class="card-text">Banned Users</p>
+                        <div class="d-flex align-items-end mb-2">
+                            <h4 class="card-title mb-0 me-2">{{ stats.users.banned }}</h4>
+                        </div>
+                    </div>
+                    <div class="card-icon">
+                        <span class="badge bg-label-danger rounded p-2">
+                            <i class="bx bx-block bx-sm"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Claims Statistics -->
+    <div class="col-lg-8 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Claims Overview</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 col-6 mb-4">
+                        <div class="d-flex align-items-center">
+                            <div class="badge rounded-pill bg-label-primary me-3 p-2">
+                                <i class="bx bx-message-square-detail"></i>
+                            </div>
+                            <div class="card-info">
+                                <h5 class="mb-0">{{ stats.claims.total }}</h5>
+                                <small>Total Claims</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6 mb-4">
+                        <div class="d-flex align-items-center">
+                            <div class="badge rounded-pill bg-label-warning me-3 p-2">
+                                <i class="bx bx-time"></i>
+                            </div>
+                            <div class="card-info">
+                                <h5 class="mb-0">{{ stats.claims.pending }}</h5>
+                                <small>Pending</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6 mb-4">
+                        <div class="d-flex align-items-center">
+                            <div class="badge rounded-pill bg-label-success me-3 p-2">
+                                <i class="bx bx-check-circle"></i>
+                            </div>
+                            <div class="card-info">
+                                <h5 class="mb-0">{{ stats.claims.resolved }}</h5>
+                                <small>Resolved</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6 mb-4">
+                        <div class="d-flex align-items-center">
+                            <div class="badge rounded-pill bg-label-danger me-3 p-2">
+                                <i class="bx bx-x-circle"></i>
+                            </div>
+                            <div class="card-info">
+                                <h5 class="mb-0">{{ stats.claims.rejected }}</h5>
+                                <small>Rejected</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="col-lg-4 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <div class="d-grid">
+                            <a href="{{ path('app_admin_users') }}" class="btn btn-outline-primary">
+                                <i class="bx bx-user-circle mb-1 d-block fs-4"></i>
+                                Manage Users
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-grid">
+                            <a href="{{ path('app_reclamation_dashboard') }}" class="btn btn-outline-primary">
+                                <i class="bx bx-message-square-detail mb-1 d-block fs-4"></i>
+                                View Claims
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-grid">
+                            <a href="{{ path('app_admin_banned_users') }}" class="btn btn-outline-primary">
+                                <i class="bx bx-block mb-1 d-block fs-4"></i>
+                                Banned Users
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-grid">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-grid">
+                            <a href="{{ path('app_eventback_index') }}" class="btn btn-outline-primary">
+                                <i class="bx bx-calendar mb-1 d-block fs-4"></i>
+                                Manage Events
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-grid">
+                            <a href="{{ path('app_front_home') }}" class="btn btn-outline-primary">
+                                <i class="bx bx-world mb-1 d-block fs-4"></i>
+                                View Website
+                            </a>
+                        </div>
+                    </div>
+</div>
+{% endblock %}
