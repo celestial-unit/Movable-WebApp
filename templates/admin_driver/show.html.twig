@@ -1,0 +1,16 @@
+{% extends "admin/layouts/admin.html.twig" %}
+
+{% block title %}Show Driver{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Driver Details</h1>
+
+    <ul>
+        <li><strong>ID:</strong> {{ driver.id }}</li>
+        <li><strong>Name:</strong> {{ driver.name }}</li>
+        <li><strong>License Number:</strong> {{ driver.licenceNumber }}</li>
+    </ul>
+
+    <a href="{{ path('admin_driver_index') }}" class="btn btn-secondary">Back to list</a>
+{% endblock %}

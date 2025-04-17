@@ -1,0 +1,169 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}{{ transport.id ? 'Edit' : 'Create' }} Transport{% endblock %}
+
+{% block hero_banner %}
+<!-- Hero Section -->
+<div class="container-xxl py-5 bg-primary hero-header mb-5">
+    <div class="container my-5 py-5 px-lg-5">
+        <div class="row g-5 py-5">
+            <div class="col-12 text-center">
+                <h1 class="text-white mb-4 animated slideInDown">
+                    {{ transport.id ? 'Edit Transport' : 'New Transport' }}
+                </h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                        <li class="breadcrumb-item"><a class="text-white" href="{{ path('app_front_home') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a class="text-white" href="{{ path('transport_list') }}">Transports</a></li>
+                        <li class="breadcrumb-item text-white active" aria-current="page">
+                            {{ transport.id ? 'Edit' : 'Create' }}
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="container px-lg-5">
+        <div class="wow fadeInUp">
+            <div class="card border-primary shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fa fa-bus me-3"></i>
+                        {{ transport.id ? 'Edit Transport Details' : 'Create New Transport' }}
+                    </h4>
+                </div>
+                
+                <div class="card-body">
+                    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+                    
+                    <div class="row g-4 mb-4">
+                        <!-- Type Field -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                {{ form_widget(form.type, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Transport Type'
+                                    }
+                                }) }}
+                                <label for="{{ form.type.vars.id }}">
+                                    <i class="fa fa-car me-2"></i>Transport Type
+                                </label>
+                                <div class="invalid-feedback">
+                                    Please enter the transport type
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Capacity Field -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                {{ form_widget(form.capacity, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Passenger Capacity'
+                                    }
+                                }) }}
+                                <label for="{{ form.capacity.vars.id }}">
+                                    <i class="fa fa-users me-2"></i>Passenger Capacity
+                                </label>
+                                <div class="invalid-feedback">
+                                    Please enter valid capacity
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Availability Field -->
+                        <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                {{ form_widget(form.disponibility, {
+                                    'attr': {
+                                        'class': 'form-check-input',
+                                        'role': 'switch'
+                                    }
+                                }) }}
+                                <label class="form-check-label" for="{{ form.disponibility.vars.id }}">
+                                    <i class="fa fa-check-circle me-2"></i>Currently Available
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Destination Field -->
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                {{ form_widget(form.destination, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Destination'
+                                    }
+                                }) }}
+                                <label for="{{ form.destination.vars.id }}">
+                                    <i class="fa fa-map-marker-alt me-2"></i>Destination
+                                </label>
+                                <div class="invalid-feedback">
+                                    Please select a destination
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Error Messages -->
+                    {% if errors is not empty %}
+                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                            <i class="fa fa-exclamation-circle me-2"></i>
+                            <strong>Validation Errors:</strong>
+                            <ul class="mb-0 mt-2">
+                                {% for error in errors %}
+                                    <li>{{ error.message }}</li>
+                                {% endfor %}
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+
+                    <!-- Form Actions -->
+                    <div class="d-flex gap-3 justify-content-end mt-5">
+                        <button type="submit" class="btn btn-primary rounded-pill px-4">
+                            <i class="fa fa-save me-2"></i>
+                            {{ transport.id ? 'Save Changes' : 'Create Transport' }}
+                        </button>
+                        <a href="{{ path('transport_list') }}" class="btn btn-secondary rounded-pill px-4">
+                            <i class="fa fa-times me-2"></i>Cancel
+                        </a>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+// Initialize WOW animations
+new WOW().init();
+
+// Bootstrap Form Validation
+(() => {
+  'use strict'
+  const forms = document.querySelectorAll('.needs-validation')
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>
+{% endblock %}

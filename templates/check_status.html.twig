@@ -1,0 +1,109 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}Check Reservation Status{% endblock %}
+{% block hero_banner %}
+<div class="container-xxl py-5 bg-primary hero-header mb-5">
+    <div class="container my-5 py-5 px-lg-5">
+        <div class="row g-5 py-5">
+            <div class="col-12 text-center">
+                <h1 class="text-white animated zoomIn">Make a Reservation</h1>
+                <hr class="bg-white mx-auto mt-0" style="width: 90px;">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                        <li class="breadcrumb-item"><a class="text-white" href="{{ path('app_front_home') }}">Home</a></li>
+                        <li class="breadcrumb-item text-white active" aria-current="page">New Reservation</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block content  %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Check Reservation Status</h4>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                        {{ form_row(form.email) }}
+                        <div class="d-grid gap-2">
+                            {{ form_row(form.submit) }}
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+
+            <div id="statusResult" class="mt-4"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const resultDiv = document.getElementById('statusResult');
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const email = formData.get('email');
+        
+        fetch('{{ path('app_reservation_check') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: email })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                let html = `
+                    <div class="card">
+                        <div class="card-header ${data.reservation.status === 'approved' ? 'bg-success' : 'bg-warning'} text-white">
+                            <h5 class="mb-0">Reservation Details</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Status:</strong> <span class="badge ${data.reservation.status === 'approved' ? 'bg-success' : 'bg-warning'}">${data.reservation.status}</span></p>
+                            <p><strong>Date:</strong> ${data.reservation.date}</p>
+                            <p><strong>Location:</strong> ${data.reservation.location}</p>
+                            <p><strong>Seats:</strong> ${data.reservation.seats}</p>
+                            <p><strong>Agent Type:</strong> ${data.reservation.agentType}</p>
+                            <p><strong>Transport:</strong> ${data.reservation.transport}</p>
+                            <p><strong>Driver:</strong> ${data.reservation.Driver}</p>
+                            <p><strong>Payment Mode:</strong> ${data.reservation.paymentMode}</p>
+                `;
+                
+                if (data.reservation.status === 'approved') {
+                    html += `
+                        <div class="d-grid gap-2 mt-3">
+                            <a href="{{ path('app_ticket_show', {'id': 'TICKET_ID'}) }}" class="btn btn-primary">View Ticket</a>
+                        </div>
+                    `;
+                }
+                
+                html += `</div></div>`;
+                
+                // Replace TICKET_ID with actual ticket ID (you might need to adjust your API to return this)
+                resultDiv.innerHTML = html.replace('TICKET_ID', data.reservation.ticketId || '1');
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="alert alert-danger">${data.message}</div>
+                `;
+            }
+        })
+        .catch(error => {
+            resultDiv.innerHTML = `
+                <div class="alert alert-danger">An error occurred. Please try again.</div>
+            `;
+            console.error(error);
+        });
+    });
+});
+</script>
+{% endblock %}
