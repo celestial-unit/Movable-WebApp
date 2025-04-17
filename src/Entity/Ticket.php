@@ -31,7 +31,7 @@ class Ticket
     #[ORM\Column(name:'paymentMode',type: 'string')]
     private ?string $paymentMode = null;
 
-    #[ORM\Column(name: "transport", type: "string", length: 255)]
+    #[ORM\Column(type: 'string')]  
     private ?string $transport = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
@@ -40,12 +40,9 @@ class Ticket
     #[ORM\Column(type: 'float')]
     private ?float $price = null;
 
-    #[ORM\Column(type: 'string', nullable: true,)]
-    private string $status = self::STATUS_PENDING;
-    public function __construct()
-{
-    $this->status = self::STATUS_PENDING; 
-}
+    #[ORM\Column(type: 'string')]
+    private ?string $status = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -106,16 +103,16 @@ class Ticket
         return $this;
     }
 
-    public function getTransport(): ?string  // Made nullable to match property
-{
-    return $this->transport;
-}
+    public function getTransport(): ?string
+    {
+        return $this->transport;
+    }
 
-public function setTransport(?string $transport): self
-{
-    $this->transport = $transport;
-    return $this;
-}
+    public function setTransport(?Transport $transport): self
+    {
+        $this->transport = $transport;
+        return $this;
+    }
 
     public function getDestination(): ?string
     {
@@ -154,9 +151,9 @@ public function setTransport(?string $transport): self
     public function onPrePersist(): void
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->ticketNumber = $this->ticketNumber ?? 'TKT-' . strtoupper(uniqid());
-        $this->issueDate = $this->issueDate ?? new \DateTime();
-        $this->status = $this->status ?? self::STATUS_PENDING;
+        $this->ticketNumber = 'TKT-' . strtoupper(uniqid());
+        $this->issueDate = new \DateTime();
+        $this->status = 'active';
     }
 
     // Optional: Add __toString() method for better display
