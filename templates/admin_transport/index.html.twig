@@ -1,0 +1,83 @@
+{% extends 'base1.html.twig' %}
+{% block sidebar %}
+    <div class="app-brand demo">
+        <a href="index.html" class="app-brand-link">
+            <span class="app-brand-logo demo">
+                <!-- Your logo SVG here -->
+            </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">Sneat</span>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+   <ul class="menu-inner py-1">
+    <li class="menu-item active">
+        <a href="{{ path('home') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+            <div>Dashboard</div>
+        </a>
+    </li>
+
+    <li class="menu-item">
+    <a href="{{ path('admin_transport_index') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-bus"></i>
+        <div>Transport (Admin)</div>
+    </a>
+</li>
+
+
+    <li class="menu-item">
+        <a href="{{ path('admin_driver_index') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-id-card"></i>
+            <div>Driver</div>
+        </a>
+    </li>
+</ul>
+
+{% endblock %}
+{% block body %}
+    <h1>List of Transports</h1>
+
+    <a href="{{ path('admin_transport_new') }}" class="btn btn-success">+ Add a transport</a>
+
+    <table border="1" cellspacing="0" cellpadding="5">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Capacity</th>
+                <th>Availability</th>
+                <th>Destination</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transport in transports %}
+                <tr>
+                    <td>{{ transport.id }}</td>
+                    <td>{{ transport.type }}</td>
+                    <td>{{ transport.capacity }}</td>
+                    <td>{{ transport.disponibility ? 'Available' : 'Not available' }}</td>
+                    <td>{{ transport.destination }}</td>
+                    <td>
+                        <a href="{{ path('admin_transport_edit', {id: transport.id}) }}" class="btn btn-primary">Edit</a>
+
+                        <form method="post" action="{{ path('admin_transport_delete', {'id': transport.id}) }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this transport?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ transport.id) }}">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">No transport found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+     <div class="text-center mt-4">
+            <a href="{{ path('admin_driver_index') }}" class="btn btn-info">Show Driver List</a>
+        </div>
+        <link href="{{ asset('css/css_halimaa.css') }}" rel="stylesheet">
+{% endblock %}

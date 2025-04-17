@@ -1,0 +1,15 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+app_transport:
+    resource: '../src/Controller/TransportController.php'
+    type: annotation
+
+app_driver:
+    resource: '../src/Controller/DriverController.php'
+    type: annotation 
+app_home:
+    path: /
+    controller: App\Controller\DashboardController::index

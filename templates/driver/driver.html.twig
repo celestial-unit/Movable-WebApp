@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <h2>Drivers List</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>License Number</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                {% for driver in drivers %}
+                    <tr>
+                        <td>{{ driver.name }}</td>
+                        <td>{{ driver.licenceNumber }}</td>
+                       
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">No drivers found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ path('transport_list') }}" class="btn btn-secondary">Back to Transports</a>
+    </div>
+    <link href="{{ asset('css/css_halimaa.css') }}" rel="stylesheet">
+{% endblock %}

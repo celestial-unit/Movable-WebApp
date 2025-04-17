@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ transport.id ? 'Edit' : 'Create' }} Transport{% endblock %}
+
+{% block body %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Transport /</span> {{ transport.id ? 'Edit' : 'Create' }}
+    </h4>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    {{ form_start(form) }}
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form_row(form.type, {
+                                    'attr': {'class': 'form-control'},
+                                    'label_attr': {'class': 'form-label'}
+                                }) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.capacity, {
+                                    'attr': {'class': 'form-control'},
+                                    'label_attr': {'class': 'form-label'}
+                                }) }}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form_row(form.disponibility, {
+                                    'attr': {'class': 'form-check-input'},
+                                    'label_attr': {'class': 'form-check-label'}
+                                }) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.destination, {
+                                    'attr': {'class': 'form-control'},
+                                    'label_attr': {'class': 'form-label'}
+                                }) }}
+                            </div>
+                        </div>
+
+                        {# Show validation errors #}
+                        {% if errors is not empty %}
+                            <div class="alert alert-danger">
+                                <ul>
+                                    {% for error in errors %}
+                                        <li>{{ error.message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        <div class="mt-4">
+                            {% if transport.id %}
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="bx bx-save"></i> Save
+                                </button>
+                            {% else %}
+                                <button type="submit" class="btn btn-success me-2">
+                                    <i class="bx bx-plus"></i> Add Transport
+                                </button>
+                            {% endif %}
+
+                            <a href="{{ path('transport_list') }}" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
