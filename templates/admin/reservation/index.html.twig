@@ -1,0 +1,109 @@
+{% extends 'admin/layouts/admin.html.twig' %}
+
+{% block title %}Manage Reservations{% endblock %}
+
+{% block body %}
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Manage Reservations</h1>
+        
+        <div class="row mt-4">
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-primary text-white mb-4">
+                    <div class="card-body">
+                        Total Reservations
+                        <h2>{{ status_counts.total ?? 0 }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-warning text-white mb-4">
+                    <div class="card-body">
+                        Pending
+                        <h2>{{ status_counts.pending ?? 0 }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-success text-white mb-4">
+                    <div class="card-body">
+                        Approved
+                        <h2>{{ status_counts.approved ?? 0 }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-danger text-white mb-4">
+                    <div class="card-body">
+                        Rejected
+                        <h2>{{ status_counts.rejected ?? 0 }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Reservations List
+            </div>
+            <div class="card-body">
+                <table id="reservationsTable" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Seats</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reservation in reservations %}
+                            <tr>
+                                <td>{{ reservation.id }}</td>
+                                <td>{{ reservation.firstName }} {{ reservation.lastName }}</td>
+                                <td>{{ reservation.date|date('Y-m-d H:i') }}</td>
+                                <td>{{ reservation.location }}</td>
+                                <td>{{ reservation.seats }}</td>
+                                <td>
+                                    <span class="badge bg-{{ reservation.status == 'approved' ? 'success' : (reservation.status == 'rejected' ? 'danger' : 'warning') }}">
+                                        {{ reservation.status }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ path('admin_reservation_show', {'id': reservation.id}) }}" 
+                                           class="btn btn-sm btn-info">View</a>
+                                        {% if reservation.status == 'pending' %}
+                                            <form method="post" action="{{ path('admin_reservation_approve', {'id': reservation.id}) }}" 
+                                                  style="display: inline;">
+                                                <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                                            </form>
+                                            <form method="post" action="{{ path('admin_reservation_reject', {'id': reservation.id}) }}" 
+                                                  style="display: inline;">
+                                                <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+            $('#reservationsTable').DataTable({
+                order: [[0, 'desc']]
+            });
+        });
+    </script>
+{% endblock %}

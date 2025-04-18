@@ -1,0 +1,237 @@
+{% extends "base1.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .bg-menu-theme .menu-item.active > .menu-link {
+            color: #696cff !important;
+        }
+        
+        .bg-menu-theme .menu-item.active > .menu-link i {
+            color: #696cff !important;
+        }
+        
+        .layout-menu-hover .layout-menu {
+            box-shadow: 0 0.25rem 1rem rgba(161, 172, 184, 0.45);
+        }
+        
+        .menu-header {
+            padding: 0.625rem 1.25rem;
+            margin-top: 0.75rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #a1acb8;
+        }
+
+        .user-stats-card {
+            transition: transform 0.3s ease;
+        }
+
+        .user-stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 0.25rem 0.5rem;
+            border-radius: 50%;
+            font-size: 0.75rem;
+        }
+    </style>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="app-brand demo">
+        <a href="{{ path('app_dashboard') }}" class="app-brand-link">
+            <span class="app-brand-logo demo">
+                <i class="bx bx-car fs-3 text-primary"></i>
+            </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">Movable</span>
+        </a>
+
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+        <!-- Dashboard -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_dashboard' ? 'active' : '' }}">
+            <a href="{{ path('app_dashboard') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div>Dashboard</div>
+            </a>
+        </li>
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Claims Management</span>
+        </li>
+
+        <!-- My Claims -->
+        <li class="menu-item {{ app.request.get('_route') starts with 'app_reclamation_' ? 'active' : '' }}">
+            <a href="{{ path('app_reclamation_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-message-square-detail"></i>
+                <div>My Claims</div>
+            </a>
+        </li>
+
+        <!-- New Claim -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_reclamation_new' ? 'active' : '' }}">
+            <a href="{{ path('app_reclamation_new') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-plus-circle"></i>
+                <div>Submit New Claim</div>
+            </a>
+        </li>
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Account</span>
+        </li>
+
+        <!-- Profile -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_user_profile' ? 'active' : '' }}">
+            <a href="{{ path('app_user_profile') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div>My Profile</div>
+            </a>
+        </li>
+
+        <!-- Settings -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_user_settings' ? 'active' : '' }}">
+            <a href="{{ path('app_user_settings') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-cog"></i>
+                <div>Settings</div>
+            </a>
+        </li>
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Quick Links</span>
+        </li>
+
+        <!-- Help Center -->
+        <li class="menu-item">
+            <a href="{{ path('app_front_help') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-help-circle"></i>
+                <div>Help Center</div>
+            </a>
+        </li>
+
+        <!-- Visit Website -->
+        <li class="menu-item">
+            <a href="{{ path('app_front_home') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-world"></i>
+                <div>Visit Website</div>
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block navbar %}
+    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+            <i class="bx bx-menu bx-sm"></i>
+        </a>
+    </div>
+
+    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+        <!-- Search -->
+        <div class="navbar-nav align-items-center">
+            <div class="nav-item d-flex align-items-center">
+                <i class="bx bx-search fs-4 lh-0"></i>
+                <input type="text" class="form-control border-0 shadow-none ps-1" placeholder="Search claims..." aria-label="Search...">
+            </div>
+        </div>
+
+        <ul class="navbar-nav flex-row align-items-center ms-auto">
+            <!-- Notifications -->
+            <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3">
+                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <i class="bx bx-bell bx-sm"></i>
+                    <span class="badge bg-danger rounded-pill badge-notifications">{{ notifications|default(0) }}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end py-0">
+                    <li class="dropdown-menu-header border-bottom">
+                        <div class="dropdown-header d-flex align-items-center py-3">
+                            <h5 class="text-body mb-0 me-auto">Notifications</h5>
+                            <a href="javascript:void(0)" class="dropdown-notifications-all text-body">
+                                <i class="bx fs-4 bx-envelope-open"></i>
+                            </a>
+                        </div>
+                    </li>
+                    <li class="dropdown-menu-footer border-top">
+                        <a href="javascript:void(0);" class="dropdown-item d-flex justify-content-center p-3">
+                            View all notifications
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- User -->
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                        <span class="avatar-initial rounded-circle bg-primary">
+                            {{ app.user.firstName|first }}{{ app.user.lastName|first }}
+                        </span>
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item" href="{{ path('app_user_profile') }}">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="avatar avatar-online">
+                                        <span class="avatar-initial rounded-circle bg-primary">
+                                            {{ app.user.firstName|first }}{{ app.user.lastName|first }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <span class="fw-semibold d-block">{{ app.user.fullName }}</span>
+                                    <small class="text-muted">Member</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('app_user_profile') }}">
+                            <i class="bx bx-user me-2"></i>
+                            <span class="align-middle">My Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('app_user_settings') }}">
+                            <i class="bx bx-cog me-2"></i>
+                            <span class="align-middle">Settings</span>
+                        </a>
+                    </li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('app_logout') }}">
+                            <i class="bx bx-power-off me-2"></i>
+                            <span class="align-middle">Log Out</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+        <div class="mb-2 mb-md-0">
+            © {{ "now"|date("Y") }} Movable. All rights reserved.
+        </div>
+        <div>
+            <a href="{{ path('app_front_help') }}" class="footer-link me-4">Help Center</a>
+            <a href="{{ path('app_contact') }}" class="footer-link">Contact</a>
+        </div>
+    </div>
+{% endblock %}
+

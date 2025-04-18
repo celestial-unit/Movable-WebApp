@@ -1,0 +1,136 @@
+/* Custom Color Scheme with Light Blue and Soft Orange */
+
+:root {
+    --primary: #5fa8d3;      /* Light blue */
+    --primary-light: #84c4eb;
+    --primary-dark: #4a87ab;
+    --secondary: #f69e7b;    /* Soft orange */
+    --secondary-light: #ffb599;
+    --secondary-dark: #e07e5f;
+}
+
+/* Primary Colors */
+.text-primary {
+    color: var(--primary) !important;
+}
+
+.bg-primary {
+    background-color: var(--primary) !important;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: var(--primary-dark) !important;
+    border-color: var(--primary-dark) !important;
+}
+
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+/* Secondary Colors */
+.text-secondary {
+    color: var(--secondary) !important;
+}
+
+.bg-secondary {
+    background-color: var(--secondary) !important;
+}
+
+.btn-secondary {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active {
+    background-color: var(--secondary-dark) !important;
+    border-color: var(--secondary-dark) !important;
+}
+
+.btn-outline-secondary {
+    color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+/* Other Elements */
+.service-item:hover .service-icon {
+    background: var(--primary-light) !important;
+}
+
+.hero-header {
+    background: linear-gradient(to bottom right, var(--primary), var(--primary-light)) !important;
+}
+
+.page-header {
+    background: linear-gradient(to bottom right, var(--primary), var(--primary-light)) !important;
+}
+
+.section-title span::before,
+.section-title span::after {
+    background: var(--secondary);
+}
+
+.back-to-top {
+    background-color: var(--secondary);
+}
+
+.back-to-top:hover {
+    background-color: var(--secondary-dark);
+}
+
+.fact {
+    background: linear-gradient(rgba(95, 168, 211, .7), rgba(95, 168, 211, .7)), url(../img/bg-bottom.png) center bottom no-repeat;
+    background-size: contain;
+}
+
+.progress .progress-bar {
+    background: var(--primary);
+}
+
+.newsletter {
+    background: linear-gradient(rgba(95, 168, 211, .7), rgba(95, 168, 211, .7)), url(../img/bg-top.png) center top no-repeat;
+    background-size: contain;
+}
+
+.footer {
+    background: linear-gradient(to bottom right, var(--primary), var(--primary-dark));
+}
+
+.footer .btn-social:hover {
+    color: var(--secondary);
+}
+
+/* Admin Dashboard Link Styling */
+.admin-link {
+    background-color: var(--secondary);
+    color: #fff;
+    border-radius: 30px;
+    padding: 8px 20px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.admin-link:hover {
+    background-color: var(--secondary-dark);
+    transform: translateY(-2px);
+}
+
