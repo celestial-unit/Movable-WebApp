@@ -1,0 +1,23 @@
+{{ form_start(form, {
+    'attr': {
+        'novalidate': 'novalidate',
+        'enctype': 'multipart/form-data'
+    }
+}) }}
+
+    {% for field in form %}
+       
+            <div class="form-group mb-3">
+                {{ form_label(field) }}
+                {{ form_widget(field, {'attr': {'class': 'form-control'}}) }}
+
+                {% for error in field.vars.errors %}
+                    <div class="text-danger">{{ error.message }}</div>
+                {% endfor %}
+            </div>
+       
+    {% endfor %}
+
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+
+{{ form_end(form) }}
