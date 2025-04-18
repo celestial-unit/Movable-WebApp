@@ -1,0 +1,103 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}Our Destinations{% endblock %}
+
+{% block hero_banner %}
+<!-- Hero Section -->
+<div class="container-xxl py-5 bg-primary hero-header mb-5">
+    <div class="container my-5 py-5 px-lg-5">
+        <div class="row g-5 py-5">
+            <div class="col-12 text-center">
+                <h1 class="text-white mb-4 animated slideInDown">Explore Our Destinations</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                        <li class="breadcrumb-item"><a class="text-white" href="{{ path('app_front_home') }}">Home</a></li>
+                        <li class="breadcrumb-item text-white active" aria-current="page">Destinations</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Destination Cards Section -->
+<div class="container-xxl py-5">
+    <div class="container px-lg-5">
+        <div class="row g-4">
+            {% for destination in destinations %}
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="service-item d-flex flex-column h-100 rounded overflow-hidden">
+                    <div class="position-relative">
+                        {% if destination.image %}
+                        <img class="img-fluid" src="{{ asset('uploads/destinations/' ~ destination.image) }}" 
+                             alt="{{ destination.name }}" 
+                             style="height: 250px; object-fit: cover;">
+                        {% else %}
+                        <img class="img-fluid" src="{{ asset('img/default-destination.jpg') }}" 
+                             alt="Default destination image"
+                             style="height: 250px; object-fit: cover;">
+                        {% endif %}
+                        <div class="service-overlay">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <a class="btn btn-square btn-light mx-1" href="{{ path('app_destination_show', {'idDestination': destination.idDestination}) }}">
+                                    <i class="fa fa-eye text-primary"></i>
+                                </a>
+                                <button class="btn btn-square btn-light mx-1">
+                                    <i class="far fa-heart text-primary"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 border-top border-primary border-3">
+                        <h5 class="mb-3 text-primary">{{ destination.name }}</h5>
+                        <p class="mb-2">
+                            <i class="fa fa-map-marker-alt text-primary me-2"></i>
+                            {{ destination.location }}
+                        </p>
+                        <p class="mb-3">
+                            {{ destination.description|length > 100 
+                                ? destination.description|slice(0, 100) ~ '...' 
+                                : destination.description }}
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-primary">
+                                <i class="fa fa-car me-2"></i>{{ destination.parkingSpots|length }} Spots
+                            </span>
+                            <a href="{{ path('app_destination_show', {'idDestination': destination.idDestination}) }}" 
+                               class="btn btn-sm btn-secondary px-3 rounded-pill">
+                                Explore <i class="fa fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12 text-center">
+                <div class="alert alert-primary py-5" role="alert">
+                    <h4 class="mb-3">No destinations available</h4>
+                    <p class="mb-0">Check back later for new destinations!</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+// Initialize WOW animations
+new WOW().init();
+
+// Heart toggle functionality
+document.querySelectorAll('.fa-heart').forEach(icon => {
+    icon.addEventListener('click', function() {
+        this.classList.toggle('fas');
+        this.classList.toggle('far');
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,9 @@
+framework:
+    asset_mapper:
+        # The paths to make available to the asset mapper.
+        paths:
+            - assets/
+            - public/css/
+            - public/js/
+            - public/lib/
+            - public/img/
