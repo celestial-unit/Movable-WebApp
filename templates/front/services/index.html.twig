@@ -1,0 +1,264 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}<title>Movable - Our Services</title>{% endblock %}
+
+{% block hero_banner %}
+<div class="container-xxl bg-primary page-header">
+    <div class="container text-center py-5 px-lg-5">
+        <h1 class="text-white animated zoomIn">Services</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center">
+                <li class="breadcrumb-item"><a class="text-white" href="{{ path('app_front_home') }}">Home</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Services</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+{# Service Start #}
+<div class="container-xxl py-5">
+    <div class="container py-5 px-lg-5">
+        <div class="wow fadeInUp" data-wow-delay="0.1s">
+            <p class="section-title text-secondary justify-content-center"><span></span>Our Services<span></span></p>
+            <h1 class="text-center mb-5">What Solutions We Provide</h1>
+        </div>
+        <div class="row g-4">
+            {% for service in services %}
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="{{ 0.1 + (loop.index0 * 0.2) }}s">
+                    <div class="service-item d-flex flex-column text-center rounded">
+                        <div class="service-icon flex-shrink-0">
+                            <i class="fa {{ service.icon }} fa-2x"></i>
+                        </div>
+                        <h5 class="mb-3">{{ service.title }}</h5>
+                        <p class="m-0">{{ service.description }}</p>
+                        <a class="btn btn-square" href="{{ path('app_front_contact') }}"><i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{# Service End #}
+
+{# Features Start #}
+<div class="container-xxl py-5">
+    <div class="container py-5 px-lg-5">
+        <div class="row g-5">
+            <div class="col-lg-5 wow fadeInUp" data-wow-delay="0.1s">
+                <p class="section-title text-secondary">Why Choose Us<span></span></p>
+                <h1 class="mb-4">Expert Digital Solutions For Your Business Growth</h1>
+                <p class="mb-4">At Movable, we combine creativity, technology, and strategy to deliver exceptional results. Our experienced team works closely with clients to understand their unique needs and develop customized solutions.</p>
+                <div class="d-flex align-items-center mb-3">
+                    <div class="flex-shrink-0 btn-square bg-primary rounded-circle me-3">
+                        <i class="fa fa-check text-white"></i>
+                    </div>
+                    <h5 class="mb-0">Experienced & Dedicated Team</h5>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <div class="flex-shrink-0 btn-square bg-primary rounded-circle me-3">
+                        <i class="fa fa-check text-white"></i>
+                    </div>
+                    <h5 class="mb-0">Customized Solutions</h5>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <div class="flex-shrink-0 btn-square bg-primary rounded-circle me-3">
+                        <i class="fa fa-check text-white"></i>
+                    </div>
+                    <h5 class="mb-0">Latest Technologies & Trends</h5>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 btn-square bg-primary rounded-circle me-3">
+                        <i class="fa fa-check text-white"></i>
+                    </div>
+                    <h5 class="mb-0">Results-Driven Approach</h5>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="row g-4">
+                    <div class="col-sm-6 wow fadeIn" data-wow-delay="0.1s">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0 btn-square bg-primary rounded-circle me-3">
+                                <i class="fa fa-chart-line text-white"></i>
+                            </div>
+                            <h5 class="mb-0">Performance Tracking</h5>
+                        </div>
+                        <span>Real-time analytics and reporting to measure your success and optimize strategies.</span>
+                    </div>
+                    <div class="col-sm-6 wow fadeIn" data-wow-delay="0.2s">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0 btn-square bg-primary rounded-circle me-3">
+                                <i class="fa fa-cubes text-white"></i>
+                            </div>
+                            <h5 class="mb-0">Scalable Solutions</h5>
+                        </div>
+                        <span>Our solutions grow with your business, adapting to your changing needs over time.</span>
+                    </div>
+                    <div class="col-sm-6 wow fadeIn" data-wow-delay="0.3s">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0 btn-square bg-primary rounded-circle me-3">
+                                <i class="fa fa-award text-white"></i>
+                            </div>
+                            <h5 class="mb-0">Award-Winning Designs</h5>
+                        </div>
+                        <span>Creative and engaging designs that stand out and capture your audience's attention.</span>
+                    </div>
+                    <div class="col-sm-6 wow fadeIn" data-wow-delay="0.4s">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0 btn-square bg-primary rounded-circle me-3">
+                                <i class="fa fa-smile-beam text-white"></i>
+                            </div>
+                            <h5 class="mb-0">100% Client Satisfaction</h5>
+                        </div>
+                        <span>We're committed to your satisfaction and delivering results that exceed expectations.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{# Features End #}
+
+{# Pricing Start #}
+<div class="container-xxl py-5">
+    <div class="container py-5 px-lg-5">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <p class="section-title text-secondary justify-content-center"><span></span>Pricing<span></span></p>
+            <h1 class="mb-5">Our Pricing Plans</h1>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="price-item rounded overflow-hidden">
+                    <div class="bg-dark p-4">
+                        <h4 class="text-white mt-2">Basic Plan</h4>
+                        <div class="text-white">
+                            <span class="align-top fs-4 fw-bold">$</span>
+                            <span class="price display-5 text-primary fw-bold">29</span>
+                            <span class="fs-5 fw-bold">/mo</span>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Website Design</span>
+                            <i class="fa fa-check text-primary pt-1"></i>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Mobile Optimization</span>
+                            <i class="fa fa-check text-primary pt-1"></i>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Basic SEO Setup</span>
+                            <i class="fa fa-check text-primary pt-1"></i>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Social Media Integration</span>
+                            <i class="fa fa-times text-danger pt-1"></i>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>E-commerce Functionality</span>
+                            <i class="fa fa-times text-danger pt-1"></i>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Marketing Support</span>
+                            <i class="fa fa-times text-danger pt-1"></i>
+                        </div>
+                        <a href="{{ path('app_front_contact') }}" class="btn btn-primary rounded-pill py-2 px-4 mt-3">Get Started</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="price-item rounded overflow-hidden">
+                    <div class="bg-primary p-4">
+                        <h4 class="text-white mt-2">Standard Plan</h4>
+                        <div class="text-white">
+                            <span class="align-top fs-4 fw-bold">$</span>
+                            <span class="price display-5 text-dark fw-bold">79</span>
+                            <span class="fs-5 fw-bold">/mo</span>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Website Design</span>
+                            <i class="fa fa-check text-primary pt-1"></i>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Mobile Optimization</span>
+                            <i class="fa fa-check text-primary pt-1"></i>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Advanced SEO Setup</span>
+                            <i class="fa fa-check text-primary pt-1"></i>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Social Media Integration</span>
+                            <i class="fa fa-check text-primary pt-1"></i>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>E-commerce Functionality</span>
+                            <i class="fa fa-check text-primary pt-1"></i>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Marketing Support</span>
+                            <i class="fa fa-times text-danger pt-1"></i>
+                        </div>
+                        <a href="{{ path('app_front_contact') }}" class="btn btn-primary rounded-pill py-2 px-4 mt-3">Get Started</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="price-item rounded overflow-hidden">
+                    <div class="bg-dark p-4">
+                        <h4 class="text-white mt-2">Premium Plan</h4>
+                        <div class="text-white">
+                            <span class="align-top fs-4 fw-bold">$</span>
+                            <span class="price display-5 text-primary fw-bold">149</span>
+                            <span class="fs-5 fw-bold">/mo</span>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Website Design</span>
+                            <i class="fa fa-check text-primary pt-1"></i>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Mobile Optimization</span>
+                            <i class="fa fa-check text-primary pt-1"></i>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Premium SEO Package</span>
+                            <i class="fa fa-check text-primary pt-1"></i>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Social Media Integration</span>
+                            <i class="fa fa-check text-primary pt-1"></i>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Advanced E-commerce</span>
+                            <i class="fa fa-check text-primary pt-1"></i>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Full Marketing Support</span>
+                            <i class="fa fa-check text-primary pt-1"></i>
+                        </div>
+                        <a href="{{ path('app_front_contact') }}" class="btn btn-primary rounded-pill py-2 px-4 mt-3">Get Started</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{# Pricing End #}
+
+{# Quote Start #}
+<div class="container-xxl py-5">
+    <div class="container py-5 px-lg-5">
+        <div class="wow fadeInUp" data-wow-delay="0.1s">
+            <p class="section-title text-secondary justify-content-center"><span></span>Get a Quote<span></span></p>
+            <h1 class="text-center mb-5">Ready to Get Started?</h1>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="wow fadeInUp" data-wow-delay="0.3s">
+                    <p class="text-center mb-4">Contact us today for a free consultation and quote.
+

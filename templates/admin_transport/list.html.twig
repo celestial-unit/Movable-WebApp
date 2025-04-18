@@ -1,0 +1,78 @@
+{% extends "admin/layouts/admin.html.twig" %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <!-- Form section (left side) -->
+            <div class="col-lg-6 col-md-12 mb-4 form-container">
+                <h2>Add or Edit Means of Transportation</h2>
+                {{ form_start(form) }}
+                    <div class="form-group">
+                        {{ form_label(form.type) }}
+                        {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.capacity) }}
+                        {{ form_widget(form.capacity, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.disponibility) }}
+                        {{ form_widget(form.disponibility, {'attr': {'class': 'form-check-input'}}) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.destination) }}
+                        {{ form_widget(form.destination, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    {{ form_row(form.submit) }}
+                {{ form_end(form) }}
+            </div>
+
+            <!-- Table section (right side) -->
+            <div class="col-lg-6 col-md-12 table-container">
+                <h2>Available Means of Transportation</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Capacity</th>
+                            <th>Availability</th>
+                            <th>Destination</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transport in transports %}
+                            <tr>
+                                <td>{{ transport.type }}</td>
+                                <td>{{ transport.capacity }}</td>
+                                <td>{{ transport.disponibility ? 'Available' : 'Not Available' }}</td>
+                                <td>{{ transport.destination }}</td>
+                                <td>
+                                    <a href="{{ path('transport_edit', {'id': transport.id}) }}" class="btn btn-warning">Edit</a>
+                                    <a href="{{ path('transport_delete', {'id': transport.id}) }}" class="btn btn-danger" 
+                                       onclick="return confirm('Are you sure you want to delete this transport?');">Delete</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5">No transport entries found.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Button to navigate to the drivers list -->
+        <div class="text-center mt-4">
+            <a href="{{ path('driver_index') }}" class="btn btn-info">Show Drivers List</a>
+        </div>
+    </div>
+
+    <!-- Custom CSS for your page -->
+    <link href="{{ asset('css/css_halimaa.css') }}" rel="stylesheet">
+{% endblock %}

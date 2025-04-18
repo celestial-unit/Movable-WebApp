@@ -1,0 +1,13 @@
+{% extends "admin/layouts/admin.html.twig" %}
+
+{% block title %}Edit Parkingspot{% endblock %}
+
+{% block body %}
+    <h1>Edit Parkingspot</h1>
+
+    {{ include('Destinations/parkingspot/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_parkingspot_index') }}">back to list</a>
+
+    {{ include('Destinations/parkingspot/_delete_form.html.twig') }}
+{% endblock %}

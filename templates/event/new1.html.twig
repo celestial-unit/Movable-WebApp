@@ -1,0 +1,230 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}New Event{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/css/pages/form-validation.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h1>Create new Event:</h1>
+
+    {{ include('event/_form.html.twig') }}
+
+    <a href="{{ path('app_eventback_index') }}" class="btn btn-label-secondary">
+        <i class="bx bx-chevron-left scaleX-n1-rtl me-2"></i>
+        Back to list
+    </a>
+</div>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="app-brand demo">
+        <a href="{{ path('app_dashboard') }}" class="app-brand-link">
+            <span class="app-brand-logo demo">
+                <i class="bx bx-car fs-3 text-primary"></i>
+            </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">Movable Admin</span>
+        </a>
+
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+        <!-- Dashboard -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_dashboard' ? 'active' : '' }}">
+            <a href="{{ path('app_dashboard') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div>Dashboard</div>
+            </a>
+        </li>
+
+        <li class="menu-item">
+            <a href="{{ path('app_front_home') }}" class="menu-link front-website-link">
+                <i class="menu-icon tf-icons bx bx-world"></i>
+                <div>Visit Website</div>
+            </a>
+        </li>
+        
+        <li class="menu-item {{ app.request.get('_route') == 'app_admin_users' ? 'active' : '' }}">
+            <a href="{{ path('app_admin_users') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user-circle"></i>
+                <div>Users</div>
+            </a>
+        </li>
+
+        <!-- Claims Management -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_reclamation_dashboard' ? 'active' : '' }}">
+            <a href="{{ path('app_reclamation_dashboard') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-message-square-detail"></i>
+                <div>Claims</div>
+            </a>
+        </li>
+
+        <!-- Banned Users -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_admin_banned_users' ? 'active' : '' }}">
+            <a href="{{ path('app_admin_banned_users') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-block"></i>
+                <div>Banned Users</div>
+            </a>
+        </li>
+
+        <!-- Events Management -->
+        <li class="menu-item {{ app.request.get('_route') starts with 'app_event' ? 'active' : '' }}">
+            <a href="{{ path('app_eventback_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar"></i>
+                <div>Events</div>
+            </a>
+        </li>
+         
+
+        <!-- Reservation Management -->
+        <li class="menu-item {{ app.request.get('_route') starts with 'admin_waitlist_' ? 'active' : '' }}">
+            <a href="{{ path('admin_waitlist_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar-check"></i>
+                <div>Reservations</div>
+            </a>
+        </li>
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">System</span>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block navbar %}
+    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+        <div class="navbar-nav align-items-center">
+            <div class="nav-item d-flex align-items-center">
+                <i class="bx bx-search fs-4 lh-0"></i>
+                <input type="text" class="form-control border-0 shadow-none ps-1" placeholder="Search..." aria-label="Search...">
+            </div>
+        </div>
+
+        <ul class="navbar-nav flex-row align-items-center ms-auto">
+            <!-- Admin User Dropdown -->
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                        <span class="avatar-initial rounded-circle bg-primary">
+                            {{ app.user.firstName|first }}{{ app.user.lastName|first }}
+                        </span>
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="avatar avatar-online">
+                                        <span class="avatar-initial rounded-circle bg-primary">
+                                            {{ app.user.firstName|first }}{{ app.user.lastName|first }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <span class="fw-semibold d-block">{{ app.user.fullName }}</span>
+                                    <small class="text-muted">Administrator</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('app_user_profile') }}">
+                            <i class="bx bx-user me-2"></i>
+                            <span class="align-middle">My Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('app_user_settings') }}">
+                            <i class="bx bx-cog me-2"></i>
+                            <span class="align-middle">Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('app_logout') }}">
+                            <i class="bx bx-power-off me-2"></i>
+                            <span class="align-middle">Log Out</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            
+            <!-- Visible Logout Button -->
+            <li class="nav-item ms-3">
+                <a href="{{ path('app_logout') }}" class="btn btn-danger d-flex align-items-center">
+                    <i class="bx bx-power-off me-2"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Debounce function for input delay
+    function debounce(func, timeout = 500) {
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => { func.apply(this, args); }, timeout);
+        };
+    }
+
+    // Profanity check API call
+    function checkProfanity(text, callback) {
+        fetch('{{ path('app_eventback_check_profanity') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ text: text })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.censoredText) {
+                callback(data.censoredText);
+            }
+        })
+        .catch(error => console.error('Profanity check error:', error));
+    }
+
+    // Setup profanity listener for a field
+    function setupProfanityListener(inputField) {
+        const handler = debounce((event) => {
+            const currentText = event.target.value;
+            checkProfanity(currentText, (censoredText) => {
+                if (event.target.value === currentText) {
+                    event.target.value = censoredText;
+                }
+            });
+        });
+
+        inputField.addEventListener('input', handler);
+    }
+
+    // Initialize for title and description fields
+    const titleField = document.querySelector('#event_title');
+    const descriptionField = document.querySelector('#event_description');
+
+    if (titleField) setupProfanityListener(titleField);
+    if (descriptionField) setupProfanityListener(descriptionField);
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,120 @@
+# User routes
+app_user_profile:
+    path: /user/profile
+    controller: App\Controller\UserController::profile
+
+app_user_settings:
+    path: /user/settings
+    controller: App\Controller\UserController::settings
+
+app_user_view:
+    path: /user/{id}
+    controller: App\Controller\UserController::view
+    requirements:
+        id: '\d+'
+        
+
+# Admin user management routes
+app_admin_users:
+    path: /admin/users
+    controller: App\Controller\AdminController::users
+
+app_admin_user_edit:
+    path: /admin/users/{id}/edit
+    controller: App\Controller\AdminController::editUser
+    requirements:
+        id: '\d+'
+
+app_admin_user_create:
+    path: /admin/users/create
+    controller: App\Controller\AdminController::createUser
+
+app_admin_user_ban:
+    path: /admin/users/{id}/ban
+    controller: App\Controller\AdminController::banUser
+    requirements:
+        id: '\d+'
+
+app_admin_user_unban:
+    path: /admin/users/{id}/unban
+    controller: App\Controller\AdminController::unbanUser
+    requirements:
+        id: '\d+'
+
+app_admin_user_change_role:
+    path: /admin/users/{id}/change-role
+    controller: App\Controller\AdminController::changeRole
+    requirements:
+        id: '\d+'
+
+# Claims (Reclamations) routes
+app_reclamation_index:
+    path: /claims
+    controller: App\Controller\ReclamationController::index
+
+app_reclamation_new:
+    path: /claims/new
+    controller: App\Controller\ReclamationController::new
+
+app_reclamation_show:
+    path: /claims/{id}
+    controller: App\Controller\ReclamationController::show
+    requirements:
+        id: '\d+'
+
+app_reclamation_edit:
+    path: /claims/{id}/edit
+    controller: App\Controller\ReclamationController::edit
+    requirements:
+        id: '\d+'
+
+app_reclamation_delete:
+    path: /claims/{id}/delete
+    controller: App\Controller\ReclamationController::delete
+    methods: [POST]
+    requirements:
+        id: '\d+'
+
+app_reclamation_resolve:
+    path: /claims/{id}/resolve
+    controller: App\Controller\ReclamationController::resolve
+    requirements:
+        id: '\d+'
+
+app_reclamation_reject:
+    path: /claims/{id}/reject
+    controller: App\Controller\ReclamationController::reject
+    requirements:
+        id: '\d+'
+
+app_reclamation_dashboard:
+    path: /admin/claims
+    controller: App\Controller\ReclamationController::dashboard
+
+app_reclamation_user:
+    path: /claims/user/{id}
+    controller: App\Controller\ReclamationController::userClaims
+    requirements:
+        id: '\d+'
+
+# Front-office routes
+app_front_home:
+    path: /
+    controller: App\Controller\Front\FrontController::index
+
+app_front_services:
+    path: /services
+    controller: App\Controller\Front\FrontController::services
+
+app_front_portfolio:
+    path: /portfolio
+    controller: App\Controller\Front\FrontController::portfolio
+
+app_front_contact:
+    path: /contact
+    controller: App\Controller\Front\FrontController::contact
+
+# Admin dashboard
+app_dashboard:
+    path: /admin
+    controller: App\Controller\AdminController::dashboard

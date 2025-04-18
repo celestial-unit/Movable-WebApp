@@ -1,0 +1,20 @@
+{% extends 'front/base.html.twig' %}
+
+<div class="card-footer d-flex justify-content-between align-items-center bg-light rounded-bottom px-4 py-3 border-top">
+    <a href="{{ path('app_transport_index') }}" class="btn btn-outline-secondary">
+        <i class="bx bx-arrow-back"></i> Back to List
+    </a>
+
+    <div class="d-flex gap-2">
+        <a href="{{ path('app_transport_edit', {'id': transport.id}) }}" class="btn btn-primary">
+            <i class="bx bx-edit-alt"></i> Edit
+        </a>
+
+        <form method="post" action="{{ path('app_transport_delete', {'id': transport.id}) }}" onsubmit="return confirm('Are you sure?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ transport.id) }}">
+            <button type="submit" class="btn btn-danger">
+                <i class="bx bx-trash"></i> Delete
+            </button>
+        </form>
+    </div>
+</div>
