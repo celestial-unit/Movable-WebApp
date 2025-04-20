@@ -1,0 +1,100 @@
+{% extends "admin/layouts/admin.html.twig" %}
+
+{% block title %}Ban User - Movable{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Ban User</h5>
+                <a href="{{ path('app_admin_users') }}" class="btn btn-secondary">
+                    <i class="bx bx-arrow-back me-1"></i> Back to Users
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-lg me-3">
+                                <span class="avatar-initial rounded-circle bg-primary">
+                                    {{ user.firstName|first }}{{ user.lastName|first }}
+                                </span>
+                            </div>
+                            <div>
+                                <h5 class="mb-0">{{ user.fullName }}</h5>
+                                <div class="text-muted">{{ user.email }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form method="post" action="{{ path('app_admin_user_ban', {'id': user.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('ban' ~ user.id) }}">
+                    
+                    <div class="mb-3">
+                        <label for="banReason" class="form-label">Ban Reason</label>
+                        <textarea class="form-control" id="banReason" name="banReason" rows="3" required></textarea>
+                        <div class="form-text">Please provide a reason for banning this user.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="banDuration" class="form-label">Ban Duration</label>
+                        <select class="form-select" id="banDuration" name="banDuration">
+                            <option value="permanent">Permanent Ban</option>
+                            <option value="24h">24 Hours</option>
+                            <option value="48h">48 Hours</option>
+                            <option value="7d">7 Days</option>
+                            <option value="30d">30 Days</option>
+                            <option value="custom">Custom Duration</option>
+                        </select>
+                    </div>
+
+                    <div id="customDuration" class="mb-3" style="display: none;">
+                        <label for="customDays" class="form-label">Custom Duration (days)</label>
+                        <input type="number" class="form-control" id="customDays" name="customDays" min="1">
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <div class="d-flex">
+                            <i class="bx bx-error-circle fs-4 me-2"></i>
+                            <div>
+                                <h6 class="alert-heading mb-1">Warning</h6>
+                                <p class="mb-0">
+                                    Banning a user will prevent them from accessing their account and all platform features.
+                                    They will be notified via email about this action.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-danger me-2">
+                            <i class="bx bx-block me-1"></i> Ban User
+                        </button>
+                        <a href="{{ path('app_admin_users') }}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const banDuration = document.getElementById('banDuration');
+    const customDuration = document.getElementById('customDuration');
+    
+    banDuration.addEventListener('change', function() {
+        if (this.value === 'custom') {
+            customDuration.style.display = 'block';
+        } else {
+            customDuration.style.display = 'none';
+        }
+    });
+});
+</script>
+{% endblock %}

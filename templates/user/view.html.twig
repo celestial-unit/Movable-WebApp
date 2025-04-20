@@ -1,0 +1,214 @@
+{% extends "layouts/default.html.twig" %}
+
+{% block title %}{{ user.fullName }} - Movable{% endblock %}
+
+{% block body %}
+<div class="row">
+    <!-- User Profile Overview -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Profile Overview</h5>
+                {% if is_granted('ROLE_ADMIN') or app.user == user %}
+                    <a href="{{ path('app_user_settings') }}" class="btn btn-primary btn-sm">
+                        <i class="bx bx-edit me-1"></i> Edit Profile
+                    </a>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="d-flex align-items-start align-items-sm-center gap-4 mb-4">
+                    <div class="avatar avatar-xl">
+                        <span class="avatar-initial rounded-circle bg-primary">
+                            {{ user.firstName|first }}{{ user.lastName|first }}
+                        </span>
+                    </div>
+                    <div>
+                        <h5 class="mb-0">{{ user.fullName }}</h5>
+                        <div class="text-muted">{{ user.email }}</div>
+                        <div class="mt-1">
+                            {% if user.role == 'ADMIN' %}
+                                <span class="badge bg-label-success">Administrator</span>
+                            {% elseif user.role == 'DRIVER' %}
+                                <span class="badge bg-label-info">Driver</span>
+                            {% else %}
+                                <span class="badge bg-label-primary">User</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-container">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <small class="text-muted text-uppercase">Member Since</small>
+                            <div>{{ user.createdAt|date('M d, Y') }}</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <small class="text-muted text-uppercase">Last Login</small>
+                            <div>
+                                {% if user.lastLogin %}
+                                    {{ user.lastLogin|date('M d, Y H:i') }}
+                                {% else %}
+                                    Never
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% if user.isBanned %}
+                        <div class="alert alert-danger d-flex align-items-center mb-0" role="alert">
+                            <i class="bx bx-block me-2"></i>
+                            <div>
+                                This account is currently banned
+                                {% if user.banExpiryDate %}
+                                    until {{ user.banExpiryDate|date('M d, Y H:i') }}
+                                {% endif %}
+                                {% if user.banReason %}
+                                    <br>
+                                    <small>Reason: {{ user.banReason }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Claims -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Recent Claims</h5>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('app_reclamation_user', {'id': user.id}) }}" class="btn btn-primary btn-sm">
+                        View All Claims
+                    </a>
+                {% endif %}
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reclamation in user.reclamations|slice(0, 5) %}
+                            <tr>
+                                <td>{{ reclamation.title }}</td>
+                                <td>
+                                    {% if reclamation.status == 'Pending' %}
+                                        <span class="badge bg-label-warning">Pending</span>
+                                    {% elseif reclamation.status == 'Resolved' %}
+                                        <span class="badge bg-label-success">Resolved</span>
+                                    {% else %}
+                                        <span class="badge bg-label-danger">Rejected</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ reclamation.createdAt|date('Y-m-d') }}</td>
+                                <td>
+                                    <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}" 
+                                       class="btn btn-sm btn-icon btn-text-secondary">
+                                        <i class="bx bx-show"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center">No claims found</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Activity -->
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Account Activity</h5>
+            </div>
+            <div class="card-body">
+                <ul class="timeline mb-0">
+                    <li class="timeline-item mb-4">
+                        <span class="timeline-point timeline-point-primary">
+                            <i class="bx bx-user"></i>
+                        </span>
+                        <div class="timeline-event">
+                            <div class="timeline-header mb-1">
+                                <h6 class="mb-0">Account Created</h6>
+                                <small class="text-muted">{{ user.createdAt|date('M d, Y') }}</small>
+                            </div>
+                            <p class="mb-2">Account registration completed</p>
+                        </div>
+                    </li>
+                    {% if user.lastLogin %}
+                        <li class="timeline-item mb-4">
+                            <span class="timeline-point timeline-point-info">
+                                <i class="bx bx-log-in"></i>
+                            </span>
+                            <div class="timeline-event">
+                                <div class="timeline-header mb-1">
+                                    <h6 class="mb-0">Last Login</h6>
+                                    <small class="text-muted">{{ user.lastLogin|date('M d, Y H:i') }}</small>
+                                </div>
+                                <p class="mb-0">Last successful login to the account</p>
+                            </div>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+.timeline {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 3rem;
+}
+
+.timeline-point {
+    position: absolute;
+    left: 0;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 2rem;
+    background: #fff;
+    border: 2px solid currentColor;
+}
+
+.timeline-point i {
+    vertical-align: middle;
+}
+
+.timeline-point-primary {
+    color: var(--bs-primary);
+}
+
+.timeline-point-info {
+    color: var(--bs-info);
+}
+
+.timeline-event {
+    position: relative;
+    width: 100%;
+    padding: 0;
+}
+</style>
+{% endblock %}

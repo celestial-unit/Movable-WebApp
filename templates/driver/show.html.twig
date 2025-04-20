@@ -1,0 +1,18 @@
+<div class="card-footer d-flex justify-content-between">
+    <a href="{{ path('app_driver_index') }}" class="btn btn-secondary">
+        <i class="bx bx-arrow-back"></i> Back to list
+    </a>
+    
+    <div>
+        <a href="{{ path('app_driver_edit', {'id': driver.id}) }}" class="btn btn-primary me-2">
+            <i class="bx bx-edit"></i> Edit
+        </a>
+        
+        <form method="post" action="{{ path('app_driver_delete', {'id': driver.id}) }}" style="display: inline-block;">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ driver.id) }}">
+            <button class="btn btn-danger" onclick="return confirm('Are you sure?')">
+                <i class="bx bx-trash"></i> Delete
+            </button>
+        </form>
+    </div>
+</div>

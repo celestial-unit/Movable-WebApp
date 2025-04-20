@@ -1,0 +1,392 @@
+{% extends "base1.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        :root {
+            --primary-color: #7367f0;
+            --secondary-color: #82868b;
+        }
+        
+        .layout-menu-hover .layout-menu {
+            box-shadow: 0 0.25rem 1rem rgba(161, 172, 184, 0.45);
+        }
+        
+        .menu-header {
+            padding: 0.625rem 1.25rem;
+            margin-top: 0.75rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #a1acb8;
+        }
+        
+        /* Front website link styling */
+        .front-website-link {
+            background-color: #f0f7ff;
+            border-left: 3px solid var(--primary-color);
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .front-website-link i {
+            color: var(--primary-color) !important;
+        }
+        
+        .front-website-link div {
+            color: var(--primary-color) !important;
+            font-weight: 600;
+        }
+        
+        .front-website-link:hover {
+            background-color: #e6f2ff;
+            transform: translateX(3px);
+        }
+        
+        /* Theme colors */
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+        
+        .bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+        }
+        
+        /* Avatar styling */
+        .avatar-online .avatar-initial {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+    </style>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="app-brand demo">
+        <a href="{{ path('app_dashboard') }}" class="app-brand-link">
+            <span class="app-brand-logo demo">
+                <i class="bx bx-car fs-3 text-primary"></i>
+            </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">Movable Admin</span>
+        </a>
+
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+        <!-- Dashboard -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_dashboard' ? 'active' : '' }}">
+            <a href="{{ path('app_dashboard') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div>Dashboard</div>
+            </a>
+        </li>
+
+        <li class="menu-item">
+            <a href="{{ path('app_front_home') }}" class="menu-link front-website-link">
+                <i class="menu-icon tf-icons bx bx-world"></i>
+                <div>Visit Website</div>
+            </a>
+        </li>
+        
+        <li class="menu-item {{ app.request.get('_route') == 'app_admin_users' ? 'active' : '' }}">
+            <a href="{{ path('app_admin_users') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user-circle"></i>
+                <div>Users</div>
+            </a>
+        </li>
+
+        <!-- Claims Management -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_reclamation_dashboard' ? 'active' : '' }}">
+            <a href="{{ path('app_reclamation_dashboard') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-message-square-detail"></i>
+                <div>Claims</div>
+            </a>
+        </li>
+
+        <!-- Banned Users -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_admin_banned_users' ? 'active' : '' }}">
+            <a href="{{ path('app_admin_banned_users') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-block"></i>
+                <div>Banned Users</div>
+            </a>
+        </li>
+
+            <!-- Agents Management -->
+<li class="menu-item {{ app.request.get('_route') starts with 'agent_list_admin' ? 'active' : '' }}">
+    <a href="{{ path('agent_list_admin') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-user"></i>
+        <div>Agents</div>
+    </a>
+</li>
+            <!-- Offices Management -->
+<li class="menu-item {{ app.request.get('_route') starts with 'office_list_admin' ? 'active' : '' }}">
+    <a href="{{ path('office_list_admin') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-user"></i>
+        <div>Offices</div>
+    </a>
+</li>
+
+<!-- Destination Management -->
+<li class="menu-item {{ app.request.get('_route') starts with 'Destinations_page' ? 'active' : '' }}">
+    <a href="{{ path('Destinations_page') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-user"></i>
+        <div>Destination</div>
+    </a>
+</li>
+            <!-- Parkingspot Management -->
+<li class="menu-item {{ app.request.get('_route') starts with 'Parking spot page' ? 'active' : '' }}">
+    <a href="{{ path('app_parkingspot_index') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-user"></i>
+        <div>Parking spot </div>
+    </a>
+</li>
+<!-- Transport Management -->
+
+<li class="menu-item {{ app.request.get('_route') starts with 'Parking spot page' ? 'active' : '' }}">
+    <a href="{{ path('admin_transport_index') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-user"></i>
+        <div>Transport </div>
+    </a>
+</li>
+
+<!-- Driver Management -->
+<li class="menu-item {{ app.request.get('_route') starts with 'Parking spot page' ? 'active' : '' }}">
+    <a href="{{ path('admin_driver_index') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-user"></i>
+        <div>Driver </div>
+    </a>
+</li>
+    
+
+
+        <!-- Events Management -->
+        <li class="menu-item {{ app.request.get('_route') starts with 'app_event' ? 'active' : '' }}">
+            <a href="{{ path('app_eventback_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar"></i>
+                <div>Events</div>
+            </a>
+        </li>
+         
+
+        <!-- Reservation Management -->
+        <li class="menu-item {{ app.request.get('_route') starts with 'admin_waitlist_' ? 'active' : '' }}">
+            <a href="{{ path('admin_waitlist_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar-check"></i>
+                <div>Reservations</div>
+            </a>
+        </li>
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">System</span>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block navbar %}
+    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+        <div class="navbar-nav align-items-center">
+            <div class="nav-item d-flex align-items-center">
+                <i class="bx bx-search fs-4 lh-0"></i>
+                <input type="text" class="form-control border-0 shadow-none ps-1" placeholder="Search..." aria-label="Search...">
+            </div>
+        </div>
+
+        <ul class="navbar-nav flex-row align-items-center ms-auto">
+            <!-- Admin User Dropdown -->
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                        <span class="avatar-initial rounded-circle bg-primary">
+                            {{ app.user.firstName|first }}{{ app.user.lastName|first }}
+                        </span>
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="avatar avatar-online">
+                                        <span class="avatar-initial rounded-circle bg-primary">
+                                            {{ app.user.firstName|first }}{{ app.user.lastName|first }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <span class="fw-semibold d-block">{{ app.user.fullName }}</span>
+                                    <small class="text-muted">Administrator</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('app_user_profile') }}">
+                            <i class="bx bx-user me-2"></i>
+                            <span class="align-middle">My Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('app_user_settings') }}">
+                            <i class="bx bx-cog me-2"></i>
+                            <span class="align-middle">Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('app_logout') }}">
+                            <i class="bx bx-power-off me-2"></i>
+                            <span class="align-middle">Log Out</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            
+            <!-- Visible Logout Button -->
+            <li class="nav-item ms-3">
+                <a href="{{ path('app_logout') }}" class="btn btn-danger d-flex align-items-center">
+                    <i class="bx bx-power-off me-2"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Admin /</span> Dashboard
+    </h4>
+
+    <div class="row">
+        <div class="col-lg-8 mb-4 order-0">
+            <div class="card">
+                <div class="d-flex align-items-end row">
+                    <div class="col-sm-7">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Welcome, {{ app.user.firstName }}! 🎉</h5>
+                            <p class="mb-4">You have access to the admin dashboard where you can manage the Movable system.</p>
+                            <a href="{{ path('app_admin_users') }}" class="btn btn-sm btn-outline-primary">Manage Users</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 text-center text-sm-left">
+                        <div class="card-body pb-0 px-0 px-md-4">
+                            <img src="{{ asset('img/illustrations/man-with-laptop-light.png') }}" height="140" alt="Admin Dashboard">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Claims Management Card -->
+        <div class="col-lg-4 mb-4 order-1">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title text-primary m-0">Claims Management</h5>
+                        <i class="bx bx-message-square-detail fs-2 text-primary"></i>
+                    </div>
+                    <p class="mb-3">Access the claims dashboard to manage customer submissions.</p>
+                    <a href="{{ path('app_reclamation_dashboard') }}" class="btn btn-primary d-block">
+                        <i class="bx bx-right-arrow-alt me-1"></i> Open Claims Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Action Cards -->
+    <div class="row">
+        <!-- Pending Claims Card -->
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-start justify-content-between">
+                        <div class="content-left">
+                            <span class="fw-bold d-block mb-1">Pending Claims</span>
+                            <div class="d-flex align-items-center my-2">
+                                <span class="badge bg-label-warning rounded p-2 me-2">
+                                    <i class="bx bx-time bx-sm"></i>
+                                </span>
+                                <a href="{{ path('app_reclamation_index', {'status': 'Pending'}) }}" class="stretched-link text-decoration-none">
+                                    View All
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Resolved Claims Card -->
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-start justify-content-between">
+                        <div class="content-left">
+                            <span class="fw-bold d-block mb-1">Resolved Claims</span>
+                            <div class="d-flex align-items-center my-2">
+                                <span class="badge bg-label-success rounded p-2 me-2">
+                                    <i class="bx bx-check-circle bx-sm"></i>
+                                </span>
+                                <a href="{{ path('app_reclamation_index', {'status': 'Resolved'}) }}" class="stretched-link text-decoration-none">
+                                    View All
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- New Claim Button -->
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card bg-primary">
+                <div class="card-body text-white">
+                    <div class="d-flex align-items-start justify-content-between">
+                        <div class="content-left">
+                            <span class="fw-bold d-block mb-1">Need to Logout?</span>
+                            <div class="d-flex align-items-center my-2">
+                                <a href="{{ path('app_logout') }}" class="btn btn-sm btn-outline-light">
+                                    <i class="bx bx-power-off me-1"></i> Logout
+                                </a>
+                            </div>
+                        </div>
+                        <div>
+                            <i class="bx bx-log-out-circle fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <div class="container-fluid d-flex flex-md-row flex-column justify-content-between align-items-md-center gap-1 container-p-x py-3">
+        <div>
+            <a href="https://movable.com" target="_blank" class="footer-text fw-bolder">Movable</a> ©
+            {{ "now"|date("Y") }}
+        </div>
+        <div>
+            <a href="{{ path('app_front_home') }}" class="footer-link me-4">Front-Office</a>
+            <a href="javascript:void(0)" class="footer-link me-4">Help</a>
+            <a href="javascript:void(0)" class="footer-link me-4">Contact</a>
+        </div>
+    </div>
+{% endblock %}

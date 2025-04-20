@@ -1,0 +1,46 @@
+{% extends "admin/layouts/admin.html.twig" %}
+
+{% block title %}Parkingspot{% endblock %}
+
+{% block body %}
+    <h1>Parkingspot</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id_parking</th>
+                <td>{{ parkingspot.id_Parking }}</td>
+            </tr>
+            <tr>
+                <th>Is_accessible</th>
+                <td>{{ parkingspot.isAccessible }}</td>
+            </tr>
+            <tr>
+                <th>Is_available</th>
+                <td>{{ parkingspot.isAvailable }}</td>
+            </tr>
+            <tr>
+                <th>Spot_number</th>
+                <td>{{ parkingspot.spotNumber }}</td>
+            </tr>
+            <tr>
+                <th>Parking_fees</th>
+                <td>{{ parkingspot.parkingFees }}</td>
+            </tr>
+            <tr>
+                <th>Size</th>
+                <td>{{ parkingspot.size }}</td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>{{ parkingspot.notes }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="display: flex; gap: 10px;">
+        <a href="{{ path('app_parkingspot_index') }}" class="btn btn-secondary">Back to list</a>
+        <a href="{{ path('app_parkingspot_edit', {'id_parking': parkingspot.id_parking}) }}" class="btn btn-primary">Edit</a>
+        {{ include('Destinations/parkingspot/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

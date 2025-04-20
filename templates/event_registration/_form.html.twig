@@ -1,0 +1,46 @@
+{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
+
+{# Loop through and render each form field individually #}
+{% for field in form %}
+    <div class="mb-3">
+        {# Label #}
+        {{ form_label(field, null, {
+            'label_attr': {'class': 'form-label'}
+        }) }}
+
+        {# Input/Widget #}
+        {% if field.vars.block_prefixes.1 == 'checkbox' %}
+            <div class="form-check">
+                {{ form_widget(field, {'attr': {'class': 'form-check-input'}}) }}
+                {{ form_label(field, null, {'label_attr': {'class': 'form-check-label'}}) }}
+            </div>
+        {% else %}
+            {{ form_widget(field, {
+                'attr': {
+                    'class': 'form-control' ~ (form_errors(field) ? ' is-invalid' : ''),
+                    'placeholder': field.vars.label
+                }
+            }) }}
+        {% endif %}
+
+        {# Error messages #}
+        {{ form_errors(field, {
+            'attr': {'class': 'invalid-feedback'}
+        }) }}
+
+        {# Help text #}
+        {% if field.vars.help %}
+            <small class="form-text text-muted">{{ field.vars.help }}</small>
+        {% endif %}
+    </div>
+{% endfor %}
+
+<div class="mt-4">
+    <button type="submit" class="btn btn-primary me-3">
+        {{ button_label|default('Save') }}
+    </button>
+    <a href="{{ path('app_eventback_registration_index') }}" class="btn btn-outline-secondary">
+        Cancel
+    </a>
+</div>
+

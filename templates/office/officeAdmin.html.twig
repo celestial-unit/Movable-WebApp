@@ -1,0 +1,38 @@
+{% extends "admin/layouts/admin.html.twig" %}
+
+{% block title %}Offices{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Manage Offices</h1>
+
+    <div class="mb-3 text-end">
+        <a href="{{ path('office_new') }}" class="btn btn-success">+ Add Office</a>
+    </div>
+
+    <div class="row">
+        {% for office in offices %}
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ office.name }}</h5>
+                        <p><strong>Location:</strong> {{ office.location }}</p>
+                        <p><strong>Phone Number:</strong> {{ office.phone }}</p>
+                        <p><strong>Number of Agents:</strong> {{ office.agents ?? 'N/A' }}</p>
+
+                        <div class="d-flex justify-content-between mt-3">
+                            <a href="{{ path('office_edit_admin', { id: office.id }) }}" class="btn btn-primary btn-sm">Edit</a>
+                            <a href="{{ path('office_delete_admin', { id: office.id }) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query={{ office.location | url_encode }}" 
+                               class="btn btn-info btn-sm" target="_blank">
+                                View on Map
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p>No offices found.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
+
