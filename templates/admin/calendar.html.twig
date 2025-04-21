@@ -1,0 +1,55 @@
+{% extends 'admin/layouts/admin.html.twig' %}
+
+{% block title %}Reservation Calendar{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: [
+                    {% for date, reservations in reservationsByDate %}
+                    {
+                        title: '{{ reservations|length }} Reservation(s)',
+                        start: '{{ date }}',
+                        url: '{{ path('admin_reservations_by_date', {'date': date}) }}',
+                        color: '#4CAF50'
+                    },
+                    {% endfor %}
+                ],
+                eventClick: function(info) {
+                    info.jsEvent.preventDefault();
+                    window.location.href = info.event.url;
+                }
+            });
+            calendar.render();
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold py-3 mb-0">
+            <span class="text-muted fw-light">Admin /</span> Reservation Calendar
+        </h4>
+        <a href="{{ path('admin_waitlist_index') }}" class="btn btn-secondary">
+            <i class="bx bx-arrow-back me-1"></i> Back to Reservations
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div id="calendar"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

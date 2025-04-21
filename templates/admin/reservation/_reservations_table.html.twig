@@ -1,0 +1,102 @@
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Destination</th>
+            <th>Date</th>
+            <th>Seats</th>
+            <th>Price</th>
+            <th>Transport</th>
+            <th>Status</th>
+            {% if show_actions %}
+                <th>Actions</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody class="table-border-bottom-0">
+        {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.id }}</td>
+                <td>
+    <div class="d-flex align-items-center">
+        <div class="avatar avatar-sm me-3">
+            <span class="avatar-initial rounded-circle bg-primary">
+                {% if reservation.user and reservation.user.firstName is defined and reservation.user.lastName is defined %}
+                    {{ reservation.user.firstName|first }}{{ reservation.user.lastName|first }}
+                {% else %}
+                    ??
+                {% endif %}
+            </span>
+        </div>
+        <div>
+            <h6 class="mb-0">
+                {% if reservation.user %}
+                    {{ reservation.user.fullName ?? '[Deleted User]' }}
+                {% else %}
+                    [Deleted User]
+                {% endif %}
+            </h6>
+            <small class="text-muted">
+                {% if reservation.user and reservation.user.email is defined %}
+                    {{ reservation.user.email }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </small>
+        </div>
+    </div>
+</td>
+
+                <td>{{ reservation.destination ? reservation.destination.name : reservation.location }}</td>
+                <td>{{ reservation.date|date('Y-m-d H:i') }}</td>
+                <td>{{ reservation.seats }}</td>
+                <td>{{ reservation.price|default('N/A') }} TND</td>
+                <td>{{ reservation.transport ? reservation.transport.type : 'N/A' }}</td>
+                <td>
+                    <span class="badge bg-{{ reservation.status == 'approved' ? 'success' : 'danger' }}">
+                        {{ reservation.status|capitalize }}
+                    </span>
+                </td>
+                {% if show_actions %}
+                    <td>
+                        <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                {% if reservation.status == 'pending' %}
+                                    <form method="post" action="{{ path('admin_waitlist_accept', {'id': reservation.id}) }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ reservation.id) }}">
+                                        <button type="submit" class="dropdown-item text-success">
+                                            <i class="bx bx-check-circle me-1"></i> Accept
+                                        </button>
+                                    </form>
+                                    <form method="post" action="{{ path('admin_waitlist_reject', {'id': reservation.id}) }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('reject' ~ reservation.id) }}">
+                                        <button type="submit" class="dropdown-item text-danger" 
+                                                onclick="return confirm('Are you sure you want to reject this reservation?')">
+                                            <i class="bx bx-x-circle me-1"></i> Reject
+                                        </button>
+                                    </form>
+                                {% endif %}
+                                <a class="dropdown-item" href="{{ path('app_reservation_show', {'id': reservation.id}) }}">
+                                    <i class="bx bx-show me-1"></i> View Details
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                {% endif %}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="{{ show_actions ? 9 : 8 }}" class="text-center py-3">
+                    <div class="text-muted">
+                        <i class="bx bx-calendar-check fs-3 mb-2"></i>
+                        <p>No reservations found</p>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

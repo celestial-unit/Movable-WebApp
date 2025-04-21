@@ -1,0 +1,9 @@
+{% extends "admin/layouts/admin.html.twig" %}
+{% block body %}
+    <h1>Edit Transport</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary">Update</button>
+    {{ form_end(form) }}
+{% endblock %}

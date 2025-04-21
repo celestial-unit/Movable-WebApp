@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Thank You{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="alert alert-success">
+            <h1>Thank You for Your Reservation!</h1>
+            <p>Your reservation #{{ reservation.id }} has been submitted successfully.</p>
+            <p>Status: <strong>{{ reservation.status }}</strong></p>
+            <p>We'll contact you shortly with confirmation.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                Reservation Details
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Name: {{ reservation.firstName }} {{ reservation.lastName }}</li>
+                    <li class="list-group-item">Email: {{ reservation.email }}</li>
+                    <li class="list-group-item">Date: {{ reservation.date|date('Y-m-d H:i') }}</li>
+                    <li class="list-group-item">Location: {{ reservation.location }}</li>
+                    <li class="list-group-item">Number of Seats: {{ reservation.seats }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

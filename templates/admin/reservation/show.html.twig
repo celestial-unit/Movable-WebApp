@@ -1,0 +1,83 @@
+{% extends 'admin/layouts/admin.html.twig' %}
+
+{% block title %}Reservation Details{% endblock %}
+
+{% block body %}
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Reservation Details</h1>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 class="mb-0">Reservation #{{ reservation.id }}</h3>
+                    </div>
+                    <div>
+                        <span class="badge bg-{{ reservation.status == 'approved' ? 'success' : (reservation.status == 'rejected' ? 'danger' : 'warning') }}">
+                            {{ reservation.status|upper }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Customer Information</h4>
+                        <table class="table">
+                            <tr>
+                                <th>Name</th>
+                                <td>{{ reservation.firstName }} {{ reservation.lastName }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{{ reservation.email }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Reservation Details</h4>
+                        <table class="table">
+                            <tr>
+                                <th>Date</th>
+                                <td>{{ reservation.date|date('Y-m-d H:i') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Location</th>
+                                <td>{{ reservation.location }}</td>
+                            </tr>
+                            <tr>
+                                <th>Seats</th>
+                                <td>{{ reservation.seats }}</td>
+                            </tr>
+                            <tr>
+                                <th>Created At</th>
+                                <td>{{ reservation.createdAt|date('Y-m-d H:i:s') }}</td>
+                            </tr>
+                            {% if reservation.updatedAt %}
+                                <tr>
+                                    <th>Last Updated</th>
+                                    <td>{{ reservation.updatedAt|date('Y-m-d H:i:s') }}</td>
+                                </tr>
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+
+                {% if reservation.status == 'pending' %}
+                    <div class="mt-4">
+                        <form method="post" action="{{ path('admin_reservation_approve', {'id': reservation.id}) }}" 
+                              style="display: inline;">
+                            <button type="submit" class="btn btn-success me-2">Approve Reservation</button>
+                        </form>
+                        <form method="post" action="{{ path('admin_reservation_reject', {'id': reservation.id}) }}" 
+                              style="display: inline;">
+                            <button type="submit" class="btn btn-danger">Reject Reservation</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <a href="{{ path('admin_reservation_index') }}" class="btn btn-secondary">Back to List</a>
+    </div>
+{% endblock %}

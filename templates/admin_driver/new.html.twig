@@ -1,0 +1,10 @@
+{% extends "admin/layouts/admin.html.twig" %}
+
+{% block body %}
+    <h1>ADD Driver</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-success">Add</button>
+    {{ form_end(form) }}
+{% endblock %}
