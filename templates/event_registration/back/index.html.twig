@@ -141,7 +141,7 @@
          
 
         <!-- Reservation Management -->
-        <li class="menu-item {{ app.request.get('route') starts with 'admin_waitlist' ? 'active' : '' }}">
+        <li class="menu-item {{ app.request.get('_route') starts with 'admin_waitlist_' ? 'active' : '' }}">
             <a href="{{ path('admin_waitlist_index') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-calendar-check"></i>
                 <div>Reservations</div>
@@ -228,3 +228,4 @@
         </ul>
     </div>
 {% endblock %}
+

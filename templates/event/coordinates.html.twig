@@ -1,78 +1,55 @@
 {# templates/event/coordinates.html.twig #}
-{% extends 'base.html.twig' %}
 
-{% block title %}Event Coordinates{% endblock %}
+{% extends 'front/base.html.twig' %}
 
-{% block body %}
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="mb-0">Location Coordinates</h2>
-                </div>
-                <div class="card-body">
-                    <div id="coordinates-container" class="text-center">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <p class="mt-2">Fetching coordinates...</p>
-                    </div>
-                </div>
-            </div>
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+{% endblock %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="container px-lg-5">
+        <!-- Add spacing before map -->
+        
+
+        <!-- Map container with top margin -->
+        <div class="mt-4" style="height: 600px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div id="map" style="height: 100%; width: 100%;"></div>
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block javascripts %}
-{{ parent() }}
-<script>
+    {{ parent() }}
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const city = urlParams.get('city');
+    const map = L.map('map').setView([34.0000, 9.0000], 6);
     
-    if (city) {
-        fetch(`/event/coordinates/${encodeURIComponent(city)}`)
-            .then(response => response.json())
-            .then(data => {
-                const container = document.getElementById('coordinates-container');
-                container.innerHTML = `
-                    <h4 class="mb-3">${data.city}</h4>
-                    <div class="list-group">
-                        <div class="list-group-item">
-                            <i class="bi bi-globe me-2"></i>
-                            Latitude: <strong>${data.coordinates.latitude}</strong>
-                        </div>
-                        <div class="list-group-item">
-                            <i class="bi bi-globe me-2"></i>
-                            Longitude: <strong>${data.coordinates.longitude}</strong>
-                        </div>
-                        <div class="list-group-item">
-                            <i class="bi bi-flag me-2"></i>
-                            Country: <strong>${data.coordinates.country}</strong>
-                        </div>
-                        <div class="list-group-item">
-                            <i class="bi bi-pin-map me-2"></i>
-                            State/Region: <strong>${data.coordinates.state}</strong>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <a href="{{ path('app_event_index') }}" class="btn btn-primary">
-                            <i class="bi bi-arrow-left me-2"></i>Back to Events
-                        </a>
-                    </div>
-                `;
-            })
-            .catch(error => {
-                const container = document.getElementById('coordinates-container');
-                container.innerHTML = `
-                    <div class="alert alert-danger">
-                        Error fetching coordinates: ${error.message}
-                    </div>
-                `;
-            });
-    }
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    {% for event in events %}
+        const marker{{ loop.index }} = L.marker([
+            {{ event.coordinates.latitude }}, 
+            {{ event.coordinates.longitude }}
+        ]).addTo(map);
+        
+        marker{{ loop.index }}.bindPopup(`
+            <b>{{ event.entity.title }}</b><br>
+            📅 {{ event.entity.dateevent|date('Y-m-d') }}<br>
+            ⏰ {{ event.entity.startEvent|date('H:i') }}<br>
+            📍 {{ event.entity.status }}<br>
+            {{ event.entity.description|slice(0, 50) }}...
+        `);
+    {% endfor %}
+    
+    // Auto-fit the map to markers
+    const group = new L.featureGroup([{% for event in events %}marker{{ loop.index }}{% if not loop.last %}, {% endif %}{% endfor %}]);
+    map.fitBounds(group.getBounds().pad(0.1));
 });
 </script>
 {% endblock %}

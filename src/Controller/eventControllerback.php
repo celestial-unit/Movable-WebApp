@@ -17,10 +17,12 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 final class eventControllerback extends AbstractController
 {
     private HttpClientInterface $httpClient;
+    private string $openweatherApiKey; // Add this line
 
     public function __construct(HttpClientInterface $httpClient)
     {
         $this->httpClient = $httpClient;
+        $this->openweatherApiKey = '1ddaaccc87b2d518c7055f81e1d85b80'; // Add this line
     }
 
     #[Route('/', name: 'app_eventback_index', methods: ['GET'])]
@@ -94,7 +96,55 @@ final class eventControllerback extends AbstractController
             'form' => $form,
         ]);
     }
-
+    #[Route('/{id}/weather', name: 'eventback_weather', methods: ['GET'], requirements: ['id' => '\d+'])]
+    public function getWeather(int $id, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $event = $entityManager->getRepository(Event::class)->find($id);
+    
+        if (!$event) {
+            return new JsonResponse(['error' => 'Event not found'], Response::HTTP_NOT_FOUND);
+        }
+    
+        $city = $event->getStatus();
+        $apiUrl = sprintf(
+            'https://api.openweathermap.org/data/2.5/forecast?q=%s&appid=%s&units=metric',
+            urlencode($city),
+            $this->openweatherApiKey
+        );
+    
+        try {
+            $response = $this->httpClient->request('GET', $apiUrl);
+            $data = $response->toArray();
+    
+            $forecasts = [];
+            foreach ($data['list'] as $item) {
+                $forecast = [
+                    'timestamp' => $item['dt'],
+                    'temp' => $item['main']['temp'],
+                    'feels_like' => $item['main']['feels_like'],
+                    'humidity' => $item['main']['humidity'],
+                    'temp_min' => $item['main']['temp_min'],
+                    'temp_max' => $item['main']['temp_max'],
+                    'weather' => $item['weather'][0]['main'],
+                    'weather_description' => $item['weather'][0]['description'],
+                    'weather_icon' => $item['weather'][0]['icon'],
+                    'cloud_pct' => $item['clouds']['all'],
+                    'wind_speed' => $item['wind']['speed'],
+                    'wind_degrees' => $item['wind']['deg'] ?? 0,
+                    'pressure' => $item['main']['pressure'],
+                    'visibility' => $item['visibility'],
+                ];
+                $forecasts[] = $forecast;
+            }
+    
+            return new JsonResponse($forecasts);
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                ['error' => 'Unable to fetch weather data: ' . $e->getMessage()],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+    }
     #[Route('/{id}/delete', name: 'app_eventback_delete', methods: ['POST'])]
     public function delete(Request $request, Event $event, EntityManagerInterface $entityManager): Response
     {

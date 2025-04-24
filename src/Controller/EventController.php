@@ -44,12 +44,17 @@ final class EventController extends AbstractController
 
         // Get earliest upcoming event (first from the sorted upcoming events)
         $earliestEvent = !empty($events) ? $events[0] : null;
+        // Get all events
+    
 
+    // Prepare map data - CORRECTED VARIABLE NAME
+   
     return $this->render('event/index.html.twig', [
         'events' => $events,
         'earliestEvent' => $earliestEvent,  // Pass the earliest future event
         'finishedEvents' => $finishedEvents,
-        'is_admin' => $isAdmin
+        'is_admin' => $isAdmin,
+        
     ]);
 }
 
@@ -224,20 +229,31 @@ public function getCoordinates(
         ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }
-    #[Route('/coordinates', name: 'app_event_coordinates_page', methods: ['GET'])]
-public function coordinatesPage(Request $request): Response
+   
+#[Route('/coordinates', name: 'app_event_coordinates_page', methods: ['GET'])]
+public function map(EntityManagerInterface $entityManager, GeocodingService $geocodingService): Response
 {
-    $city = $request->query->get('city');
-    
-    if (!$city) {
-        return $this->redirectToRoute('app_event_index');
+    $events = $entityManager->getRepository(Event::class)
+        ->createQueryBuilder('e')
+        ->where('e.dateevent >= :today')
+        ->setParameter('today', (new \DateTime())->format('Y-m-d'))
+        ->getQuery()
+        ->getResult();
+
+    // Prepare events data with coordinates
+    $mappedEvents = [];
+    foreach ($events as $event) {
+        $coordinates = $geocodingService->getGovernorateCoordinates($event->getStatus());
+        $mappedEvents[] = [
+            'entity' => $event,
+            'coordinates' => $coordinates
+        ];
     }
 
     return $this->render('event/coordinates.html.twig', [
-        'city' => $city
+        'events' => $mappedEvents,
     ]);
 }
-
     
 
 }
