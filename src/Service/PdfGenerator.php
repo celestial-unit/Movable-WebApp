@@ -1,53 +1,46 @@
 <?php
+// src/Service/PdfGenerator.php
 namespace App\Service;
 
-use Dompdf\Dompdf;
-use Dompdf\Options;
-use Symfony\Component\HttpFoundation\Response;
+use Knp\Snappy\Pdf;
 use Twig\Environment;
+use Endroid\QrCode\Builder\Builder;
+use Symfony\Component\HttpFoundation\Response;
 
 class PdfGenerator
 {
-    private Environment $twig;
+    private $pdf;
+    private $templating;
 
-    public function __construct(Environment $twig)
+    public function __construct(Pdf $pdf, Environment $templating)
     {
-        $this->twig = $twig;
+        $this->pdf = $pdf;
+        $this->templating = $templating;
     }
 
-    
-public function generate(string $template, array $data = []): Response
-{
-    // Configure Dompdf options
-    $options = new Options();
-    $options->set('defaultFont', 'Arial');
-    $options->setIsHtml5ParserEnabled(true);
+    public function generate(string $template, array $data): Response
+    {
+        // Generate QR code directly in the PDF generator
+        $qrCode = Builder::create()
+            ->data($data['qr_code_data'])
+            ->size(200)
+            ->margin(10)
+            ->build();
 
-    $dompdf = new Dompdf($options);
+        // Add QR code to the template data
+        $data['qr_code'] = $qrCode->getDataUri();
 
-    // Render the HTML template
-    $html = $this->twig->render($template, $data);
+        // Render HTML with QR code
+        $html = $this->templating->render($template, $data);
 
-    // Load HTML into Dompdf
-    $dompdf->loadHtml($html);
-
-    // Set paper size and orientation
-    $dompdf->setPaper('A4', 'portrait');
-
-    // Render the PDF
-    $dompdf->render();
-
-    // Return the PDF as a Response
-    return new Response(
-        $dompdf->output(),
-        Response::HTTP_OK,
-        [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => sprintf(
-                'attachment; filename="registration-%d.pdf"',
-                $data['event_registration']->getId()
-            ),
-        ]
-    );
-}
+        // Generate PDF
+        return new Response(
+            $this->pdf->getOutputFromHtml($html),
+            200,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="registration.pdf"'
+            ]
+        );
+    }
 }

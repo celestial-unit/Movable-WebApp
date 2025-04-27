@@ -160,14 +160,51 @@ final class EventRegistrationController extends AbstractController
     public function generatePdf(int $id, EntityManagerInterface $entityManager, PdfGenerator $pdfGenerator): Response
     {
         $eventRegistration = $entityManager->getRepository(EventRegistration::class)->find($id);
-
+    
         if (!$eventRegistration) {
             throw $this->createNotFoundException('Event registration not found');
         }
-
-        return $pdfGenerator->generate('event_registration/pdf.html.twig', [
-            'event_registration' => $eventRegistration,
-        ]);
+    
+        $event = $eventRegistration->getEvent();
+        $user = $eventRegistration->getUser();
+    
+        // Handle nullable user
+        $userName = $user ? $user->getFirstName().' '.$user->getLastName() : 'Guest User';
+        $userEmail = $user ? $user->getEmail() : 'N/A';
+    
+        // Convert string date to DateTime object
+        $eventDate = \DateTime::createFromFormat('Y-m-d', $event->getDateevent());
+        $registrationDate = \DateTime::createFromFormat('Y-m-d', $eventRegistration->getRegistrationDate());
+    
+        $pdfData = [
+            'event' => [
+                'title' => $event->getTitle(),
+                'date' => $eventDate ? $eventDate->format('F j, Y') : 'N/A',
+                'time' => $event->getStartEvent() ? $event->getStartEvent()->format('g:i A') : 'N/A',
+                'location' => $event->getStatus(), // Based on your entity, status seems to store governorate
+                'duration' => $event->getDuration().' minutes',
+                'type' => $event->getType()
+            ],
+            'user' => [
+                'name' => $userName,
+                'email' => $userEmail,
+            ],
+            'registration' => [
+                'id' => $eventRegistration->getId(),
+                'date' => $registrationDate ? $registrationDate->format('F j, Y') : 'N/A',
+                'status' => $eventRegistration->getStatus(),
+            ],
+            'qr_code_data' => sprintf(
+                "EVENT TICKET\nID: %d\nEVENT: %s\nDATE: %s\nDURATION: %dmin\nATTENDEE: %s",
+                $eventRegistration->getId(),
+                $event->getTitle(),
+                $eventDate ? $eventDate->format('Y-m-d H:i') : 'N/A',
+                $event->getDuration(),
+                $userName
+            )
+        ];
+    
+        return $pdfGenerator->generate('event_registration/pdf.html.twig', $pdfData);
     }
     #[Route('/event/registration/{id<\d+>}', name: 'app_event_registration_show', methods: ['GET'])]
     public function show(int $id, EntityManagerInterface $entityManager): Response
