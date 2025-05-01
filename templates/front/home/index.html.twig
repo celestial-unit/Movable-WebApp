@@ -1,0 +1,204 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}<title>Movable - Transportation for Everyone</title>{% endblock %}
+
+{% block hero_banner %}
+<div class="container-xxl bg-primary hero-header">
+    <div class="container px-lg-5">
+        <div class="row g-5 align-items-end">
+           
+            
+
+                <div class="animated slideInLeft">
+                    <a href="{{ path('app_reservation_new') }}" class="btn btn-light py-2 px-4 rounded-pill">Book a Ride</a>
+                    <a href="{{ path('app_front_contact') }}" class="btn btn-outline-light py-2 px-4 rounded-pill ms-3">Contact Us</a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center text-lg-end">
+                <img class="img-fluid animated zoomIn" src="{{ asset('img/hero.png') }}" alt="Hero Image">
+            </div>
+        </div>
+
+{% endblock %}
+
+{% block content %}
+{# Feature/Services Preview Start #}
+<div class="container-xxl py-5">
+    <div class="container py-5 px-lg-5">
+        <div class="row g-4">
+            {% for service in services %}
+                <div class="col-lg-4 wow fadeInUp" data-wow-delay="{{ loop.index * 0.2 }}s">
+                    <div class="feature-item bg-light rounded text-center p-4">
+                        <i class="fa fa-3x {{ service.icon }} text-primary mb-4"></i>
+                        <h5 class="mb-3">{{ service.title }}</h5>
+                        <p class="m-0">{{ service.description }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{# Feature/Services Preview End #}
+
+{# About Start #}
+<div class="container-xxl py-5">
+    <div class="container py-5 px-lg-5">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                <p class="section-title text-secondary">About Us<span></span></p>
+                <h1 class="mb-5">Transportation for Everyone</h1>
+                <p class="mb-4">Movable is dedicated to providing accessible transportation services for people with disabilities. We believe that everyone deserves the freedom to move and travel independently, regardless of physical limitations.</p>
+                <div class="skill mb-4">
+                    <div class="d-flex justify-content-between">
+                        <p class="mb-2">Wheelchair Accessible Vehicles</p>
+                        <p class="mb-2">100%</p>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div class="skill mb-4">
+                    <div class="d-flex justify-content-between">
+                        <p class="mb-2">Trained Drivers</p>
+                        <p class="mb-2">95%</p>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-secondary" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%"></div>
+                    </div>
+                </div>
+                <div class="skill mb-4">
+                    <div class="d-flex justify-content-between">
+                        <p class="mb-2">Customer Satisfaction</p>
+                        <p class="mb-2">98%</p>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100" style="width: 98%"></div>
+                    </div>
+                </div>
+                <a href="#" class="btn btn-primary py-sm-3 px-sm-5 rounded-pill mt-3">Book a Ride</a>
+            </div>
+            <div class="col-lg-6">
+                <img class="img-fluid wow zoomIn" data-wow-delay="0.5s" src="{{ asset('img/about.png') }}">
+            </div>
+        </div>
+    </div>
+</div>
+{# About End #}
+
+{# Facts Start #}
+<div class="container-xxl bg-primary fact py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container py-5 px-lg-5">
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
+                <i class="fa fa-car fa-3x text-secondary mb-3"></i>
+                <h1 class="text-white mb-2" data-toggle="counter-up">500</h1>
+                <p class="text-white mb-0">Accessible Vehicles</p>
+            </div>
+            <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.3s">
+                <i class="fa fa-users fa-3x text-secondary mb-3"></i>
+                <h1 class="text-white mb-2" data-toggle="counter-up">250</h1>
+                <p class="text-white mb-0">Trained Drivers</p>
+            </div>
+            <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.5s">
+                <i class="fa fa-wheelchair fa-3x text-secondary mb-3"></i>
+                <h1 class="text-white mb-2" data-toggle="counter-up">5000</h1>
+                <p class="text-white mb-0">Happy Clients</p>
+            </div>
+            <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.7s">
+                <i class="fa fa-map-marker-alt fa-3x text-secondary mb-3"></i>
+                <h1 class="text-white mb-2" data-toggle="counter-up">25</h1>
+                <p class="text-white mb-0">Cities Served</p>
+            </div>
+        </div>
+    </div>
+</div>
+{# Facts End #}
+
+{# Testimonials Start #}
+<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container py-5 px-lg-5">
+        <p class="section-title text-secondary justify-content-center"><span></span>Testimonials<span></span></p>
+        <h1 class="text-center mb-5">What Our Clients Say!</h1>
+        <div class="owl-carousel testimonial-carousel">
+            {% for testimonial in testimonials %}
+                <div class="testimonial-item bg-light rounded my-4">
+                    <p class="fs-5"><i class="fa fa-quote-left fa-4x text-primary mt-n4 me-3"></i>{{ testimonial.content }}</p>
+                    <div class="d-flex align-items-center">
+                        <img class="img-fluid flex-shrink-0 rounded-circle" src="{{ asset('img/' ~ testimonial.image) }}" style="width: 65px; height: 65px;">
+                        <div class="ps-4">
+                            <h5 class="mb-1">{{ testimonial.name }}</h5>
+                            <span>{{ testimonial.position }}</span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{# Testimonial End #}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    {# Initialize typed.js for the hero banner #}
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize WOW.js
+            new WOW().init();
+            
+            // Initialize Typed.js
+            var typed = new Typed('.typed-text', {
+                strings: ['Professionals', 'Creatives', 'Strategists', 'Innovators'],
+                typeSpeed: 100,
+                backSpeed: 50,
+                backDelay: 2000,
+                loop: true
+            });
+            
+            // Initialize Isotope for portfolio filtering
+            var portfolioIsotope = $('.portfolio-container').isotope({
+                itemSelector: '.portfolio-item',
+                layoutMode: 'fitRows'
+            });
+            
+            $('#portfolio-flters li').on('click', function() {
+                $("#portfolio-flters li").removeClass('active');
+                $(this).addClass('active');
+                
+                portfolioIsotope.isotope({
+                    filter: $(this).data('filter')
+                });
+            });
+            
+            // Initialize Owl Carousel for testimonials
+            $('.testimonial-carousel').owlCarousel({
+                autoplay: true,
+                smartSpeed: 1000,
+                margin: 25,
+                dots: true,
+                loop: true,
+                center: true,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    768: {
+                        items: 2
+                    },
+                    992: {
+                        items: 3
+                    }
+                }
+            });
+            
+            // Initialize Counter-Up
+            $('[data-toggle="counter-up"]').counterUp({
+                delay: 10,
+                time: 2000
+            });
+        });
+    </script>
+{% endblock %}
+

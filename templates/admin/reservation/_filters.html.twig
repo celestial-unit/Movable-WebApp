@@ -1,0 +1,60 @@
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">Search & Filter Reservations</h5>
+    </div>
+    <div class="card-body">
+        <form method="get" action="{{ target_path }}">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Date Range</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control date-picker" placeholder="From" name="date_from" value="{{ app.request.query.get('date_from') }}">
+                        <input type="text" class="form-control date-picker" placeholder="To" name="date_to" value="{{ app.request.query.get('date_to') }}">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Destination</label>
+                    <select class="form-select" name="destination">
+                        <option value="">All Destinations</option>
+                        {% for destination in destinations %}
+                            <option value="{{ destination.iddestination }}" {{ app.request.query.get('destination') == destination.iddestination ? 'selected' : '' }}>
+                                {{ destination.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Transport Type</label>
+                    <select class="form-select" name="transport">
+                        <option value="">All Types</option>
+                        <option value="bus" {{ app.request.query.get('transport') == 'bus' ? 'selected' : '' }}>Bus</option>
+                        <option value="train" {{ app.request.query.get('transport') == 'train' ? 'selected' : '' }}>Train</option>
+                        <option value="plane" {{ app.request.query.get('transport') == 'plane' ? 'selected' : '' }}>Plane</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Agent Type</label>
+                    <select class="form-select" name="agent_type">
+                        <option value="">All Agents</option>
+                        <option value="regular" {{ app.request.query.get('agent_type') == 'regular' ? 'selected' : '' }}>Regular</option>
+                        <option value="premium" {{ app.request.query.get('agent_type') == 'premium' ? 'selected' : '' }}>Premium</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Sort By</label>
+                    <select class="form-select" name="sort">
+                        <option value="price_asc" {{ app.request.query.get('sort') == 'price_asc' ? 'selected' : '' }}>Price (Low to High)</option>
+                        <option value="price_desc" {{ app.request.query.get('sort') == 'price_desc' ? 'selected' : '' }}>Price (High to Low)</option>
+                        <option value="date_asc" {{ app.request.query.get('sort') == 'date_asc' ? 'selected' : '' }}>Date (Oldest First)</option>
+                        <option value="date_desc" {{ app.request.query.get('sort') == 'date_desc' or app.request.query.get('sort') is null ? 'selected' : '' }}>Date (Newest First)</option>
+                    </select>
+                </div>
+                <div class="col-md-1 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bx bx-search"></i> Search
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

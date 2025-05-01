@@ -1,0 +1,58 @@
+{% extends 'front/base.html.twig' %}
+
+{% block content %}
+<div class="container-xxl py-5 pt-5">
+    <div class="container px-lg-5">
+        <h2 class="text-primary mb-4">My Favorite Destinations</h2>
+
+        <div class="row g-4">
+            {% for favorite in favorites %}
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="service-item d-flex flex-column h-100 rounded overflow-hidden">
+                        <div class="position-relative">
+                            {% if favorite.destination.image %}
+                                <img class="img-fluid" src="{{ asset('uploads/destinations/' ~ favorite.destination.image) }}"
+                                     alt="{{ favorite.destination.name }}"
+                                     style="height: 250px; object-fit: cover;">
+                            {% else %}
+                                <img class="img-fluid" src="{{ asset('img/default-destination.jpg') }}"
+                                     alt="Default destination image"
+                                     style="height: 250px; object-fit: cover;">
+                            {% endif %}
+                        </div>
+                        <div class="p-4 border-top border-primary border-3">
+                            <h5 class="mb-3 text-primary">{{ favorite.destination.name }}</h5>
+                            <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-2"></i> {{ favorite.destination.location }}</p>
+                            <p class="mb-3">
+                                {{ favorite.destination.description|length > 100 
+                                    ? favorite.destination.description|slice(0, 100) ~ '...' 
+                                    : favorite.destination.description }}
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="{{ path('app_destination_show', {'idDestination': favorite.destination.idDestination}) }}" 
+                                   class="btn btn-sm btn-secondary px-3 rounded-pill">
+                                    Explore <i class="fa fa-arrow-right ms-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12 text-center">
+                    <div class="alert alert-primary py-5" role="alert">
+                        <h4 class="mb-3">No favorites yet!</h4>
+                        <p class="mb-0">Go add some favorites first!</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="mt-4">
+            <a href="{{ path('app_front_home') }}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i> Back to Home
+            </a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

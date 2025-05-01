@@ -1,0 +1,16 @@
+liip_imagine:
+    driver: gd  # or imagick
+    resolvers:
+        default:
+            web_path:
+                web_root: '%kernel.project_dir%/public'
+                cache_prefix: 'media/cache'
+    filter_sets:
+        cache: ~
+        watermarked:
+            quality: 85
+            filters:
+                watermark_image:
+                    image: 'uploads/destinations/watermark.png'  # relative to /public
+                    size: 0.5       # scale (optional)
+                    position: center

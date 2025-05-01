@@ -1,0 +1,343 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register for Event{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {# Add registration-specific styles here #}
+{% endblock %}
+
+{% block body %}
+<div class="container-xxl bg-white p-0">
+    <!-- Hero banner -->
+    <div class="container-xxl py-5 bg-primary hero-header mb-5">
+        <div class="container my-5 py-5 px-lg-5">
+            <hr class="bg-white mx-auto mt-0" style="width: 90px;">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb justify-content-center">
+                    <li class="breadcrumb-item"><a class="text-white" href="{{ path('app_front_home') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a class="text-white" href="{{ path('app_event_index') }}">Events</a></li>
+                    <li class="breadcrumb-item text-white active" aria-current="page">Register</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main content -->
+<style>
+    :root {
+        --primary-color: #2563eb; /* Modern blue */
+        --success-color: #10b981; /* Emerald green */
+        --warning-color: #f59e0b; /* Amber */
+        --danger-color: #ef4444; /* Red */
+        --text-color: #1e293b; /* Slate 800 */
+        --border-color: #e2e8f0; /* Slate 200 */
+        --bg-light: #f8fafc; /* Slate 50 */
+        --form-icon-size: 1.5rem;
+        --card-max-width: 1400px;
+        --transition-timing: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .registration-wrapper {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        padding: 4rem 0;
+        min-height: 100vh;
+    }
+
+    .registration-card {
+        background: white;
+        border-radius: 1.5rem;
+        box-shadow: var(--shadow-lg);
+        margin: 0 auto;
+        overflow: hidden;
+        max-width: var(--card-max-width);
+        transition: transform var(--transition-timing);
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #1d4ed8 100%);
+        padding: 4rem 2rem;
+        text-align: center;
+        
+        h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            backdrop-filter: blur(4px);
+            margin: 0 auto;
+            
+            i {
+                font-size: 1.8em;
+                transform: rotate(-5deg);
+            }
+        }
+    }
+
+    .event-info {
+        display: flex;
+        gap: 2rem;
+        background: white;
+        padding: 2.5rem;
+        border-radius: 1.25rem;
+        margin: 2rem 0;
+        box-shadow: var(--shadow-md);
+        border-left: 4px solid var(--primary-color);
+        
+        i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            flex-shrink: 0;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+    }
+
+    .form-section {
+        padding: 2.5rem;
+        background: var(--bg-light);
+        border-radius: 1.25rem;
+        margin: 2rem 0;
+        
+        .form-label {
+            font-size: 1.25rem;
+            color: var(--text-color);
+            padding: 1rem 1.5rem;
+            background: rgba(37, 99, 235, 0.05);
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-left: 4px solid var(--primary-color);
+            
+            i {
+                font-size: 1.4em;
+            }
+        }
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+        position: relative;
+        
+        .input-icon {
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: var(--form-icon-size);
+            pointer-events: none;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 1.25rem 1.5rem 1.25rem 4rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: all var(--transition-timing);
+            
+            &:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+            }
+            
+            &.is-invalid {
+                border-color: var(--danger-color);
+                padding-right: 2.5rem;
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23ef4444'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23ef4444' stroke='none'/%3e%3c/svg%3e");
+            }
+        }
+    }
+
+    .status-note {
+        background: rgba(59, 130, 246, 0.05);
+        color: #1e40af;
+        padding: 1.25rem;
+        border-radius: 0.75rem;
+        border-left: 4px solid #3b82f6;
+        margin: 1.5rem 0;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        font-size: 0.95rem;
+        
+        &::before {
+            content: "ℹ️";
+            font-size: 1.2em;
+        }
+    }
+
+    .submit-btn {
+        background: var(--primary-color);
+        color: white;
+        padding: 1rem 2.5rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        transition: all var(--transition-timing);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: #1d4ed8;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .registration-wrapper {
+            padding: 2rem 0;
+        }
+        
+        .card-header {
+            padding: 3rem 1rem;
+            
+            h1 {
+                font-size: 1.75rem;
+                flex-direction: column;
+                padding: 1rem;
+            }
+        }
+        
+        .event-info {
+            flex-direction: column;
+            text-align: center;
+            padding: 1.5rem;
+            
+            i {
+                margin: 0 auto;
+            }
+        }
+        
+        .form-section {
+            padding: 1.5rem;
+            
+            .form-label {
+                font-size: 1.1rem;
+                padding: 1rem;
+            }
+        }
+        
+        .form-group .form-control {
+            padding-left: 3.5rem;
+        }
+    }
+</style>
+
+<div class="registration-wrapper">
+    <div class="container-fluid">
+        <div class="registration-card">
+            <div class="card-header">
+                <h1>
+                    <i class="bi bi-pencil-square"></i>
+                    🃏New Registration🃏
+                </h1>
+            </div>
+
+            <div class="card-body">
+                <div class="event-info">
+                    <i class="bi bi-calendar-event" style="font-size: 3rem; color: var(--primary-color);"></i>
+                    <div>
+                        <h3 class="mb-4">{{ event.title }}</h3>
+                        <div class="d-flex flex-wrap gap-3 text-muted">
+                            <div class="event-detail-badge">
+                                <i class="bi bi-clock"></i>
+                                {{ event.getFormattedDate() }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'needs-validation'}}) }}
+                    <div class="form-section">
+                        <div class="form-grid">
+                            <div class="full-width-section">
+                                <label class="form-label">
+                                    <i class="bi bi-card-checklist"></i>
+                                    🪪 Registration Information🪪
+                                </label>
+                            </div>
+
+                            <!-- Registration Date Field -->
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <i class="bi bi-calendar2-range input-icon"></i>
+                                    {{ form_widget(form.registration_date, {
+                                        'attr': {
+                                            'class': 'form-control ' ~ (form.registration_date.vars.errors|length ? 'is-invalid' : '')
+                                        }
+                                    }) }}
+                                    {% if form.registration_date.vars.errors|length %}
+                                        <div class="invalid-feedback">
+                                            {{ form_errors(form.registration_date) }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Status Field -->
+                            <p class="status-note">
+    You can see  current status below. If it's pending, please wait for an admin to review your registration ( you are not CHOOSING YOUR STATUS).
+</p>
+
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <i class="bi bi-clipboard-check input-icon"></i>
+                                    {{ form_widget(form.status, {
+                                        'attr': {
+                                            'class': 'form-control ' ~ (form.status.vars.errors|length ? 'is-invalid' : '')
+                                        }
+                                    }) }}
+                                    {% if form.status.vars.errors|length %}
+                                        <div class="invalid-feedback">
+                                            {{ form_errors(form.status) }}
+                                        </div>
+                                    
+                                {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if form_errors(form) %}
+                        <div class="form-error mt-4">
+                            <i class="bi bi-exclamation-octagon"></i>
+                            <div>
+                                Please correct the following errors:
+                                {{ form_errors(form) }}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-5 px-3">
+                        <a href="{{ path('app_event_registration_index') }}" class="back-link text-decoration-none">
+                            <i class="bi bi-arrow-left"></i>
+                            Back to Registrations
+                        </a>
+                        <button type="submit" class="submit-btn btn-primary">
+                            <i class="bi bi-check2-circle"></i>
+                            Complete Registration
+                        </button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

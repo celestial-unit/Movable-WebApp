@@ -1,0 +1,417 @@
+{% extends 'base1.html.twig' %}
+
+{% block page_css %}
+<style>
+    .timeline {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        position: relative;
+    }
+
+    .timeline:before {
+        content: '';
+        position: absolute;
+        left: 0.75rem;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: #e9ecef;
+    }
+
+    .timeline-item {
+        position: relative;
+        padding-left: 2.5rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .timeline-point {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid #e9ecef;
+    }
+
+    .timeline-point-primary {
+        border-color: #696cff;
+    }
+
+    .timeline-point-success {
+        border-color: #71dd37;
+    }
+
+    .timeline-point-warning {
+        border-color: #ffab00;
+    }
+
+    .avatar-initial {
+        background-color: #696cff;
+    }
+
+    .card {
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+</style>
+{% endblock %}
+{% block sidebar %}
+    <div class="app-brand demo">
+        <a href="{{ path('app_dashboard') }}" class="app-brand-link">
+            <span class="app-brand-logo demo">
+                <i class="bx bx-car fs-3 text-primary"></i>
+            </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">Movable</span>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+        <!-- Dashboard -->
+        <li class="menu-item active">
+            <a href="{{ path('app_dashboard') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div>Dashboard</div>
+            </a>
+        </li>
+
+        <!-- Claims Management -->
+        <li class="menu-item">
+            <a href="{{ path('app_reclamation_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-message-square-detail"></i>
+                <div>Claims</div>
+            </a>
+        </li>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <!-- User Management -->
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bx-user-circle"></i>
+                    <div>User Management</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="{{ path('app_admin_users') }}" class="menu-link">
+                            <div>All Users</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{ path('app_reclamation_dashboard') }}" class="menu-link">
+                            <div>Claims Dashboard</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        {% endif %}
+
+        <!-- Profile -->
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div>My Account</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ path('app_user_profile') }}" class="menu-link">
+                        <div>Profile</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ path('app_user_settings') }}" class="menu-link">
+                        <div>Settings</div>
+                    </a>
+                </li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li class="menu-item">
+                        <a href="{{ path('app_logout') }}" class="menu-link">
+                            <div>Logout</div>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </li>
+        
+        <!-- Link to Front Office -->
+        <li class="menu-item">
+            <a href="{{ path('app_front_home') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-world"></i>
+                <div>Visit Website</div>
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+{% block navbar %}
+    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+        <!-- Search -->
+        <div class="navbar-nav align-items-center">
+            <div class="nav-item d-flex align-items-center">
+                <i class="bx bx-search fs-4 lh-0"></i>
+                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..." />
+            </div>
+        </div>
+
+        <ul class="navbar-nav flex-row align-items-center ms-auto">
+            <!-- User -->
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                        <span class="avatar-initial rounded-circle bg-primary">
+                            {% if app.user %}
+                                {{ app.user.firstName|first }}{{ app.user.lastName|first }}
+                            {% else %}
+                                G
+                            {% endif %}
+                        </span>
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    {% if app.user %}
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app_user_profile') }}">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="avatar">
+                                            <span class="avatar-initial rounded-circle bg-primary">
+                                                {{ app.user.firstName|first }}{{ app.user.lastName|first }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <span class="fw-semibold d-block">{{ app.user.fullName }}</span>
+                                        <small class="text-muted">{{ app.user.email }}</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li><div class="dropdown-divider"></div></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app_user_profile') }}">
+                                <i class="bx bx-user me-2"></i>
+                                <span class="align-middle">My Profile</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app_user_settings') }}">
+                                <i class="bx bx-cog me-2"></i>
+                                <span class="align-middle">Settings</span>
+                            </a>
+                        </li>
+                        <li><div class="dropdown-divider"></div></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app_logout') }}">
+                                <i class="bx bx-power-off me-2"></i>
+                                <span class="align-middle">Log Out</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app_login') }}">
+                                <i class="bx bx-log-in me-2"></i>
+                                <span class="align-middle">Login</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app_register') }}">
+                                <i class="bx bx-user-plus me-2"></i>
+                                <span class="align-middle">Register</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-lg-8 mb-4 order-0">
+            <div class="card">
+                <div class="d-flex align-items-end row">
+                    <div class="col-sm-7">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Welcome {% if app.user %}{{ app.user.firstName }}{% else %}to Movable{% endif %}! 🎉</h5>
+                            <p class="mb-4">
+                                Your transportation platform for accessible and convenient travel.
+                                {% if app.user %}
+                                    Access your dashboard to manage your account and claims.
+                                {% else %}
+                                    Join us today to access all features.
+                                {% endif %}
+                            </p>
+                            {% if app.user %}
+                                <div class="d-flex gap-2">
+                                    <a href="{{ path('app_user_profile') }}" class="btn btn-sm btn-primary">
+                                        <i class="bx bx-user me-1"></i> My Profile
+                                    </a>
+                                    <a href="{{ path('app_reclamation_new') }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bx bx-plus me-1"></i> New Claim
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="d-flex gap-2">
+                                    <a href="{{ path('app_login') }}" class="btn btn-sm btn-primary">
+                                        <i class="bx bx-log-in me-1"></i> Login
+                                    </a>
+                                    <a href="{{ path('app_register') }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bx bx-user-plus me-1"></i> Register
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-sm-5 text-center text-sm-left">
+                        <div class="card-body pb-0 px-0 px-md-4">
+                            <img src="{{ asset('img/illustrations/man-with-laptop-light.png') }}"
+                                 height="140"
+                                 alt="View Badge User"
+                                 data-app-light-img="illustrations/man-with-laptop-light.png"
+                                 data-app-dark-img="illustrations/man-with-laptop-dark.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="col-lg-4 col-md-4 order-1">
+            <div class="row">
+                {% if is_granted('ROLE_ADMIN') %}
+                    <div class="col-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <div class="content-left">
+                                        <span class="fw-semibold d-block mb-1">Users</span>
+                                        <h3 class="card-title mb-0">{{ stats.total_users ?? '0' }}</h3>
+                                    </div>
+                                    <div class="avatar flex-shrink-0">
+                                        <span class="avatar-initial rounded bg-label-primary">
+                                            <i class="bx bx-user"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <div class="content-left">
+                                        <span class="fw-semibold d-block mb-1">Claims</span>
+                                        <h3 class="card-title mb-0">{{ stats.total_claims ?? '0' }}</h3>
+                                    </div>
+                                    <div class="avatar flex-shrink-0">
+                                        <span class="avatar-initial rounded bg-label-warning">
+                                            <i class="bx bx-message-square-detail"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <div class="content-left">
+                                        <span class="fw-semibold d-block mb-1">My Claims</span>
+                                        <h3 class="card-title mb-0">{{ app.user ? stats.my_claims ?? '0' : '0' }}</h3>
+                                    </div>
+                                    <div class="avatar flex-shrink-0">
+                                        <span class="avatar-initial rounded bg-label-warning">
+                                            <i class="bx bx-message-square-detail"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <div class="content-left">
+                                        <span class="fw-semibold d-block mb-1">Status</span>
+                                        <h3 class="card-title mb-0">Active</h3>
+                                    </div>
+                                    <div class="avatar flex-shrink-0">
+                                        <span class="avatar-initial rounded bg-label-success">
+                                            <i class="bx bx-check-circle"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-6">
+            <div class="d-grid">
+                <a href="{{ path('app_reclamation_new') }}" class="btn btn-outline-primary">
+                    <i class="bx bx-plus-circle mb-1 d-block fs-4"></i>
+                    New Claim
+                </a>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="d-grid">
+                <a href="{{ path('app_user_profile') }}" class="btn btn-outline-primary">
+                    <i class="bx bx-user mb-1 d-block fs-4"></i>
+                    Profile
+                </a>
+            </div>
+        </div>
+        {% if is_granted('ROLE_ADMIN') %}
+        <div class="col-6">
+            <div class="d-grid">
+                <a href="{{ path('app_admin_users') }}" class="btn btn-outline-primary">
+                    <i class="bx bx-group mb-1 d-block fs-4"></i>
+                    Users
+                </a>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="d-grid">
+                <a href="{{ path('app_reclamation_dashboard') }}" class="btn btn-outline-primary">
+                    <i class="bx bx-dashboard mb-1 d-block fs-4"></i>
+                    Dashboard
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    // Initialize any charts or widgets here
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add animation classes to cards
+        document.querySelectorAll('.card').forEach(card => {
+            card.classList.add('animate__animated', 'animate__fadeInUp');
+        });
+    });
+</script>
+{% endblock %}
+
+{% block footer %}
+    <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+        <div class="mb-2 mb-md-0">
+            © {{ "now"|date("Y") }} Movable. All rights reserved.
+        </div>
+    </div>
+{% endblock %}

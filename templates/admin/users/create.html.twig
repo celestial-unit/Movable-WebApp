@@ -1,0 +1,63 @@
+{% extends 'admin/layouts/admin.html.twig' %}
+
+{% block title %}Create New User - Admin Dashboard{% endblock %}
+
+{% block body %}
+<h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">Admin / Users /</span> Create New User
+</h4>
+
+<!-- Flash Messages -->
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ label }} alert-dismissible" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endfor %}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Create New User</h5>
+                <a href="{{ path('app_admin_users') }}" class="btn btn-secondary">
+                    <i class="bx bx-arrow-back me-1"></i> Back to Users
+                </a>
+            </div>
+            <div class="card-body">
+                {{ form_start(form) }}
+                    <div class="mb-3">
+                        {{ form_label(form.firstName, 'First Name', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.firstName, {'attr': {'class': 'form-control', 'placeholder': 'Enter first name'}}) }}
+                        {{ form_errors(form.firstName) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.lastName, 'Last Name', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.lastName, {'attr': {'class': 'form-control', 'placeholder': 'Enter last name'}}) }}
+                        {{ form_errors(form.lastName) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.email, 'Email', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Enter email address'}}) }}
+                        {{ form_errors(form.email) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.plainPassword, 'Password', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Enter password'}}) }}
+                        {{ form_errors(form.plainPassword) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.role, 'Role', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.role, {'attr': {'class': 'form-select'}}) }}
+                        {{ form_errors(form.role) }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create User</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

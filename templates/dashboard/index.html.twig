@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    <h1>Dashboard</h1>
+
+    <p><strong>Total Transports:</strong> {{ transport_count }}</p>
+    <p><strong>Available Transports:</strong> {{ available_transport_count }}</p>
+    <p><strong>Total Drivers:</strong> {{ driver_count }}</p>
+    <p><strong>Assigned Drivers:</strong> {{ assigned_driver_count }}</p>
+
+    <h2>Recent Transports</h2>
+    <ul>
+        {% for transport in recent_transports %}
+            <li>{{ transport.id }} - {{ transport.type }} - Destination: {{ transport.destination }}</li>
+        {% else %}
+            <li>No recent transports available.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Management</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optionally, include your own custom CSS -->
+    <link rel="stylesheet" href="back_css/sneat">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="bg-primary text-white text-center py-3">
+        <h1>Driver Management</h1>
+        <nav>
+            <ul class="nav justify-content-center">
+                <li class="nav-item"><a class="nav-link text-white" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="admin_driver/driver.html">Add Driver</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container my-4">
+        <div class="row">
+            <!-- Form Section (Left Side) -->
+            <section class="col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h2>Add New Driver</h2>
+                    </div>
+                    <div class="card-body">
+                        <form action="admin_driver/driver.html" method="POST">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Driver Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="license_number" class="form-label">License Number</label>
+                                <input type="text" class="form-control" id="license_number" name="license_number" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="transport_id" class="form-label">Assigned Transport ID</label>
+                                <input type="number" class="form-control" id="transport_id" name="transport_id" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Add Driver</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Table Section (Right Side) -->
+            <section class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h2>Driver List</h2>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>License Number</th>
+                                    <th>Assigned Transport</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Example rows for driver data -->
+                                <tr>
+                                    <td>1</td>
+                                    <td>John Doe</td>
+                                    <td>AB12345</td>
+                                    <td>Bus</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Jane Smith</td>
+                                    <td>XY98765</td>
+                                    <td>Car</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-light text-center py-3">
+        <p>&copy; 2025 Driver Management</p>
+    </footer>
+
+    <!-- Bootstrap JS (optional for interactive elements like dropdowns) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

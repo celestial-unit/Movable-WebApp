@@ -1,0 +1,384 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Edit Event{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/css/pages/form-validation.css') }}">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --danger-color: #dc3545;
+            --success-color: #28a745;
+            --transition-timing: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-link {
+            transition: all var(--transition-timing);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            margin: 0.25rem 1rem;
+        }
+
+        .menu-link:hover {
+            background: rgba(99, 102, 241, 0.1);
+            transform: translateX(5px);
+        }
+
+        .menu-item.active .menu-link {
+            background: rgba(99, 102, 241, 0.1);
+            position: relative;
+        }
+
+        .menu-item.active .menu-link::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--primary-color);
+            border-radius: 2px 0 0 2px;
+        }
+
+        .card-header-gradient {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            border-bottom: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .profanity-warning {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .hover-scale {
+            transition: transform 0.2s ease;
+        }
+
+        .hover-scale:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+{% endblock %}
+
+
+
+{% block body %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="row">
+        <div class="col-12">
+            <!-- Page Header -->
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <div>
+                    <h4 class="fw-bold mb-1">Edit Event</h4>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ path('app_eventback_index') }}">Events</a></li>
+                            <li class="breadcrumb-item active">Edit</li>
+                        </ol>
+                    </nav>
+                </div>
+                <a href="{{ path('app_eventback_index') }}" class="btn btn-label-secondary hover-scale">
+                    <i class="bx bx-chevron-left scaleX-n1-rtl me-2"></i>
+                    Back to List
+                </a>
+            </div>
+
+            <!-- Edit Form Card -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header card-header-gradient text-white py-3">
+                    <h5 class="card-title mb-0 d-flex align-items-center">
+                        <i class="bx bx-edit me-2"></i>
+                        Event Details
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    {{ include('event/_form.html.twig', {
+                        'button_label': 'Update Event',
+                        'button_class': 'btn-primary hover-scale',
+                        'include_delete': true,
+                        'delete_btn_class': 'btn-danger hover-scale'
+                    }) }}
+                </div>
+            </div>
+
+            <!-- Registrations Card -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h5 class="card-title mb-0 d-flex align-items-center">
+                        <i class="bx bx-user-circle me-2"></i>
+                        Event Registrations
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="alert alert-info d-flex align-items-center">
+                        <i class="bx bx-info-circle me-3"></i>
+                        <div>
+                            Manage registrations through the 
+                            <a href="{{ path('app_eventback_registration_index') }}" class="alert-link fw-medium">
+                                Registrations Dashboard
+                            </a>. You can view, edit, and manage attendee information there.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ asset('vendor/libs/flatpickr/flatpickr.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Enhanced Date/Time Pickers
+    const dateConfig = {
+        dateFormat: 'Y-m-d',
+        minDate: 'today',
+        allowInput: true
+    };
+
+    const timeConfig = {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: 'H:i',
+        time_24hr: true
+    };
+
+    document.querySelectorAll('.flatpickr-date').forEach(fp => flatpickr(fp, dateConfig));
+    document.querySelectorAll('.flatpickr-time').forEach(fp => flatpickr(fp, timeConfig));
+
+    // Enhanced Profanity Filter
+    function showProfanityWarning(field) {
+        const existingWarning = field.parentNode.querySelector('.profanity-warning');
+        if (!existingWarning) {
+            const warning = document.createElement('div');
+            warning.className = 'profanity-warning text-danger mt-2 small d-flex align-items-center';
+            warning.innerHTML = `
+                <i class="bx bx-shield-x me-2"></i>
+                Inappropriate content detected and modified
+            `;
+            field.parentNode.insertBefore(warning, field.nextElementSibling);
+        }
+    }
+
+    function checkProfanity(text, callback, field) {
+        fetch('{{ path('app_eventback_check_profanity') }}', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ text: text })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.censoredText && data.censoredText !== text) {
+                callback(data.censoredText);
+                showProfanityWarning(field);
+                field.classList.add('is-invalid');
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+    }
+
+    function setupProfanityListener(inputField) {
+        let previousValue = inputField.value;
+        
+        inputField.addEventListener('input', function(e) {
+            clearTimeout(this.timer);
+            this.timer = setTimeout(() => {
+                checkProfanity(e.target.value, (censoredText) => {
+                    if (e.target.value === this.value) {
+                        e.target.value = censoredText;
+                        previousValue = censoredText;
+                    }
+                }, inputField);
+            }, 500);
+        });
+    }
+
+    // Initialize for relevant fields
+    const monitoredFields = ['#event_title', '#event_description'];
+    monitoredFields.forEach(selector => {
+        const field = document.querySelector(selector);
+        if (field) setupProfanityListener(field);
+    });
+
+    // Form Submission Handling
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const submitBtn = form.querySelector('[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <span class="spinner-border spinner-border-sm" role="status"></span>
+                Updating...
+            `;
+        });
+    }
+});
+</script>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="app-brand demo">
+        <a href="{{ path('app_dashboard') }}" class="app-brand-link">
+            <span class="app-brand-logo demo">
+                <i class="bx bx-car fs-3 text-primary"></i>
+            </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">Movable Admin</span>
+        </a>
+
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+        <!-- Dashboard -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_dashboard' ? 'active' : '' }}">
+            <a href="{{ path('app_dashboard') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div>Dashboard</div>
+            </a>
+        </li>
+
+        <li class="menu-item">
+            <a href="{{ path('app_front_home') }}" class="menu-link front-website-link">
+                <i class="menu-icon tf-icons bx bx-world"></i>
+                <div>Visit Website</div>
+            </a>
+        </li>
+        
+        <li class="menu-item {{ app.request.get('_route') == 'app_admin_users' ? 'active' : '' }}">
+            <a href="{{ path('app_admin_users') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user-circle"></i>
+                <div>Users</div>
+            </a>
+        </li>
+
+        <!-- Claims Management -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_reclamation_dashboard' ? 'active' : '' }}">
+            <a href="{{ path('app_reclamation_dashboard') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-message-square-detail"></i>
+                <div>Claims</div>
+            </a>
+        </li>
+
+        <!-- Banned Users -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_admin_banned_users' ? 'active' : '' }}">
+            <a href="{{ path('app_admin_banned_users') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-block"></i>
+                <div>Banned Users</div>
+            </a>
+        </li>
+
+        <!-- Events Management -->
+        <li class="menu-item {{ app.request.get('_route') starts with 'app_event' ? 'active' : '' }}">
+            <a href="{{ path('app_eventback_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar"></i>
+                <div>Events</div>
+            </a>
+        </li>
+         
+
+        <!-- Reservation Management -->
+        <li class="menu-item {{ app.request.get('_route') starts with 'admin_waitlist_' ? 'active' : '' }}">
+            <a href="{{ path('admin_waitlist_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar-check"></i>
+                <div>Reservations</div>
+            </a>
+        </li>
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">System</span>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block navbar %}
+    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+        <div class="navbar-nav align-items-center">
+            <div class="nav-item d-flex align-items-center">
+                <i class="bx bx-search fs-4 lh-0"></i>
+                <input type="text" class="form-control border-0 shadow-none ps-1" placeholder="Search..." aria-label="Search...">
+            </div>
+        </div>
+
+        <ul class="navbar-nav flex-row align-items-center ms-auto">
+            <!-- Admin User Dropdown -->
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                        <span class="avatar-initial rounded-circle bg-primary">
+                            {{ app.user.firstName|first }}{{ app.user.lastName|first }}
+                        </span>
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="avatar avatar-online">
+                                        <span class="avatar-initial rounded-circle bg-primary">
+                                            {{ app.user.firstName|first }}{{ app.user.lastName|first }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <span class="fw-semibold d-block">{{ app.user.fullName }}</span>
+                                    <small class="text-muted">Administrator</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('app_user_profile') }}">
+                            <i class="bx bx-user me-2"></i>
+                            <span class="align-middle">My Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('app_user_settings') }}">
+                            <i class="bx bx-cog me-2"></i>
+                            <span class="align-middle">Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('app_logout') }}">
+                            <i class="bx bx-power-off me-2"></i>
+                            <span class="align-middle">Log Out</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            
+            <!-- Visible Logout Button -->
+            <li class="nav-item ms-3">
+                <a href="{{ path('app_logout') }}" class="btn btn-danger d-flex align-items-center">
+                    <i class="bx bx-power-off me-2"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}

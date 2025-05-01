@@ -1,0 +1,15 @@
+{% extends "admin/layouts/admin.html.twig" %}
+{% block body %}
+<div class="container">
+    <h1>Transport Details</h1>
+
+    <ul>
+        <li><strong>ID:</strong> {{ transport.id }}</li>
+        <li><strong>Type:</strong> {{ transport.type }}</li>
+        <li><strong>Capacity:</strong> {{ transport.capacity }}</li>
+        <li><strong>Destination:</strong> {{ transport.destination }}</li>
+        <li><strong>Disponibility:</strong> {{ transport.disponibility }}</li>
+    </ul>
+
+    <a href="{{ path('admin_transport_index') }}" class="btn btn-secondary">Back to list</a>
+{% endblock %}

@@ -1,0 +1,95 @@
+{{ form_start(form, {
+    'attr': {
+        'novalidate': 'novalidate',
+        'enctype': 'multipart/form-data'
+    }
+}) }}
+
+    {% for field in form %}
+        {% if field.vars.name != 'token' and field.vars.name != 'location' %}
+            <div class="form-group mb-3">
+                {{ form_label(field) }}
+
+                {% if field.vars.name == 'image' and destination.image is not empty %}
+                    <div class="mb-2">
+                        <img src="{{ asset('uploads/destinations/' ~ destination.image) }}" alt="Current Image" style="max-height: 200px;">
+                    </div>
+                {% endif %}
+
+                {{ form_widget(field, {'attr': {'class': 'form-control'}}) }}
+
+                {% for error in field.vars.errors %}
+                    <div class="text-danger">{{ error.message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    {# Location field with modal map trigger #}
+    <div class="form-group mb-3">
+        {{ form_label(form.location) }}
+        <div class="input-group">
+            {{ form_widget(form.location, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#mapModal">
+                Select on Map
+            </button>
+        </div>
+    </div>
+
+    {# Map Modal #}
+    <div class="modal fade" id="mapModal" tabindex="-1" aria-labelledby="mapModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mapModalLabel">Select Location on Map</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="height: 500px;">
+                    <div id="map" style="height: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+
+{{ form_end(form) }}
+
+{# Map Script #}
+<script>
+    let mapInitialized = false;
+    let marker;
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const mapModal = document.getElementById('mapModal');
+        const mapContainer = document.getElementById('map');
+
+        mapModal.addEventListener('shown.bs.modal', function () {
+            if (!mapInitialized) {
+                const map = L.map(mapContainer).setView([33.8869, 9.5375], 7);  // Default to Tunisia
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+                map.on('click', function (e) {
+                    const lat = e.latlng.lat.toFixed(5);
+                    const lng = e.latlng.lng.toFixed(5);
+                    const coordString = lat + ',' + lng;
+
+                    // Set or move marker
+                    if (marker) {
+                        marker.setLatLng(e.latlng);
+                    } else {
+                        marker = L.marker(e.latlng).addTo(map);
+                    }
+
+                    // Set location field value
+                    document.getElementById('{{ form.location.vars.id }}').value = coordString;
+                });
+
+                mapInitialized = true;
+            }
+
+            // Invalidate the size of the map after the modal is shown to avoid any rendering issues
+            mapContainer._leaflet_map.invalidateSize();
+        });
+    });
+</script>

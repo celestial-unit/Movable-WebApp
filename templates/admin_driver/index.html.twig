@@ -1,0 +1,62 @@
+{% extends "admin/layouts/admin.html.twig" %}
+
+{% block body %}
+  <div class="container">
+    <a href="{{ path('admin_driver_new') }}" class="btn btn-success">+ Add a Driver</a>
+    <div class="row">
+      <div class="col-lg-6 col-md-12 table-container">
+        <h2>Available Drivers</h2>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Licence Number</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for driver in drivers %}
+              <tr>
+                <td>{{ driver.name }}</td>
+                <td>{{ driver.licenceNumber }}</td>
+                <td>
+                  <a href="{{ path('admin_driver_edit', { id: driver.id }) }}"
+                     class="btn btn-warning">Edit</a>
+
+                  {# ——— Inline POST form for Delete ——— #}
+                  <form
+                    method="post"
+                    action="{{ path('admin_driver_delete', { id: driver.id }) }}"
+                    style="display:inline"
+                    onsubmit="return confirm('Really delete driver “{{ driver.name }}”?');"
+                  >
+                    <input
+                      type="hidden"
+                      name="_token"
+                      value="{{ csrf_token('delete' ~ driver.id) }}"
+                    >
+                    <button type="submit" class="btn btn-danger btn-sm">
+                      Delete
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="3">No driver entries found.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-4">
+    <a href="{{ path('admin_transport_index') }}" class="btn btn-info">
+      Show Transports List
+    </a>
+  </div>
+
+  <link href="{{ asset('back_css/css_halimaa.css') }}" rel="stylesheet">
+{% endblock %}

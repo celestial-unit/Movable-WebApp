@@ -1,0 +1,257 @@
+
+
+{% extends "admin/layouts/admin.html.twig" %}
+
+{% block title %}Claims Dashboard - Movable{% endblock %}
+
+{% block body %}
+<div class="row">
+    <!-- Statistics Cards -->
+    <div class="col-lg-3 col-sm-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="card-info">
+                        <p class="card-text">Pending Claims</p>
+                        <div class="d-flex align-items-end mb-2">
+                            <h4 class="card-title mb-0 me-2">{{ pendingCount }}</h4>
+                        </div>
+                    </div>
+                    <div class="card-icon">
+                        <span class="badge bg-label-warning rounded p-2">
+                            <i class="bx bx-time bx-sm"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="card-info">
+                        <p class="card-text">Resolved Claims</p>
+                        <div class="d-flex align-items-end mb-2">
+                            <h4 class="card-title mb-0 me-2">{{ resolvedCount }}</h4>
+                        </div>
+                    </div>
+                    <div class="card-icon">
+                        <span class="badge bg-label-success rounded p-2">
+                            <i class="bx bx-check-circle bx-sm"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="card-info">
+                        <p class="card-text">Rejected Claims</p>
+                        <div class="d-flex align-items-end mb-2">
+                            <h4 class="card-title mb-0 me-2">{{ rejectedCount }}</h4>
+                        </div>
+                    </div>
+                    <div class="card-icon">
+                        <span class="badge bg-label-danger rounded p-2">
+                            <i class="bx bx-x-circle bx-sm"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="card-info">
+                        <p class="card-text">Total Claims</p>
+                        <div class="d-flex align-items-end mb-2">
+                            <h4 class="card-title mb-0 me-2">{{ pendingCount + resolvedCount + rejectedCount }}</h4>
+                        </div>
+                    </div>
+                    <div class="card-icon">
+                        <span class="badge bg-label-primary rounded p-2">
+                            <i class="bx bx-list-ul bx-sm"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Claims Management -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <h5 class="m-0">Claims Management</h5>
+                <div>
+                    <a href="{{ path('app_reclamation_dashboard', {'status': 'Pending'}) }}" class="btn btn-outline-warning btn-sm me-1">
+                        Pending Claims
+                    </a>
+                    <a href="{{ path('app_reclamation_dashboard', {'status': 'Resolved'}) }}" class="btn btn-outline-success btn-sm me-1">
+                        Resolved Claims
+                    </a>
+                    <a href="{{ path('app_reclamation_dashboard', {'status': 'Rejected'}) }}" class="btn btn-outline-danger btn-sm me-1">
+                        Rejected Claims
+                    </a>
+                    <a href="{{ path('app_reclamation_dashboard') }}" class="btn btn-primary btn-sm">
+                        View All Claims
+                    </a>
+                </div>
+            </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for claim in claims %}
+                            <tr>
+                                <td>#{{ claim.id }}</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar avatar-sm me-2">
+                                            <span class="avatar-initial rounded-circle bg-primary">
+                                                {{ claim.user.firstName|first }}{{ claim.user.lastName|first }}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            {{ claim.user.fullName }}
+                                            <div class="small text-muted">{{ claim.user.email }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ claim.title }}</td>
+                                <td>
+                                    <span class="badge bg-label-primary">{{ claim.category }}</span>
+                                </td>
+                                <td>
+                                    {% if claim.status == 'Pending' %}
+                                        <span class="badge bg-label-warning">Pending</span>
+                                    {% elseif claim.status == 'Resolved' %}
+                                        <span class="badge bg-label-success">Resolved</span>
+                                    {% else %}
+                                        <span class="badge bg-label-danger">Rejected</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ claim.createdAt|date('Y-m-d H:i') }}</td>
+                                <td>
+                                    {% if claim.status == 'Pending' %}
+                                        <div class="d-flex">
+                                            <a href="{{ path('app_reclamation_show', {'id': claim.id}) }}" class="btn btn-sm btn-icon btn-outline-primary me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="View">
+                                                <i class="bx bx-show-alt"></i>
+                                            </a>
+                                            <form method="POST" action="{{ path('app_reclamation_resolve', {'id': claim.id}) }}" class="d-inline me-1">
+                                                <button type="submit" class="btn btn-sm btn-icon btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Resolve" onclick="return confirm('Are you sure you want to resolve this claim?')">
+                                                    <i class="bx bx-check"></i>
+                                                </button>
+                                            </form>
+                                            <form method="POST" action="{{ path('app_reclamation_reject', {'id': claim.id}) }}" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-icon btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Reject" onclick="return confirm('Are you sure you want to reject this claim?')">
+                                                    <i class="bx bx-x"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    {% else %}
+                                        <a href="{{ path('app_reclamation_show', {'id': claim.id}) }}" class="btn btn-sm btn-icon btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="View">
+                                            <i class="bx bx-show-alt"></i>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="7" class="text-center">No claims found</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Category Distribution</h5>
+            </div>
+            <div class="card-body">
+                {% if stats.categories is defined %}
+                    {% for category, count in stats.categories %}
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-label-primary me-2">{{ category }}</span>
+                                <span>{{ count }} claims</span>
+                            </div>
+                            <div class="progress w-50" style="height: 8px;">
+                                <div class="progress-bar" role="progressbar" 
+                                     style="width: {{ (count / stats.total * 100)|round }}%"
+                                     aria-valuenow="{{ (count / stats.total * 100)|round }}" 
+                                     aria-valuemin="0" 
+                                     aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted mb-0">No category statistics available</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Status Distribution</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-label-warning me-2">Pending</span>
+                        <span>{{ pendingCount }} claims</span>
+                    </div>
+                    <div class="progress w-50" style="height: 8px;">
+                        <div class="progress-bar bg-warning" role="progressbar" 
+                             style="width: {{ (pendingCount / (pendingCount + resolvedCount + rejectedCount) * 100)|round }}%"
+                             aria-valuenow="{{ (pendingCount / (pendingCount + resolvedCount + rejectedCount) * 100)|round }}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-label-success me-2">Resolved</span>
+                        <span>{{ resolvedCount }} claims</span>
+                    </div>
+                    <div class="progress w-50" style="height: 8px;">
+                        <div class="progress-bar bg-success" role="progressbar" 
+                             style="width: {{ (resolvedCount / (pendingCount + resolvedCount + rejectedCount) * 100)|round }}%"
+                             aria-valuenow="{{ (resolvedCount / (pendingCount + resolvedCount + rejectedCount) * 100)|round }}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-label-danger me-2">Rejected</span>
+                        <span>{{ rejectedCount }} claims</span>
+                    </div>
+                    <div class="progress w-50" style="height: 8px;">
+                        <div class="progress-bar bg-danger" role="progressbar" 
+                             style="width: {{ (rejectedCount / (pendingCount + resolvedCount + rejectedCount) * 100)|round }}%"
+                             aria-valuenow="{{ (rejectedCount / (pendingCount + resolvedCount + rejectedCount) * 100)|round }}%
+</div>
+{% endblock %}

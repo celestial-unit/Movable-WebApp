@@ -1,0 +1,171 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}New Event Registration{% endblock %}
+
+{% block sidebar %}
+    <!-- Sidebar Content -->
+    <div class="menu-inner-shadow"></div>
+    <ul class="menu-inner py-1">
+        <li class="menu-item active">
+            <a href="{{ path('app_eventback_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar-event"></i>
+                <div data-i18n="Events">Events</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="{{ path('app_eventback_new') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-plus-circle"></i>
+                <div data-i18n="Create Event">Create Event</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="{{ path('app_eventback_registration_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-list-ul"></i>
+                <div data-i18n="View Registrations">View Registrations</div>
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('vendor/css/pages/form-validation.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <!-- Header Section -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold mb-0">
+                    <span class="text-muted fw-light">Registrations /</span> New Registration
+                </h4>
+                <a href="{{ path('app_eventback_registration_index') }}" class="btn btn-label-secondary">
+                    <i class="bx bx-chevron-left scaleX-n1-rtl me-2"></i>
+                    Back to List
+                </a>
+            </div>
+
+            <!-- Event Info Card -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="bx bx-calendar-event me-2"></i>
+                        Event Details
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-3">Event Title:</dt>
+                        <dd class="col-sm-9">{{ event.title }}</dd>
+                        
+                        <dt class="col-sm-3">Event Date:</dt>
+                        <dd class="col-sm-9">{{ event.getFormattedDate() }}</dd>
+                        
+                        <dt class="col-sm-3">Event Type:</dt>
+                        <dd class="col-sm-9 ">
+                            <span class="badge bg-label-primary">{{ event.type }}</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Registration Form Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Registration Information</h5>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
+                        
+                        <!-- Registration Date -->
+                        <div class="mb-4">
+                            {{ form_label(form.registration_date, null, {
+                                'label_attr': {'class': 'form-label'}
+                            }) }}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bx bx-calendar"></i></span>
+                                {{ form_widget(form.registration_date, {
+                                    'attr': {
+                                        'class': 'form-control flatpickr-date',
+                                        'placeholder': 'Select registration date'
+                                    }
+                                }) }}
+                            </div>
+                            {{ form_errors(form.registration_date, {
+                                'attr': {'class': 'invalid-feedback'}
+                            }) }}
+                        </div>
+                        
+                        <!-- Status Field -->
+                        <div class="mb-4">
+                            {{ form_label(form.status, null, {
+                                'label_attr': {'class': 'form-label'}
+                            }) }}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bx bx-check-circle"></i></span>
+                                {{ form_widget(form.status, {
+                                    'attr': {
+                                        'class': 'form-select'
+                                    }
+                                }) }}
+                            </div>
+                            {{ form_errors(form.status, {
+                                'attr': {'class': 'invalid-feedback'}
+                            }) }}
+                        </div>
+                        
+                        {% if form.user is defined %}
+                        <!-- User Field (Admin only) -->
+                        <div class="mb-4">
+                            {{ form_label(form.user, null, {
+                                'label_attr': {'class': 'form-label'}
+                            }) }}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bx bx-user"></i></span>
+                                {{ form_widget(form.user, {
+                                    'attr': {
+                                        'class': 'form-select'
+                                    }
+                                }) }}
+                            </div>
+                            {{ form_errors(form.user, {
+                                'attr': {'class': 'invalid-feedback'}
+                            }) }}
+                            <small class="form-text text-muted">Select a user or leave empty for manual registration</small>
+                        </div>
+                        {% endif %}
+
+                        <!-- Form Actions -->
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-between align-items-center mt-5">
+                            <button type="reset" class="btn btn-label-secondary">
+                                <i class="bx bx-reset me-2"></i>
+                                Reset
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bx bx-save me-2"></i>
+                                {{ button_label|default('Create Registration') }}
+                            </button>
+                        </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <!-- Removed flatpickr initialization as registration_date is now read-only -->
+{% endblock %}
+
+{% block navbar %}
+    {{ parent() }}
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
+{% endblock %}
