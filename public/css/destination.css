@@ -1,0 +1,111 @@
+/* General layout */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Title */
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #0d6efd;
+}
+
+/* Table styling */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table th, .table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #dee2e6;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f1f3f5;
+    font-weight: 600;
+    color: #333;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Actions column links */
+td a {
+    margin-right: 10px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+td a[href*="show"] {
+    background-color: #198754;
+    color: white;
+}
+
+td a[href*="edit"] {
+    background-color: #0d6efd;
+    color: white;
+}
+
+td a:hover {
+    opacity: 0.85;
+}
+
+/* "Create new" link as a button */
+a[href*="new"] {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #0d6efd;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+a[href*="new"]:hover {
+    background-color: #0b5ed7;
+}
+
+/* Make the cell flex to align children horizontally */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px; /* space between buttons */
+    height: 100%;
+}
+
+/* Make sure buttons are same size and centered */
+.action-buttons .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+/* Button colors */
+.btn-show {
+    background-color: #0dcaf0; /* blue */
+}
+.btn-edit {
+    background-color: #6f42c1; /* violet */
+}
+
+/* Hover effect */
+.action-buttons .btn:hover {
+    opacity: 0.85;
+}

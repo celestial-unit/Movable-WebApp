@@ -1,0 +1,201 @@
+{% extends 'admin/layouts/admin.html.twig' %}
+
+{% block title %}Reservation Statistics{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Bookings per day chart
+            const bookingsCtx = document.getElementById('bookingsChart').getContext('2d');
+            new Chart(bookingsCtx, {
+                type: 'line',
+                data: {
+                    labels: {{ bookingsPerDay|map(b => b.day)|json_encode|raw }},
+                    datasets: [{
+                        label: 'Bookings per Day',
+                        data: {{ bookingsPerDay|map(b => b.count)|json_encode|raw }},
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Popular routes chart
+            const routesCtx = document.getElementById('routesChart').getContext('2d');
+            new Chart(routesCtx, {
+                type: 'bar',
+                data: {
+                    labels: {{ popularRoutes|map(r => r.destination)|json_encode|raw }},
+                    datasets: [{
+                        label: 'Popular Routes',
+                        data: {{ popularRoutes|map(r => r.count)|json_encode|raw }},
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Transport distribution chart
+            const transportCtx = document.getElementById('transportChart').getContext('2d');
+            new Chart(transportCtx, {
+                type: 'pie',
+                data: {
+                    labels: {{ transportDistribution|map(t => t.transport)|json_encode|raw }},
+                    datasets: [{
+                        data: {{ transportDistribution|map(t => t.count)|json_encode|raw }},
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold py-3 mb-0">
+            <span class="text-muted fw-light">Admin /</span> Reservation Statistics
+        </h4>
+        <a href="{{ path('admin_waitlist_index') }}" class="btn btn-secondary">
+            <i class="bx bx-arrow-back me-1"></i> Back to Reservations
+        </a>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Total Reservations</h5>
+                    <h2 class="mb-0">{{ totalReservations }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Approved</h5>
+                    <h2 class="mb-0">{{ approvedCount }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Rejected</h5>
+                    <h2 class="mb-0">{{ rejectedCount }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Pending</h5>
+                    <h2 class="mb-0">{{ pendingCount }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Bookings Per Day (Last 30 Days)</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="bookingsChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Top 5 Popular Routes</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="routesChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Transport Type Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="transportChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Additional Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title">Average Seats per Booking</h6>
+                                    <h4 class="mb-0">{{ averageSeats|default('N/A') }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title">Most Active User</h6>
+                                    <h4 class="mb-0">{{ mostActiveUser|default('N/A') }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="additionalStats"></div>
+                    <button class="btn btn-primary mt-3" id="loadMoreStats">
+                        <i class="bx bx-plus me-1"></i> Load More Statistics
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

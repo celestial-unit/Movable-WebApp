@@ -1,0 +1,43 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Shift index{% endblock %}
+
+{% block body %}
+    <h1>Shift index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Driver</th>
+                <th>Transport</th>
+                <th>StartTime</th>
+                <th>EndTime</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for shift in shifts %}
+            <tr>
+                <td>{{ shift.id }}</td>
+                <td>{{ shift.driver ? shift.driver.name : 'Unknown Driver' }}</td>
+                <td>{{ shift.transport ?: 'Unknown Transport' }}</td>  <!-- Use transport directly -->
+                <td>{{ shift.startTime ? shift.startTime|date('Y-m-d') : '' }}</td>
+                <td>{{ shift.endTime ? shift.endTime|date('Y-m-d') : '' }}</td>
+                <td>{{ shift.type }}</td>
+                <td>
+                    <a href="{{ path('app_shift_show', {'id': shift.id}) }}">Show</a>
+                    <a href="{{ path('app_shift_edit', {'id': shift.id}) }}">Edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_shift_new') }}">Create new</a>
+{% endblock %}

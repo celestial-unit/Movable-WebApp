@@ -1,0 +1,130 @@
+{% extends "admin/layouts/admin.html.twig" %}
+
+{% block title %}Agents Management{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h1 class="mb-4">Agents Management</h1>
+
+    <!-- Search and Sort Controls -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" 
+                       id="searchInput" 
+                       class="form-control" 
+                       placeholder="Search agents..."
+                       data-turbo-permanent>
+                <button class="btn btn-outline-secondary" 
+                        type="button" 
+                        id="searchButton"
+                        data-turbo-permanent>
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="input-group">
+                <select class="form-select" 
+                        id="sortSelect"
+                        data-turbo-permanent>
+                    <option value="name" data-direction="asc">Name (A-Z)</option>
+                    <option value="name" data-direction="desc">Name (Z-A)</option>
+                    <option value="type" data-direction="asc">Type (A-Z)</option>
+                    <option value="type" data-direction="desc">Type (Z-A)</option>
+                    <option value="phone" data-direction="asc">Phone (A-Z)</option>
+                    <option value="phone" data-direction="desc">Phone (Z-A)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agents List -->
+    <div class="row" id="agentsList" data-turbo-frame="agents_list">
+        {% include 'agent/_agents_list.html.twig' with {'agents': agents} %}
+    </div>
+
+<!-- Action Buttons -->
+<div class="mt-4 d-flex gap-2">
+    <a href="{{ path('agent_new') }}" 
+       class="btn btn-primary"
+       data-turbo-frame="_top">
+        <i class="bi bi-plus-circle"></i> Add New Agent
+    </a>
+
+    <a href="{{ path('agent_statistics') }}" 
+       class="btn btn-outline-info"
+       data-turbo-frame="_top">
+        <i class="bi bi-bar-chart-line"></i> View Statistics
+    </a>
+</div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+    const sortSelect = document.getElementById('sortSelect');
+    const agentsList = document.getElementById('agentsList');
+
+    function updateAgentsList() {
+        const searchTerm = searchInput.value;
+        const sortOption = sortSelect.options[sortSelect.selectedIndex];
+        const sortBy = sortOption.value;
+        const direction = sortOption.dataset.direction;
+
+        const url = new URL(window.location.href);
+        url.searchParams.set('search', searchTerm);
+        url.searchParams.set('sort', sortBy);
+        url.searchParams.set('direction', direction);
+
+        fetch(url.toString(), {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.text())
+        .then(html => {
+            agentsList.innerHTML = html;
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // Debounce function to limit API calls
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    // Event listeners
+    searchInput.addEventListener('input', debounce(updateAgentsList, 300));
+    searchButton.addEventListener('click', updateAgentsList);
+    sortSelect.addEventListener('change', updateAgentsList);
+
+    // Handle pagination clicks
+    agentsList.addEventListener('click', function(e) {
+        if (e.target.closest('.pagination a')) {
+            e.preventDefault();
+            const url = e.target.closest('a').href;
+            fetch(url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                agentsList.innerHTML = html;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,399 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}Sign Language Gesture Recognition - Movable{% endblock %}
+
+{% block hero_banner %}
+<div class="container-xxl bg-primary hero-header">
+    <div class="container px-lg-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 text-center">
+                <h1 class="text-white mb-4 animated slideInDown">Sign Language Recognition</h1>
+                <p class="text-white pb-3 animated slideInDown">Use our advanced gesture recognition technology to communicate with sign language. Our system detects common gestures in real-time to enhance accessibility. Currently supporting basic gestures including Hello, Thanks, and I Love You.</p>
+                <div class="d-flex justify-content-center pt-2">
+                    <a href="{{ path('app_front_home') }}" class="btn btn-light py-sm-3 px-sm-5 rounded-pill me-3 animated slideInLeft">
+                        <i class="fas fa-home me-2"></i>Back to Home
+                    </a>
+                    <button id="quick-start-btn" class="btn btn-outline-light py-sm-3 px-sm-5 rounded-pill animated slideInRight">
+                        <i class="fas fa-video me-2"></i>Start Recognition
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .webcam-container {
+            position: relative;
+            width: 640px;
+            margin: 2rem auto;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        #webcam {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .controls {
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .sequence-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .frame-buffer {
+            display: none;
+        }
+        
+        .gesture-info {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .available-gestures {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0;
+        }
+        
+        .gesture-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 10px 15px;
+            width: 30%;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .gesture-card.active {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background-color: #e8f5e9;
+        }
+        
+        .gesture-history {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            min-height: 60px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .history-item {
+            display: inline-block;
+            background-color: #e3f2fd;
+            padding: 5px 10px;
+            margin: 3px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center mb-4">Sign Language Gesture Recognition</h2>
+            
+            <div class="gesture-info">
+                <h4>Available Gestures</h4>
+                <div class="available-gestures">
+                    <div class="gesture-card" id="gesture-hello">
+                        <h5>Hello</h5>
+                        <p><small>Wave with your hand</small></p>
+                    </div>
+                    <div class="gesture-card" id="gesture-thanks">
+                        <h5>Thanks</h5>
+                        <p><small>Touch chin and move forward</small></p>
+                    </div>
+                    <div class="gesture-card" id="gesture-iloveyou">
+                        <h5>I Love You</h5>
+                        <p><small>Extended thumb, index and pinky</small></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="webcam-container mt-4">
+                <video id="webcam" autoplay playsinline></video>
+                <div class="sequence-indicator" id="sequenceCount">0/30 frames</div>
+                <canvas id="frameBuffer" class="frame-buffer"></canvas>
+            </div>
+            
+            <div class="controls">
+                <button id="startBtn" class="btn btn-primary">Start Capture</button>
+                <button id="stopBtn" class="btn btn-danger" disabled>Stop</button>
+                <button id="clearBtn" class="btn btn-secondary" disabled>Clear History</button>
+            </div>
+            
+            <div id="output" class="mt-4 text-center">
+                <h3>Detected Gesture: <span id="detectedGesture">-</span></h3>
+                <div class="my-2">
+                    <h5>Buffer Status: <span id="bufferStatus">Waiting to start...</span></h5>
+                </div>
+                <div class="mt-2">
+                    <h5>Confidence: <span id="confidence">-</span></h5>
+                </div>
+                
+                <div class="mt-4">
+                    <h4>Gesture History</h4>
+                    <div id="gestureHistory" class="gesture-history">
+                        <!-- Detected gestures will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const webcamElement = document.getElementById('webcam');
+    const startButton = document.getElementById('startBtn');
+    const stopButton = document.getElementById('stopBtn');
+    const clearButton = document.getElementById('clearBtn');
+    const quickStartButton = document.getElementById('quick-start-btn');
+    const sequenceCount = document.getElementById('sequenceCount');
+    const frameBuffer = document.getElementById('frameBuffer');
+    const ctx = frameBuffer.getContext('2d');
+    
+    let stream = null;
+    let frameSequence = [];
+    const SEQUENCE_LENGTH = 30;
+    let isCapturing = false;
+    let gestureHistory = [];
+    
+    // Initialize frame buffer
+    frameBuffer.width = 640;
+    frameBuffer.height = 480;
+    
+    async function startWebcam() {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    width: { ideal: 640 },
+                    height: { ideal: 480 },
+                    frameRate: { ideal: 30 }
+                }
+            });
+            webcamElement.srcObject = stream;
+            startButton.disabled = true;
+            stopButton.disabled = false;
+            isCapturing = true;
+            captureFrames();
+        } catch (error) {
+            console.error('Error accessing webcam:', error);
+            alert('Could not access webcam. Please check permissions.');
+        }
+    }
+    
+    function stopWebcam() {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            webcamElement.srcObject = null;
+        }
+        startButton.disabled = false;
+        stopButton.disabled = true;
+        clearButton.disabled = true;
+        isCapturing = false;
+        frameSequence = [];
+        sequenceCount.textContent = '0/30 frames';
+        
+        // Reset detected gesture
+        document.getElementById('detectedGesture').textContent = '-';
+        document.getElementById('confidence').textContent = '-';
+        document.getElementById('bufferStatus').textContent = 'Stopped';
+    }
+    
+    function captureFrames() {
+        if (!isCapturing) return;
+        
+        ctx.drawImage(webcamElement, 0, 0, frameBuffer.width, frameBuffer.height);
+        const frameData = frameBuffer.toDataURL('image/jpeg', 0.8);
+        frameSequence.push(frameData);
+        
+        sequenceCount.textContent = `${frameSequence.length}/${SEQUENCE_LENGTH} frames`;
+        
+        if (frameSequence.length >= SEQUENCE_LENGTH) {
+            sendFrameSequence();
+            frameSequence = [];
+        }
+        
+        if (isCapturing) {
+            requestAnimationFrame(captureFrames);
+        }
+    }
+    
+    function addGestureToHistory(gesture, confidence) {
+        // Add gesture to history array
+        gestureHistory.push({
+            gesture: gesture,
+            timestamp: new Date(),
+            confidence: confidence
+        });
+        
+        // Update the history display
+        updateGestureHistoryDisplay();
+        
+        // Highlight the detected gesture card
+        highlightGestureCard(gesture);
+        
+        // Enable clear button if we have history
+        if (gestureHistory.length > 0) {
+            clearButton.disabled = false;
+        }
+    }
+    
+    function updateGestureHistoryDisplay() {
+        const historyElement = document.getElementById('gestureHistory');
+        historyElement.innerHTML = '';
+        
+        if (gestureHistory.length === 0) {
+            historyElement.innerHTML = '<p class="text-muted">No gestures detected yet</p>';
+            return;
+        }
+        
+        // Display most recent 10 gestures
+        const recentGestures = gestureHistory.slice(-10);
+        
+        recentGestures.forEach(item => {
+            const historyItem = document.createElement('span');
+            historyItem.className = 'history-item';
+            historyItem.textContent = item.gesture;
+            historyElement.appendChild(historyItem);
+        });
+    }
+    
+    function highlightGestureCard(gesture) {
+        // Reset all cards
+        document.querySelectorAll('.gesture-card').forEach(card => {
+            card.classList.remove('active');
+        });
+        
+        // Highlight the detected gesture card
+        const cardId = `gesture-${gesture}`;
+        const card = document.getElementById(cardId);
+        if (card) {
+            card.classList.add('active');
+            
+            // Remove the highlight after 2 seconds
+            setTimeout(() => {
+                card.classList.remove('active');
+            }, 2000);
+        }
+    }
+    
+    function clearGestureHistory() {
+        gestureHistory = [];
+        updateGestureHistoryDisplay();
+        clearButton.disabled = true;
+    }
+    
+    async function sendFrameSequence() {
+        const detectedGestureElement = document.getElementById('detectedGesture');
+        const bufferStatusElement = document.getElementById('bufferStatus');
+        const confidenceElement = document.getElementById('confidence');
+        
+        detectedGestureElement.textContent = 'Processing...';
+        
+        try {
+            // Convert first frame in sequence to a Blob
+            const base64Data = frameSequence[0].split(',')[1];
+            const byteCharacters = atob(base64Data);
+            const byteNumbers = new Array(byteCharacters.length);
+            
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: 'image/jpeg' });
+            
+            // Create FormData to send the image
+            const formData = new FormData();
+            formData.append('file', blob, 'frame.jpg');
+            
+            console.log('Sending request to:', '{{ serviceUrl }}/predict-stream');
+            const response = await fetch('{{ serviceUrl }}/predict-stream', {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            console.log('Received response:', result);
+            
+            // Update buffer status
+            if (result.buffer_status) {
+                bufferStatusElement.textContent = result.buffer_status;
+            }
+            
+            // Handle prediction results
+            if (result.buffer_status === 'ready' && result.gesture) {
+                detectedGestureElement.textContent = result.gesture;
+                
+                if (result.confidence) {
+                    confidenceElement.textContent = (result.confidence * 100).toFixed(2) + '%';
+                }
+                
+                // Add the detected gesture to history
+                addGestureToHistory(result.gesture, result.confidence);
+            } else {
+                detectedGestureElement.textContent = 'Collecting frames...';
+                confidenceElement.textContent = '-';
+            }
+        } catch (error) {
+            console.error('Error in sendFrameSequence:', error);
+            detectedGestureElement.textContent = 'Error!';
+            bufferStatusElement.textContent = 'Service error - check console';
+            // Log the actual service URL being used
+            console.log('Service URL:', '{{ serviceUrl }}');
+        }
+    }
+    
+    startButton.addEventListener('click', startWebcam);
+    stopButton.addEventListener('click', stopWebcam);
+    clearButton.addEventListener('click', clearGestureHistory);
+    
+    // Add event listener for the quick start button in the hero section
+    if (quickStartButton) {
+        quickStartButton.addEventListener('click', function() {
+            // Scroll to the webcam section
+            document.querySelector('.webcam-container').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+            
+            // Start the webcam after a short delay to allow scrolling
+            setTimeout(startWebcam, 500);
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,347 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Edit Event Registration{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        :root {
+            --primary-hover: #5b5dcc;
+            --danger-color: #ff3e1d;
+            --success-color: #71dd37;
+            --transition-timing: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Enhanced Sidebar */
+        .menu-inner {
+            padding: 1.5rem 0;
+        }
+
+        .menu-link {
+            transition: all var(--transition-timing);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            margin: 0.25rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-link:hover {
+            background: rgba(105, 108, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .menu-item.active .menu-link {
+            background: rgba(105, 108, 255, 0.1);
+            position: relative;
+        }
+
+        .menu-item.active .menu-link::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--primary-color);
+            border-radius: 2px 0 0 2px;
+        }
+
+        /* Main Content Styling */
+        .edit-container {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 0.5rem 1.5rem rgba(161, 172, 184, 0.15);
+            padding: 2.5rem;
+            margin: 2rem 0;
+        }
+
+        .edit-header {
+            padding-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid #eceef1;
+        }
+
+        .edit-header h4 {
+            font-weight: 600;
+            color: #2f3651;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-section {
+            margin-bottom: 3rem;
+        }
+
+        /* Enhanced Form Controls */
+        .form-label {
+            font-weight: 500;
+            color: #5d596c;
+            margin-bottom: 0.75rem;
+        }
+
+        .form-control {
+            border-radius: 0.75rem;
+            padding: 0.875rem 1.25rem;
+            transition: all var(--transition-timing);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(105, 108, 255, 0.2);
+        }
+
+        .form-control.is-invalid {
+            border-color: var(--danger-color);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23ff3e1d'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23ff3e1d' stroke='none'/%3e%3c/svg%3e");
+        }
+
+        .invalid-feedback {
+            font-size: 0.875em;
+            margin-top: 0.5rem;
+            padding-left: 0.25rem;
+        }
+
+        /* Error Display */
+        .form-error {
+            background: rgba(255, 62, 29, 0.08);
+            border-left: 4px solid var(--danger-color);
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            margin: 2rem 0;
+        }
+
+        /* Button Styling */
+        .btn-update {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: #fff;
+            padding: 0.875rem 2rem;
+            border-radius: 0.75rem;
+            border: none;
+            transition: all var(--transition-timing);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-update:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(105, 108, 255, 0.25);
+        }
+
+        /* Delete Section */
+        .delete-section {
+            border-top: 1px solid rgba(255, 62, 29, 0.15);
+            padding-top: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .delete-section h6 {
+            color: var(--danger-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Back Link */
+        .back-link {
+            color: #6f6b7d;
+            transition: all var(--transition-timing);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .back-link:hover {
+            color: var(--primary-color);
+            background: rgba(105, 108, 255, 0.05);
+            text-decoration: none;
+        }
+
+        /* Datepicker Customization */
+        .flatpickr-input {
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%235d596c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-calendar'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E") 
+                no-repeat right 1rem center/20px;
+        }
+
+        @media (max-width: 768px) {
+            .edit-container {
+                padding: 1.5rem;
+                margin: 1rem 0;
+            }
+            
+            .edit-header {
+                padding-bottom: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block sidebar %}
+    <!-- Enhanced Sidebar Content -->
+    <div class="menu-inner-shadow"></div>
+    <ul class="menu-inner py-1">
+        <li class="menu-item active">
+            <a href="{{ path('app_eventback_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar-event"></i>
+                <div data-i18n="Events">Events</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="{{ path('app_eventback_new') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-plus-circle"></i>
+                <div data-i18n="Create Event">Create Event</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="{{ path('app_eventback_registration_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-list-ul"></i>
+                <div data-i18n="View Registrations">View Registrations</div>
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block body %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="edit-container">
+        <!-- Header Section -->
+        <div class="edit-header">
+            <h4>Edit Event Registration</h4>
+            <p class="text-muted mb-0">Update registration details below</p>
+        </div>
+
+        <!-- Main Form Section -->
+        <div class="form-section">
+            {{ form_start(form, {
+                'attr': {
+                    'novalidate': 'novalidate',
+                    'class': 'needs-validation'
+                }
+            }) }}
+
+            {% if form_errors(form) %}
+                <div class="form-error">
+                    <i class="bx bx-error-circle text-danger me-2"></i>
+                    <div class="text-danger">
+                        <strong>Validation Errors:</strong>
+                        {{ form_errors(form) }}
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Registration Date Field -->
+            <div class="mb-4">
+                {{ form_label(form.registration_date, null, {
+                    'label_attr': {'class': 'form-label'}
+                }) }}
+                <div class="input-group">
+                    {{ form_widget(form.registration_date, {
+                        'attr': {
+                            'class': 'form-control flatpickr-input ' ~ (form.registration_date.vars.errors|length ? 'is-invalid' : ''),
+                            'placeholder': 'Select date & time'
+                        }
+                    }) }}
+                </div>
+                <div class="invalid-feedback">
+                    {{ form_errors(form.registration_date) }}
+                </div>
+            </div>
+
+            <!-- Status Field -->
+            <!-- Status Field -->
+            <div class="mb-4">
+                {% if form.status is defined %}
+                    {{ form_label(form.status, null, {
+                        'label_attr': {'class': 'form-label'}
+                    }) }}
+                    {{ form_widget(form.status, {
+                        'attr': {
+                            'class': 'form-select ' ~ (form.status.vars.errors|length ? 'is-invalid' : '')
+                        }
+                    }) }}
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.status) }}
+                    </div>
+                {% endif %}
+            </div>
+            <!-- Form Actions -->
+            <div class="d-flex justify-content-between align-items-center mt-5">
+                <button type="submit" class="btn btn-update">
+                    <i class="bx bx-save me-2"></i>
+                    Update Registration
+                </button>
+                
+                <a href="{{ path('app_eventback_registration_index') }}" class="back-link">
+                    <i class="bx bx-chevron-left scaleX-n1-rtl"></i>
+                    Back to List
+                </a>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="delete-section">
+            <h6 class="text-danger mb-3">
+                <i class="bx bx-trash me-2"></i>
+                Danger Zone
+            </h6>
+            {{ include('event_registration/_delete_form.html.twig') }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ asset('vendor/libs/flatpickr/flatpickr.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize datepicker
+    flatpickr('.flatpickr-input', {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        time_24hr: true,
+        minDate: "today"
+    });
+
+    // Enhanced form validation
+    const forms = document.querySelectorAll('.needs-validation');
+    forms.forEach(form => {
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            form.classList.add('was-validated');
+            
+            // Add loading state
+            const submitBtn = form.querySelector('[type="submit"]');
+            if (submitBtn) {
+                submitBtn.innerHTML = `
+                    <span class="spinner-border spinner-border-sm" role="status"></span>
+                    Updating...
+                `;
+                submitBtn.disabled = true;
+            }
+        }, false);
+    });
+
+    // Delete confirmation
+    document.querySelectorAll('.delete-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            if (!confirm('Are you sure you want to delete this registration?')) {
+                e.preventDefault();
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}Edit Reservation #{{ reservation.id }}{% endblock %}
+{% block hero_banner %}
+<div class="container-xxl py-5 bg-primary hero-header mb-5">
+    <div class="container my-5 py-5 px-lg-5">
+        <div class="row g-5 py-5">
+            <div class="col-12 text-center">
+                <h1 class="text-white animated zoomIn">Make a Reservation</h1>
+                <hr class="bg-white mx-auto mt-0" style="width: 90px;">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                        <li class="breadcrumb-item"><a class="text-white" href="{{ path('app_front_home') }}">Home</a></li>
+                        <li class="breadcrumb-item text-white active" aria-current="page">New Reservation</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h1 class="mb-5">Edit Reservation #{{ reservation.id }}</h1>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="card shadow-sm border-0 rounded-4">
+                        <div class="card-header bg-primary text-white rounded-top-4">
+                            <h4 class="mb-0">Reservation Details</h4>
+                            <span class="badge bg-{{ reservation.status == 'approved' ? 'success' : (reservation.status == 'rejected' ? 'danger' : 'warning') }}">
+                                {{ reservation.status|upper }}
+                            </span>
+                        </div>
+                        <div class="card-body p-4">
+                            {{ form_start(form) }}
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            {{ form_widget(form.date, {
+                                                'attr': {
+                                                    'class': 'form-control',
+                                                    'placeholder': 'Select Date'
+                                                }
+                                            }) }}
+                                            {{ form_label(form.date) }}
+                                            {{ form_errors(form.date) }}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            {{ form_widget(form.destination, {
+                                                'attr': {
+                                                    'class': 'form-select',
+                                                    'placeholder': 'Select Destination'
+                                                }
+                                            }) }}
+                                            {{ form_label(form.destination) }}
+                                            {{ form_errors(form.destination) }}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            {{ form_widget(form.seats, {
+                                                'attr': {
+                                                    'class': 'form-control',
+                                                    'placeholder': 'Number of Seats',
+                                                    'min': 1
+                                                }
+                                            }) }}
+                                            {{ form_label(form.seats) }}
+                                            {{ form_errors(form.seats) }}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            {{ form_widget(form.paymentMode, {
+                                                'attr': {
+                                                    'class': 'form-select',
+                                                    'placeholder': 'Payment Mode'
+                                                }
+                                            }) }}
+                                            {{ form_label(form.paymentMode) }}
+                                            {{ form_errors(form.paymentMode) }}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            {{ form_widget(form.transport, {
+                                                'attr': {
+                                                    'class': 'form-select',
+                                                    'placeholder': 'Select Transport'
+                                                }
+                                            }) }}
+                                            {{ form_label(form.transport) }}
+                                            {{ form_errors(form.transport) }}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            {{ form_widget(form.agent, {
+                                                'attr': {
+                                                    'class': 'form-select',
+                                                    'placeholder': 'Select Agent'
+                                                }
+                                            }) }}
+                                            {{ form_label(form.agent) }}
+                                            {{ form_errors(form.agent) }}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-12 mt-4">
+                                        <div class="d-flex justify-content-end gap-3">
+                                            <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}" class="btn btn-secondary px-4">
+                                                <i class="fas fa-times me-2"></i> Cancel
+                                            </a>
+                                            <button type="submit" class="btn btn-primary px-4">
+                                                <i class="fas fa-save me-2"></i> Save Changes
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: 1px solid rgba(0,0,0,.125);
+    }
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+    }
+    .form-floating > label {
+        padding: 1rem 0.75rem;
+    }
+    .form-control, .form-select {
+        height: calc(3.5rem + 2px);
+        padding: 1rem 0.75rem;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 0.25rem rgba(0, 102, 204, 0.25);
+    }
+</style>
+{% endblock %}

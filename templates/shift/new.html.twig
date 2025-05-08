@@ -1,0 +1,20 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Create new Shift{% endblock %}
+
+{% block body %}
+    <h1>Create new Shift</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.driver) }}  {# This will display the driver selection field #}
+        {{ form_row(form.transport) }}
+        {{ form_row(form.startTime) }}
+        {{ form_row(form.endTime) }}
+        {{ form_row(form.type) }}
+
+
+        <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_shift_index') }}">Back to list</a>
+{% endblock %}

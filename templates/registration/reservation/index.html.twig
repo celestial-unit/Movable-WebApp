@@ -1,0 +1,117 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}My Reservations{% endblock %}
+
+{% block hero_banner %}
+<div class="container-xxl py-5 bg-primary hero-header mb-5">
+    <div class="container my-5 py-5 px-lg-5">
+        <div class="row g-5 py-5">
+            <div class="col-12 text-center">
+                <h1 class="text-white animated zoomIn">My Reservations</h1>
+                <hr class="bg-white mx-auto mt-0" style="width: 90px;">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                        <li class="breadcrumb-item"><a class="text-white" href="{{ path('app_front_home') }}">Home</a></li>
+                        <li class="breadcrumb-item text-white active" aria-current="page">My Reservations</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header bg-primary text-white rounded-top-4 d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">My Reservation History</h4>
+                <a href="{{ path('app_reservation_new') }}" class="btn btn-light">
+                    <i class="bx bx-plus me-1"></i> New Reservation
+                </a>
+            </div>
+            <div class="card-body p-4">
+                {% if reservations|length > 0 %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Date & Time</th>
+                                    <th>Destination</th>
+                                    <th>Status</th>
+                                    <th>Seats</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for reservation in reservations %}
+                                <tr>
+                                    <td>{{ reservation.id }}</td>
+                                    <td>{{ reservation.date|date('Y-m-d H:i') }}</td>
+                                    <td>{{ reservation.destination ? reservation.destination.name : 'N/A' }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ reservation.status == 'approved' ? 'success' : (reservation.status == 'rejected' ? 'danger' : 'warning') }}">
+                                            {{ reservation.status|upper }}
+                                        </span>
+                                    </td>
+                                    <td>{{ reservation.seats }}</td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}" 
+                                               class="btn btn-sm btn-outline-primary"
+                                               title="View Details">
+                                                <i class="bx bx-show"></i>
+                                            </a>
+                                            {% if reservation.isPending() %}
+                                                <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}" 
+                                                   class="btn btn-sm btn-outline-secondary"
+                                                   title="Edit">
+                                                    <i class="bx bx-edit"></i>
+                                                </a>
+                                                <form action="{{ path('app_reservation_cancel', {'id': reservation.id}) }}" 
+                                                      method="post" 
+                                                      onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('cancel' ~ reservation.id) }}">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Cancel">
+                                                        <i class="bx bx-x"></i>
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                            {% if reservation.isApproved() and reservation.tickets|length > 0 %}
+                                                <a href="{{ path('app_ticket_show', {'id': reservation.tickets.first.id}) }}" 
+                                                   class="btn btn-sm btn-outline-success"
+                                                   title="View Ticket">
+                                                    <i class="bx bx-ticket"></i>
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info text-center">
+                        <i class="bx bx-info-circle me-2"></i>
+                        You don't have any reservations yet. 
+                        <a href="{{ path('app_reservation_new') }}" class="alert-link">Create your first reservation</a>.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add any JavaScript functionality you need
+    // For example, confirmation dialogs or AJAX actions
+});
+</script>
+{% endblock %}

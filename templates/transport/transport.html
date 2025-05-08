@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transportation Management</title>
+    <link rel="stylesheet" href="css_halima.css">
+</head>
+<body>
+    <header>
+        <h1>Transportation Management</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="transport/transport.html">Add Transportation</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Form Section (Left Side) -->
+            <section class="form-container">
+                <h2>Add New Transport</h2>
+                <form action="transport/transport.html" method="POST">
+                    <div class="form-group">
+                        <label for="type">Type</label>
+                        <input type="text" id="type" name="type" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="capacity">Capacity</label>
+                        <input type="number" id="capacity" name="capacity" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="availability">Availability</label>
+                        <select id="availability" name="availability">
+                            <option value="available">Available</option>
+                            <option value="unavailable">Unavailable</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="destination">Destination</label>
+                        <input type="text" id="destination" name="destination" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Add Transport</button>
+                </form>
+            </section>
+
+            <!-- Table Section (Right Side) -->
+            <section class="table-container">
+                <h2>Transportation List</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Type</th>
+                            <th>Capacity</th>
+                            <th>Availability</th>
+                            <th>Destination</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Transportation data will be dynamically added here -->
+                        <tr>
+                            <td>1</td>
+                            <td>Bus</td>
+                            <td>40</td>
+                            <td>Available</td>
+                            <td>Tunis</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Car</td>
+                            <td>4</td>
+                            <td>Unavailable</td>
+                            <td>Hammamet</td>
+                        </tr>
+                        <!-- More transport rows can be added here -->
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Transportation Management</p>
+    </footer>
+</body>
+</html>

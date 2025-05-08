@@ -1,0 +1,26 @@
+{% extends "admin/layouts/admin.html.twig" %}
+
+{% block title %}New Destination{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/destination.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Create New Destination</h1>
+
+        <div class="mb-3">
+            {{ include('Destinations/destination/_form.html.twig') }}
+        </div>
+
+        <a href="{{ path('Destinations_page') }}" class="btn btn-secondary">Back to List</a>
+    </div>
+{% endblock %}

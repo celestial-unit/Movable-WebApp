@@ -1,0 +1,49 @@
+{% for agent in agents %}
+    <div class="col-md-6 col-lg-4 mb-4" data-turbo-frame="agent_{{ agent.id }}">
+        <div class="card h-100">
+            <img src="{{ asset(agent.pictureP) }}" class="card-img-top" alt="{{ agent.name }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ agent.name }}</h5>
+                <p><strong>Email:</strong> {{ agent.email }}</p>
+                <p><strong>Phone:</strong> {{ agent.phone }}</p>
+                <p><strong>Type:</strong> {{ agent.type }}</p>
+                <p><strong>Birthdate:</strong> {{ agent.birthdate ? agent.birthdate|date('Y-m-d') : 'N/A' }}</p>
+
+                <div class="d-flex justify-content-between mt-3">
+                    <a href="{{ path('agent_edit', { id: agent.id }) }}" 
+                       class="btn btn-primary btn-sm"
+                       data-turbo-frame="_top">
+                        Edit
+                    </a>
+                    <a href="{{ path('agent_delete', { id: agent.id }) }}"
+                       class="btn btn-danger btn-sm"
+                       data-turbo-confirm="Are you sure you want to delete this agent?"
+                       data-turbo-method="delete">
+                        Delete
+                    </a>
+                </div>
+
+                <div class="d-grid gap-2 mt-3">
+                    <a href="{{ asset('uploads/agents/map.html') ~ '?agent_id=' ~ agent.id }}"
+                       class="btn btn-outline-success btn-sm"
+                       target="_blank">
+                        <i class="bi bi-geo-alt-fill me-1"></i> Track in Real Time
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+{% if agents|length == 0 %}
+    <div class="col-12">
+        <p class="text-center">No agents found.</p>
+    </div>
+{% endif %}
+
+<!-- Pagination -->
+<div class="col-12">
+    <div class="d-flex justify-content-center mt-4">
+        {{ knp_pagination_render(agents) }}
+    </div>
+</div> 

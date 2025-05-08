@@ -1,0 +1,87 @@
+{% extends "admin/layouts/admin.html.twig" %}
+
+{% block title %}Transport Management{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h1 class="mb-4">Transport Management</h1>
+
+    <div class="row">
+        <!-- Form section (left side) -->
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="card p-4">
+                <h4 class="mb-3 text-center">Add or Edit Means of Transportation</h4>
+                {{ form_start(form) }}
+                    <div class="mb-3">
+                        {{ form_label(form.type) }}
+                        {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.capacity) }}
+                        {{ form_widget(form.capacity, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        {{ form_widget(form.disponibility, {'attr': {'class': 'form-check-input'}}) }}
+                        {{ form_label(form.disponibility, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.destination) }}
+                        {{ form_widget(form.destination, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    {{ form_row(form.submit) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+        <!-- Table section (right side) -->
+        <div class="col-lg-6 col-md-12">
+            <div class="card p-4">
+                <h4 class="mb-3">Available Means of Transportation</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Capacity</th>
+                            <th>Availability</th>
+                            <th>Destination</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transport in transports %}
+                            <tr>
+                                <td>{{ transport.type }}</td>
+                                <td>{{ transport.capacity }}</td>
+                                <td>{{ transport.disponibility ? 'Available' : 'Not Available' }}</td>
+                                <td>{{ transport.destination }}</td>
+                                <td>
+                                    <a href="{{ path('transport_edit', {'id': transport.id}) }}" class="btn btn-sm btn-warning">Edit</a>
+                                    <a href="{{ path('transport_delete', {'id': transport.id}) }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this transport?');">Delete</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center">No transport entries found.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Button to navigate to the drivers list -->
+    <div class="text-center mt-4">
+        <a href="{{ path('driver_index') }}" class="btn btn-info">
+            <i class="bi bi-people"></i> Show Drivers List
+        </a>
+    </div>
+</div>
+
+<link href="{{ asset('css/css_halimaa.css') }}" rel="stylesheet">
+{% endblock %}
+

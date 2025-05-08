@@ -1,0 +1,181 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}Check Reservation Status{% endblock %}
+
+{% block hero_banner %}
+<div class="container-xxl py-5 bg-primary hero-header mb-5">
+    <div class="container my-5 py-5 px-lg-5">
+        <div class="row g-5 py-5">
+            <div class="col-12 text-center">
+                <h1 class="text-white animated zoomIn">Check Reservation Status</h1>
+                <hr class="bg-white mx-auto mt-0" style="width: 90px;">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                        <li class="breadcrumb-item"><a class="text-white" href="{{ path('app_front_home') }}">Home</a></li>
+                        <li class="breadcrumb-item text-white active" aria-current="page">Check Status</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Check Reservation Status</h4>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                        <div class="mb-3">
+                            {{ form_label(form.email, 'Enter your email address', {'label_attr': {'class': 'form-label'}}) }}
+{{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'your@email.com', 'name': 'email'}}) }}                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Check Status</button>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+
+            <div id="statusResult" class="mt-4"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const resultDiv = document.getElementById('statusResult');
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const email = formData.get('email');
+        
+        // Show loading state
+        resultDiv.innerHTML = `
+           <div class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Checking your reservation...</p>
+            </div>
+        `;
+            // Create proper FormData object
+        const formData = new FormData();
+        formData.append('email', email);
+        
+        fetch('{{ path('app_reservation_check') }}', {
+            method: 'POST',
+            body: formData  // Send as FormData instead of JSON
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // ... rest of your success handling code ...
+        })
+        .catch(error => {
+            resultDiv.innerHTML = `
+                <div class="alert alert-danger">Error: ${error.message || 'An error occurred while checking your reservation'}</div>
+            `;
+            console.error('Error:', error);
+        });
+    });
+});
+        
+        fetch('{{ path('app_reservation_check') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: email })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const reservation = data.reservation;
+                let statusBadgeClass = 'bg-secondary';
+                let statusText = reservation.status;
+                
+                // Set appropriate badge color based on status
+                if (reservation.status === 'approved') {
+                    statusBadgeClass = 'bg-success';
+                } else if (reservation.status === 'pending') {
+                    statusBadgeClass = 'bg-warning';
+                } else if (reservation.status === 'rejected') {
+                    statusBadgeClass = 'bg-danger';
+                }
+                
+                let html = `
+                    <div class="card mb-4">
+                        <div class="card-header ${statusBadgeClass} text-white">
+                            <h5 class="mb-0">Reservation #${reservation.id}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Reservation Details</h5>
+                                    <p><strong>Status:</strong> <span class="badge ${statusBadgeClass}">${statusText.toUpperCase()}</span></p>
+                                    <p><strong>Date:</strong> ${reservation.date}</p>
+                                    <p><strong>Location:</strong> ${reservation.location}</p>
+                                    <p><strong>Seats:</strong> ${reservation.seats}</p>
+                                    <p><strong>Payment Mode:</strong> ${reservation.paymentMode}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Transport Details</h5>
+                                    <p><strong>Transport:</strong> ${reservation.transport}</p>
+                                    <p><strong>Driver:</strong> ${reservation.driver}</p>
+                                </div>
+                            </div>
+                `;
+                
+                if (reservation.hasTicket && reservation.ticketId) {
+                    html += `
+                        <div class="mt-4">
+                            <h5>Ticket Information</h5>
+                            <p><strong>Ticket Number:</strong> ${reservation.ticketNumber}</p>
+                            <div class="d-grid gap-2 mt-3">
+                                <a href="{{ path('app_ticket_show', {'id': 'PLACEHOLDER'}) }}".replace('PLACEHOLDER', reservation.ticketId)" class="btn btn-primary">
+                                    View Ticket Details
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                } else if (reservation.status === 'approved') {
+                    html += `
+                        <div class="mt-4">
+                            <div class="alert alert-info">
+                                Your ticket is being processed. Please check back later.
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                html += `</div></div>`;
+                
+                resultDiv.innerHTML = html;
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="alert alert-danger">${data.message}</div>
+                `;
+            }
+        })
+        .catch(error => {
+            resultDiv.innerHTML = `
+                <div class="alert alert-danger">An error occurred while checking your reservation. Please try again.</div>
+            `;
+            console.error(error);
+        });
+    });
+});
+</script>
+{% endblock %}

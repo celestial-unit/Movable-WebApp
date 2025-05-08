@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Event Ticket</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            background: #f0f2f5;
+            min-height: 100vh;
+        }
+
+        .ticket {
+            background: #ffffff;
+            border-radius: 12px;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Header Strip */
+        .ticket::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #4a90e2 0%, #6c5ce7 100%);
+        }
+
+        .header {
+            padding: 30px 30px 20px;
+            text-align: center;
+            border-bottom: 2px dashed #e0e0e0;
+        }
+
+        .event-title {
+            color: #2d3436;
+            font-size: 32px;
+            margin: 0 0 10px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .details-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .detail-item {
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .detail-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+        }
+
+        .date::before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%234a90e2"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg>'); }
+        .location::before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%234a90e2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>'); }
+        .attendee::before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%234a90e2"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>'); }
+        .registration-date::before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%234a90e2"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>'); }
+
+        .detail-label {
+            color: #636e72;
+            font-size: 14px;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: #2d3436;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .qr-section {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fb;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .qr-code {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 15px;
+        }
+
+        .footer {
+            padding: 25px 30px;
+            background: #f8f9fb;
+            border-top: 2px dashed #e0e0e0;
+            text-align: center;
+            font-size: 13px;
+            color: #636e72;
+        }
+
+        .ticket-number {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #636e72;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .watermark {
+            position: absolute;
+            opacity: 0.1;
+            font-size: 120px;
+            font-weight: 700;
+            color: #4a90e2;
+            transform: rotate(-45deg);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .tear-line {
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                #e0e0e0 10px,
+                #e0e0e0 20px
+            );
+        }
+    </style>
+</head>
+<body>
+    <div class="ticket">
+        
+        <div class="tear-line"></div>
+        <div class="ticket-number">Ticket #{{ registration.id }}</div>
+        
+        <div class="header">
+            <h1 class="event-title">{{ event.title }}</h1>
+        </div>
+
+        <div class="details-container">
+            <div class="details">
+                <div class="detail-item date">
+                    <div class="detail-label">Date & Time</div>
+                    <div class="detail-value">
+                        {{ event.date }}<br>
+                        {{ event.time }}
+                    </div>
+                </div>
+
+                <div class="detail-item location">
+                    <div class="detail-label">Location & Duration</div>
+                    <div class="detail-value">
+                        {{ event.location }}<br>
+                        {{ event.duration }}
+                    </div>
+                </div>
+
+                <div class="detail-item attendee">
+                    <div class="detail-label">Attendee</div>
+                    <div class="detail-value">
+                        {{ user.name }}<br>
+                        {{ user.email }}
+                    </div>
+                </div>
+
+                <div class="detail-item registration-date">
+                    <div class="detail-label">Registration Date</div>
+                    <div class="detail-value">
+                        {{ registration.date }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="qr-section">
+                <img class="qr-code" src="{{ qr_code }}" alt="Event Ticket QR Code">
+                <div style="font-size: 14px; color: #4a90e2; font-weight: 500; margin-top: 10px;">
+                    Scan to verify
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div style="margin-bottom: 8px;">Present this ticket at the entrance • Valid for 1 person</div>
+            <div style="font-size: 12px;">No re-entry allowed • Non-transferable • ID may be required</div>
+        </div>
+    </div>
+</body>
+</html>

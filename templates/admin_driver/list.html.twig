@@ -1,0 +1,181 @@
+{% extends 'base1.html.twig' %}
+{% block sidebar %}
+
+    <div class="app-brand demo">
+        <a href="{{ path('app_dashboard') }}" class="app-brand-link">
+            <span class="app-brand-logo demo">
+                <i class="bx bx-car fs-3 text-primary"></i>
+            </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">Movable Admin</span>
+        </a>
+
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+        <!-- Dashboard -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_dashboard' ? 'active' : '' }}">
+            <a href="{{ path('app_dashboard') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div>Dashboard</div>
+            </a>
+        </li>
+
+        <li class="menu-item">
+            <a href="{{ path('app_front_home') }}" class="menu-link front-website-link">
+                <i class="menu-icon tf-icons bx bx-world"></i>
+                <div>Visit Website</div>
+            </a>
+        </li>
+        
+        <li class="menu-item {{ app.request.get('_route') == 'app_admin_users' ? 'active' : '' }}">
+            <a href="{{ path('app_admin_users') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user-circle"></i>
+                <div>Users</div>
+            </a>
+        </li>
+
+        <!-- Claims Management -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_reclamation_dashboard' ? 'active' : '' }}">
+            <a href="{{ path('app_reclamation_dashboard') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-message-square-detail"></i>
+                <div>Claims</div>
+            </a>
+        </li>
+
+        <!-- Banned Users -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_admin_banned_users' ? 'active' : '' }}">
+            <a href="{{ path('app_admin_banned_users') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-block"></i>
+                <div>Banned Users</div>
+            </a>
+        </li>
+
+            <!-- Agents Management -->
+<li class="menu-item {{ app.request.get('_route') starts with 'agent_list_admin' ? 'active' : '' }}">
+    <a href="{{ path('agent_list_admin') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-user"></i>
+        <div>Agents</div>
+    </a>
+</li>
+            <!-- Offices Management -->
+<li class="menu-item {{ app.request.get('_route') starts with 'office_list_admin' ? 'active' : '' }}">
+    <a href="{{ path('office_list_admin') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-user"></i>
+        <div>Offices</div>
+    </a>
+</li>
+
+<!-- Destination Management -->
+<li class="menu-item {{ app.request.get('_route') starts with 'Destinations_page' ? 'active' : '' }}">
+    <a href="{{ path('Destinations_page') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-user"></i>
+        <div>Destination</div>
+    </a>
+</li>
+            <!-- Parkingspot Management -->
+<li class="menu-item {{ app.request.get('_route') starts with 'Parking spot page' ? 'active' : '' }}">
+    <a href="{{ path('app_parkingspot_index') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-user"></i>
+        <div>Parking spot </div>
+    </a>
+</li>
+<!-- Transport Management -->
+
+<li class="menu-item {{ app.request.get('_route') starts with 'Parking spot page' ? 'active' : '' }}">
+    <a href="{{ path('admin_transport_index') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-user"></i>
+        <div>Transport </div>
+    </a>
+</li>
+<!-- Transport Stats -->
+    <li class="menu-item {% if app.request.get('_route') == 'admin_transport_stat' %}active{% endif %}">
+        <a href="{{ path('admin_transport_stat') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-bar-chart"></i>
+            <div>Transport Stats</div>
+        </a>
+    </li>
+<!-- Driver Management -->
+<li class="menu-item {{ app.request.get('_route') starts with 'Parking spot page' ? 'active' : '' }}">
+    <a href="{{ path('admin_driver_index') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-user"></i>
+        <div>Driver </div>
+    </a>
+</li>
+    
+
+
+        <!-- Events Management -->
+        <li class="menu-item {{ app.request.get('_route') starts with 'app_event' ? 'active' : '' }}">
+            <a href="{{ path('app_eventback_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar"></i>
+                <div>Events</div>
+            </a>
+        </li>
+         
+
+        <!-- Reservation Management -->
+        <li class="menu-item {{ app.request.get('_route') starts with 'admin_waitlist_' ? 'active' : '' }}">
+            <a href="{{ path('admin_waitlist_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar-check"></i>
+                <div>Reservations</div>
+            </a>
+        </li>
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">System</span>
+        </li>
+    </ul>
+
+   
+
+    <!-- Transport Stats -->
+    <li class="menu-item {% if app.request.get('_route') == 'admin_transport_stat' %}active{% endif %}">
+        <a href="{{ path('admin_transport_stat') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-bar-chart"></i>
+            <div>Transport Stats</div>
+        </a>
+    </li>
+
+{% endblock %}
+{% block body %}
+    <h1>List of Drivers</h1>
+
+    <a href="{{ path('admin_driver_new') }}" class="btn btn-success">+ Add a driver</a>
+
+    <table border="1" cellspacing="0" cellpadding="5">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Licence Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for driver in drivers %}
+                <tr>
+                    <td>{{ driver.id }}</td>
+                    <td>{{ driver.name }}</td>
+                    <td>{{ driver.licenceNumber }}</td>
+                    <td>{{ driver.transportId }}</td>
+                    <td>
+                        <a href="{{ path('admin_driver_edit', {id: driver.id}) }}" class="btn btn-primary">Edit</a>
+
+                        <form method="post" action="{{ path('admin_driver_delete', {'id': driver.id}) }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this driver?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ driver.id) }}">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">No driver found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

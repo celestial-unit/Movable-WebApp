@@ -1,0 +1,81 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Calendar{% endblock %}
+{% block sidebar %}
+
+
+    <!-- Transport -->
+    <li class="menu-item {% if app.request.get('_route') starts with 'admin_transport_' %}active{% endif %}">
+        <a href="{{ path('admin_transport_index') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-bus"></i>
+            <div>Transport (Admin)</div>
+        </a>
+    </li>
+
+    <!-- Transport Stats -->
+    <li class="menu-item {% if app.request.get('_route') == 'admin_transport_stat' %}active{% endif %}">
+        <a href="{{ path('admin_transport_stat') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-bar-chart"></i>
+            <div>Transport Stats</div>
+        </a>
+    </li>
+
+    <!-- Drivers -->
+    <li class="menu-item {% if app.request.get('_route') starts with 'admin_driver_' %}active{% endif %}">
+        <a href="{{ path('admin_driver_index') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-id-card"></i>
+            <div>Driver</div>
+        </a>
+    </li>
+</ul>
+{% endblock %}
+{% block body %}
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css" rel="stylesheet" />
+
+    <div id="calendar"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
+
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: '/shift/api/shifts',
+            editable: true, // ✅ Make calendar draggable
+
+            eventTimeFormat: {
+                hour: 'numeric',
+                minute: '2-digit',
+                meridiem: false
+            },
+            locale: 'en',
+
+            // ✅ Tooltip on hover
+            eventDidMount: function(info) {
+                info.el.setAttribute("title", info.event.extendedProps.description);
+            },
+
+            // ✅ Clickable events
+            eventClick: function(info) {
+                // Prevent default anchor behavior
+                info.jsEvent.preventDefault();
+                // Redirect to the calendar page
+                window.location.href = '/shift/calendar'; // Ensure this goes to /shift/calendar
+            },
+
+            // ✅ Handle drag & drop
+            eventDrop: function(info) {
+                console.log("New start:", info.event.start.toISOString());
+                console.log("New end:", info.event.end ? info.event.end.toISOString() : "None");
+
+                // Here you could send an AJAX request to update the DB
+            },
+        });
+
+        calendar.render();
+    });
+</script>
+
+{% endblock %}

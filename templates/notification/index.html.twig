@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Notifications</h1>
+    
+    <div class="d-flex justify-content-end mb-3">
+        <button id="markAllAsRead" class="btn btn-primary">Mark all as read</button>
+    </div>
+
+    <div class="list-group">
+        {% for notification in notifications %}
+            <div class="list-group-item list-group-item-action notification-item" data-id="{{ notification.id }}">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ notification.message }}</h5>
+                    <small>{{ notification.createdAt|date('Y-m-d H:i') }}</small>
+                </div>
+                {% if notification.type %}
+                    <small class="text-muted">Type: {{ notification.type }}</small>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">No unread notifications</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Mark all as read
+    document.getElementById('markAllAsRead').addEventListener('click', function() {
+        fetch('{{ path('app_notification_mark_all_as_read') }}', {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        }).then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  location.reload();
+              }
+          });
+    });
+
+    // Mark individual notification as read
+    document.querySelectorAll('.notification-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const notificationId = this.dataset.id;
+            fetch(`/notifications/mark-as-read/${notificationId}`, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      this.remove();
+                  }
+              });
+        });
+    });
+});
+</script>
+{% endblock %} 

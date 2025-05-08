@@ -1,0 +1,8 @@
+<h1>Your Ticket</h1>
+
+<p>Reservation: {{ ticket.reservation.id }}</p>
+<p>Status: {{ ticket.status }}</p>
+<p>Destination: {{ ticket.destination }}</p>
+<p>Transport: {{ ticket.transport }}</p>
+<p>Payment Mode: {{ ticket.paymentMode }}</p>
+<p>Issued At: {{ ticket.createdAt|date('Y-m-d H:i:s') }}</p>

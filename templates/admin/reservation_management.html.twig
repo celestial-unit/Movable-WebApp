@@ -1,0 +1,232 @@
+{% extends 'admin/layouts/admin.html.twig' %}
+
+{% block title %}Reservation Management{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize date pickers
+            const dateInputs = document.querySelectorAll('.date-picker');
+            dateInputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.type = 'date';
+                });
+                input.addEventListener('blur', function() {
+                    if (!this.value) this.type = 'text';
+                });
+            });
+        });
+    </script>
+{% endblock %}
+{% block body %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Header with navigation buttons -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold py-3 mb-0">
+            <span class="text-muted fw-light">Admin /</span> Reservation Management
+        </h4>
+        <div class="btn-group">
+            <a href="{{ path('admin_reservations_approved') }}" class="btn btn-success">
+                <i class="bx bx-check-circle me-1"></i> Approved
+            </a>
+            <a href="{{ path('admin_reservations_rejected') }}" class="btn btn-danger">
+                <i class="bx bx-x-circle me-1"></i> Rejected
+            </a>
+            <a href="{{ path('admin_calendar') }}" class="btn btn-primary">
+                <i class="bx bx-calendar me-1"></i> Calendar
+            </a>
+            <a href="{{ path('admin_statistics') }}" class="btn btn-info">
+                <i class="bx bx-stats me-1"></i> Statistics
+            </a>
+        </div>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Search & Filter Reservations</h5>
+        </div>
+        <div class="card-body">
+            <form method="get" action="{{ path('admin_waitlist_index') }}">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Date Range</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control date-picker" placeholder="From" name="date_from">
+                            <input type="text" class="form-control date-picker" placeholder="To" name="date_to">
+                        </div>
+                    </div>
+                   <div class="col-md-3">
+    <label class="form-label">Destination</label>
+    <select class="form-select" name="destination">
+    <option value="">All Destinations</option>
+    {% if destinations is empty %}
+        <option value="" disabled>No destinations available</option>
+    {% else %}
+        {% for destination in destinations %}
+            <option value="{{ destination.iddestination }}">{{ destination.name }}</option>
+        {% endfor %}
+    {% endif %}
+</select>
+</div>
+                    <div class="col-md-2">
+                        <label class="form-label">Transport Type</label>
+                        <select class="form-select" name="transport">
+                            <option value="">All Types</option>
+                            <option value="bus">Bus</option>
+                            <option value="train">Train</option>
+                            <option value="plane">Plane</option>
+                            <option value="boat">Boat</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Agent Type</label>
+                        <select class="form-select" name="agent_type">
+                            <option value="">All Agents</option>
+                            <option value="regular">Regular</option>
+                            <option value="premium">Premium</option>
+                            <option value="vip">VIP</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Sort By</label>
+                        <select class="form-select" name="sort">
+                            <option value="price_asc">Price (Low to High)</option>
+                            <option value="price_desc">Price (High to Low)</option>
+                            <option value="date_asc">Date (Oldest First)</option>
+                            <option value="date_desc">Date (Newest First)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bx bx-search"></i> Search
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Pending</h5>
+                    <h2 class="mb-0">{{ pending_reservations|length }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Approved</h5>
+                    <h2 class="mb-0">{{ approved_count }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Rejected</h5>
+                    <h2 class="mb-0">{{ rejected_count }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservations Table -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Pending Reservations</h5>
+            <small class="text-muted">Showing {{ pending_reservations|length }} records</small>
+        </div>
+        <div class="table-responsive text-nowrap">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>User</th>
+                        <th>Destination</th>
+                        <th>Date</th>
+                        <th>Seats</th>
+                        <th>Price</th>
+                        <th>Transport</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    {% for reservation in pending_reservations %}
+                        <tr>
+                            <td>{{ reservation.id }}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar avatar-sm me-3">
+                                        <span class="avatar-initial rounded-circle bg-primary">
+                                            {{ reservation.user.firstName|first }}{{ reservation.user.lastName|first }}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0">{{ reservation.user.fullName }}</h6>
+                                        <small class="text-muted">{{ reservation.user.email }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ reservation.destination ? reservation.destination.name : reservation.location }}</td>
+                            <td>{{ reservation.date|date('Y-m-d H:i') }}</td>
+                            <td>{{ reservation.seats }}</td>
+                            <td>{{ reservation.price|default('N/A') }} TND</td>
+                            <td>
+                                {% if reservation.transport is defined and reservation.transport is not null %}
+                                    {{ reservation.transportType|default(reservation.transport.type|default('N/A')) }}
+                                {% else %}
+                                    {{ reservation.transportType|default('N/A') }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge bg-label-warning">Pending</span>
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <form method="post" action="{{ path('admin_waitlist_accept', {'id': reservation.id}) }}">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ reservation.id) }}">
+                                            <button type="submit" class="dropdown-item text-success">
+                                                <i class="bx bx-check-circle me-1"></i> Accept
+                                            </button>
+                                        </form>
+                                        <form method="post" action="{{ path('admin_waitlist_reject', {'id': reservation.id}) }}">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('reject' ~ reservation.id) }}">
+                                            <button type="submit" class="dropdown-item text-danger" 
+                                                    onclick="return confirm('Are you sure you want to reject this reservation?')">
+                                                <i class="bx bx-x-circle me-1"></i> Reject
+                                            </button>
+                                        </form>
+                                        <a class="dropdown-item" href="{{ path('app_reservation_show', {'id': reservation.id}) }}">
+                                            <i class="bx bx-show me-1"></i> View Details
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="9" class="text-center py-3">
+                                <div class="text-muted">
+                                    <i class="bx bx-calendar-check fs-3 mb-2"></i>
+                                    <p>No pending reservations found</p>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %} 

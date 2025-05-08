@@ -1,0 +1,55 @@
+{# templates/event/coordinates.html.twig #}
+
+{% extends 'front/base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+{% endblock %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="container px-lg-5">
+        <!-- Add spacing before map -->
+        
+
+        <!-- Map container with top margin -->
+        <div class="mt-4" style="height: 600px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div id="map" style="height: 100%; width: 100%;"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const map = L.map('map').setView([34.0000, 9.0000], 6);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    {% for event in events %}
+        const marker{{ loop.index }} = L.marker([
+            {{ event.coordinates.latitude }}, 
+            {{ event.coordinates.longitude }}
+        ]).addTo(map);
+        
+        marker{{ loop.index }}.bindPopup(`
+            <b>{{ event.entity.title }}</b><br>
+            📅 {{ event.entity.dateevent|date('Y-m-d') }}<br>
+            ⏰ {{ event.entity.startEvent|date('H:i') }}<br>
+            📍 {{ event.entity.status }}<br>
+            {{ event.entity.description|slice(0, 50) }}...
+        `);
+    {% endfor %}
+    
+    // Auto-fit the map to markers
+    const group = new L.featureGroup([{% for event in events %}marker{{ loop.index }}{% if not loop.last %}, {% endif %}{% endfor %}]);
+    map.fitBounds(group.getBounds().pad(0.1));
+});
+</script>
+{% endblock %}

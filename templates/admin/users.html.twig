@@ -1,0 +1,311 @@
+{% extends 'admin/layouts/admin.html.twig' %}
+
+{% block title %}User Management - Admin Dashboard{% endblock %}
+
+{% block body %}
+<h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">Admin /</span> User Management
+</h4>
+
+<!-- Flash Messages -->
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ label }} alert-dismissible" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endfor %}
+
+<div class="row">
+    <!-- Statistics Cards -->
+    <div class="col-xl-3 col-sm-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="card-info">
+                        <p class="card-text">Total Users</p>
+                        <div class="d-flex align-items-end mb-2">
+                            <h4 class="card-title mb-0 me-2">{{ stats.total }}</h4>
+                        </div>
+                    </div>
+                    <div class="card-icon">
+                        <span class="badge bg-label-primary rounded p-2">
+                            <i class="bx bx-user-circle bx-sm"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="card-info">
+                        <p class="card-text">Administrators</p>
+                        <div class="d-flex align-items-end mb-2">
+                            <h4 class="card-title mb-0 me-2">{{ stats.admin }}</h4>
+                        </div>
+                    </div>
+                    <div class="card-icon">
+                        <span class="badge bg-label-success rounded p-2">
+                            <i class="bx bx-shield-quarter bx-sm"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="card-info">
+                        <p class="card-text">Drivers</p>
+                        <div class="d-flex align-items-end mb-2">
+                            <h4 class="card-title mb-0 me-2">{{ stats.driver }}</h4>
+                        </div>
+                    </div>
+                    <div class="card-icon">
+                        <span class="badge bg-label-info rounded p-2">
+                            <i class="bx bx-car bx-sm"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="card-info">
+                        <p class="card-text">Banned Users</p>
+                        <div class="d-flex align-items-end mb-2">
+                            <h4 class="card-title mb-0 me-2">{{ stats.banned }}</h4>
+                        </div>
+                    </div>
+                    <div class="card-icon">
+                        <span class="badge bg-label-danger rounded p-2">
+                            <i class="bx bx-block bx-sm"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Table -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5>Users List</h5>
+            <a href="{{ path('app_admin_user_create') }}" class="btn btn-primary">
+                <i class="bx bx-plus me-1"></i> Add User
+            </a>
+        </div>
+
+        <!-- Filters -->
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search users..." value="{{ query }}">
+                        <button class="btn btn-outline-primary" type="button" id="applyFilters">
+                            <i class="bx bx-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select id="roleFilter" class="form-select">
+                        <option value="">All Roles</option>
+                        <option value="USER" {{ role == 'USER' ? 'selected' : '' }}>User</option>
+                        <option value="DRIVER" {{ role == 'DRIVER' ? 'selected' : '' }}>Driver</option>
+                        <option value="ADMIN" {{ role == 'ADMIN' ? 'selected' : '' }}>Admin</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-outline-secondary w-100" onclick="window.location.href='{{ path('app_admin_users') }}'">
+                        <i class="bx bx-reset"></i> Reset Filters
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-responsive text-nowrap">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Last Login</th>
+                            <th>Registered</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        {% for user in users %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar avatar-sm me-3">
+                                            <span class="avatar-initial rounded-circle bg-label-primary">{{ user.fullName|first|upper }}</span>
+                                        </div>
+                                        <div>
+                                            {{ user.fullName }}
+                                            <div class="small text-muted">{{ user.email }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if user.role == 'ADMIN' %}
+                                        <span class="badge bg-label-success">Administrator</span>
+                                    {% elseif user.role == 'DRIVER' %}
+                                        <span class="badge bg-label-info">Driver</span>
+                                    {% else %}
+                                        <span class="badge bg-label-primary">User</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if user.isBanned %}
+                                        <span class="badge bg-label-danger">Banned</span>
+                                    {% else %}
+                                        <span class="badge bg-label-success">Active</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if user.lastLogin %}
+                                        {{ user.lastLogin|date('Y-m-d H:i') }}
+                                    {% else %}
+                                        <span class="text-muted">Never</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ user.createdAt|date('Y-m-d') }}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="{{ path('app_admin_user_edit', {'id': user.id}) }}">
+                                                <i class="bx bx-edit-alt me-1"></i> Edit
+                                            </a>
+                                            <a class="dropdown-item" href="{{ path('app_admin_user_change_role', {'id': user.id}) }}">
+                                                <i class="bx bx-transfer me-1"></i> Change Role
+                                            </a>
+                                            {% if user != app.user %}
+                                                {% if user.isBanned %}
+                                                    <a class="dropdown-item text-success" href="{{ path('app_admin_user_unban', {'id': user.id}) }}">
+                                                        <i class="bx bx-check-circle me-1"></i> Unban User
+                                                    </a>
+                                                {% else %}
+                                                    <a class="dropdown-item text-danger" href="{{ path('app_admin_user_ban', {'id': user.id}) }}">
+                                                        <i class="bx bx-block me-1"></i> Ban User
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {% if user != app.user %}
+                                        {% if user.isBanned %}
+                                            <a href="{{ path('app_admin_user_unban', {'id': user.id}) }}" class="btn btn-sm btn-success ms-2" title="Unban User">
+                                                <i class="bx bx-check-circle"></i>
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ path('app_admin_user_ban', {'id': user.id}) }}" class="btn btn-sm btn-danger ms-2" title="Ban User">
+                                                <i class="bx bx-block"></i>
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center">No users found</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            {% if users|length > 0 and total_pages is defined and total_pages > 1 %}
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            Showing {{ users|length }} users
+                        </div>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination mb-0">
+                                {% if currentPage > 1 %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ path('app_admin_users', {'page': currentPage-1, 'role': role, 'q': query}) }}">
+                                            <i class="bx bx-chevron-left"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                {% for i in 1..total_pages %}
+                                    <li class="page-item {{ currentPage == i ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ path('app_admin_users', {'page': i, 'role': role, 'q': query}) }}">{{ i }}</a>
+                                    </li>
+                                {% endfor %}
+
+                                {% if currentPage < total_pages %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ path('app_admin_users', {'page': currentPage+1, 'role': role, 'q': query}) }}">
+                                            <i class="bx bx-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const roleFilter = document.getElementById('roleFilter');
+        const applyFilters = document.getElementById('applyFilters');
+
+        function updateFilters() {
+            const searchQuery = searchInput.value;
+            const roleValue = roleFilter.value;
+            
+            let url = '{{ path('app_admin_users') }}?';
+            let params = [];
+            
+            if (searchQuery) {
+                params.push('q=' + encodeURIComponent(searchQuery));
+            }
+            
+            if (roleValue) {
+                params.push('role=' + encodeURIComponent(roleValue));
+            }
+            
+            window.location.href = url + params.join('&');
+        }
+
+        // Handle search button click
+        applyFilters.addEventListener('click', updateFilters);
+
+        // Handle Enter key in search input
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                updateFilters();
+            }
+        });
+
+        // Handle role filter change
+        roleFilter.addEventListener('change', updateFilters);
+    });
+</script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Shift{% endblock %}
+
+{% block body %}
+    <h1>Shift</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ shift.id }}</td>
+            </tr>
+            <tr>
+                <th>Driver</th>
+                <td>{{ shift.driver ? shift.driver.name : 'No driver assigned' }}</td>
+            </tr>
+            <tr>
+                <th>Transport</th>
+                <td>{{ shift.transport }}</td>
+            </tr>
+            <tr>
+                <th>StartTime</th>
+                <td>{{ shift.startTime ? shift.startTime|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>EndTime</th>
+                <td>{{ shift.endTime ? shift.endTime|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ shift.type }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_shift_index') }}">back to list</a>
+    <a href="{{ path('app_shift_edit', {'id': shift.id}) }}">edit</a>
+
+    {{ include('shift/_delete_form.html.twig') }}
+{% endblock %}

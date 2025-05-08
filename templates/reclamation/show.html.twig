@@ -1,0 +1,220 @@
+{% extends "base1.html.twig" %}
+
+{% block title %}Claim Details - Movable{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<style>
+.timeline-with-icons {
+    position: relative;
+    padding-left: 2.5rem;
+}
+.timeline-item {
+    position: relative;
+}
+.timeline-icon {
+    position: absolute;
+    left: -2.5rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 2rem;
+    background: #fff;
+    border: 2px solid currentColor;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-0">Claim #{{ reclamation.id }}</h5>
+                    <span class="text-muted">Submitted on {{ reclamation.createdAt|date('M d, Y H:i') }}</span>
+                </div>
+                <div>
+                    <a href="{{ app.request.query.get('from_admin') ? path('app_reclamation_dashboard') : path('app_reclamation_index') }}" class="btn btn-secondary">
+                        <i class="bx bx-arrow-back me-1"></i> Back to List
+                    </a>
+                </div>
+            </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <!-- Main Claim Details -->
+                        <div class="mb-4">
+                            <h4 class="text-primary mb-2">{{ reclamation.title }}</h4>
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-label-primary me-2">{{ reclamation.category }}</span>
+                                
+                                {% if reclamation.status == 'Pending' %}
+                                    <span class="badge bg-label-warning">Pending</span>
+                                {% elseif reclamation.status == 'Resolved' %}
+                                    <span class="badge bg-label-success">Resolved</span>
+                                {% else %}
+                                    <span class="badge bg-label-danger">Rejected</span>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <h6 class="fw-semibold">Description</h6>
+                                <div class="p-3 bg-body-tertiary rounded">
+                                    {{ reclamation.description|nl2br }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <!-- Meta Information -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h6 class="mb-0">Claim Information</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="fw-semibold">Status</span>
+                                        {% if reclamation.status == 'Pending' %}
+                                            <span class="badge bg-warning">Pending</span>
+                                        {% elseif reclamation.status == 'Resolved' %}
+                                            <span class="badge bg-success">Resolved</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Rejected</span>
+                                        {% endif %}
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="fw-semibold">Category</span>
+                                        <span>{{ reclamation.category }}</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="fw-semibold">Created</span>
+                                        <span>{{ reclamation.createdAt|date('Y-m-d H:i') }}</span>
+                                    </li>
+                                    {% if reclamation.resolutionDate %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="fw-semibold">Resolution Date</span>
+                                        <span>{{ reclamation.resolutionDate|date('Y-m-d H:i') }}</span>
+                                    </li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span class="fw-semibold">User</span>
+                                        <a href="{{ path('app_user_view', {'id': reclamation.user.id}) }}">{{ reclamation.user.fullName }}</a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Timeline -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h6 class="mb-0">Timeline</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="timeline-with-icons">
+                                    <div class="timeline-item mb-3">
+                                        <i class="bx bx-plus text-primary timeline-icon"></i>
+                                        <div class="ms-3">
+                                            <span class="fw-semibold d-block">Created</span>
+                                            <small class="text-muted">{{ reclamation.createdAt|date('Y-m-d H:i') }}</small>
+                                        </div>
+                                    </div>
+                                    
+                                    {% if reclamation.status != 'Pending' %}
+                                    <div class="timeline-item">
+                                        <i class="bx {% if reclamation.status == 'Resolved' %}bx-check-circle text-success{% else %}bx-x-circle text-danger{% endif %} timeline-icon"></i>
+                                        <div class="ms-3">
+                                            <span class="fw-semibold d-block">{{ reclamation.status }}</span>
+                                            <small class="text-muted">{{ reclamation.resolutionDate ? reclamation.resolutionDate|date('Y-m-d H:i') : reclamation.createdAt|date('Y-m-d H:i') }}</small>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Actions -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">Actions</h6>
+                            </div>
+                            <div class="card-body">
+                                {% if reclamation.status == 'Pending' %}
+                                    <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}" class="btn btn-primary w-100 mb-2">
+                                        <i class="bx bx-edit-alt me-1"></i> Edit Claim
+                                    </a>
+                                    
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a href="{{ path('app_reclamation_resolve', {'id': reclamation.id}) }}" class="btn btn-success w-100 mb-2">
+                                            <i class="bx bx-check-circle me-1"></i> Mark as Resolved
+                                        </a>
+                                        <a href="{{ path('app_reclamation_reject', {'id': reclamation.id}) }}" class="btn btn-warning w-100 mb-2">
+                                            <i class="bx bx-x-circle me-1"></i> Reject Claim
+                                        </a>
+                                    {% endif %}
+                                    
+                                    <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                        <i class="bx bx-trash me-1"></i> Delete Claim
+                                    </button>
+                                {% else %}
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        {% if reclamation.status == 'Resolved' %}
+                                            <a href="{{ path('app_reclamation_reject', {'id': reclamation.id}) }}" class="btn btn-warning w-100 mb-2">
+                                                <i class="bx bx-x-circle me-1"></i> Mark as Rejected
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ path('app_reclamation_resolve', {'id': reclamation.id}) }}" class="btn btn-success w-100 mb-2">
+                                                <i class="bx bx-check-circle me-1"></i> Mark as Resolved
+                                            </a>
+                                        {% endif %}
+                                        
+                                        <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                            <i class="bx bx-trash me-1"></i> Delete Claim
+                                        </button>
+                                    {% else %}
+                                        <p class="text-muted mb-0">This claim is {{ reclamation.status|lower }} and cannot be modified.</p>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this claim? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form action="{{ path('app_reclamation_delete', {'id': reclamation.id}) }}" method="post">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reclamation.id) }}">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+    <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+        <div class="mb-2 mb-md-0">
+            © {{ "now"|date("Y") }} Movable, All rights reserved.
+        </div>
+    </div>
+{% endblock %}

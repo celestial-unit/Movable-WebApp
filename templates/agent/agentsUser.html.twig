@@ -1,0 +1,283 @@
+{% extends 'front/base.html.twig' %}
+
+{% block title %}Agents{% endblock %}
+
+{% block hero_banner %}
+<div class="container-xxl py-5 bg-primary hero-header mb-5">
+    <div class="container my-5 py-5 px-lg-5">
+        <div class="row g-5 py-5">
+            <div class="col-12 text-center">
+                <h1 class="text-white animated zoomIn">Our Agents</h1>
+                <hr class="bg-white mx-auto mt-0" style="width: 90px;">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                        <li class="breadcrumb-item"><a class="text-white" href="{{ path('app_front_home') }}">Home</a></li>
+                        <li class="breadcrumb-item text-white active" aria-current="page">Agents</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Search Bar -->
+    <div class="row mb-4">
+        <div class="col-md-6 mx-auto">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search agents by name..." onkeyup="filterAgents()">
+        </div>
+    </div>
+
+<!-- Agents Section -->
+<div id="agents-section">
+    <div class="row g-4 justify-content-center" id="agents-list">
+        {% for agent in agents %}
+            <div class="col-md-6 col-lg-4 agent-card" data-name="{{ agent.name|lower }}">
+                <div class="card border-0 shadow rounded">
+                    <img src="{{ asset(agent.pictureP) }}" class="card-img-top" alt="{{ agent.name }}">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ agent.name }}</h5>
+                        <p class="card-text">
+                            {{ agent.email }}<br>
+                            {{ agent.phone }}<br>
+                            {{ agent.type }}<br>
+                            <strong>Birthdate:</strong> {{ agent.birthdate|date('d-m-Y') }}
+                            
+                            {% if agent.type == 'animal' %}
+                                <div class="mt-3">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="dog-breed-{{ agent.id }}" placeholder="Enter dog breed">
+                                        <button class="btn btn-outline-primary" onclick="getDogInfo('{{ agent.id }}')">
+                                            Get Info
+                                        </button>
+                                    </div>
+                                    <div id="dog-info-{{ agent.id }}" class="mt-2" style="display: none;">
+                                        <div class="alert alert-info">
+                                            <p id="dog-description-{{ agent.id }}"></p>
+                                            <div class="btn-group mt-2">
+                                                <button class="btn btn-outline-secondary btn-sm" onclick="readAloud('{{ agent.id }}')" id="play-button-{{ agent.id }}">
+                                                    <i class="bi bi-play-fill"></i> Play
+                                                </button>
+                                                <button class="btn btn-outline-secondary btn-sm" onclick="stopReading('{{ agent.id }}')" id="stop-button-{{ agent.id }}" disabled>
+                                                    <i class="bi bi-stop-fill"></i> Stop
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </p>
+                        <button class="btn btn-info" onclick="viewAgent('{{ agent.id }}', '{{ agent.name }}', '{{ agent.email }}', '{{ agent.phone }}', '{{ asset(agent.pictureP)|e('js') }}')">
+                            View Agent
+                        </button>
+                        <a href="{{ path('app_reservation_new') }}" class="btn btn-success mt-2">
+                            <i class="bi bi-calendar-check"></i> Book
+                        </a>
+                        <a href="{{ path('rate_agent', { id: agent.id }) }}" class="btn btn-warning mt-2">
+                            <i class="bi bi-star"></i> Rate
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-4">
+        {{ knp_pagination_render(agents) }}
+    </div>
+</div>
+
+
+    <!-- Agent Detail Section -->
+    <div id="agent-detail-section" style="display: none;">
+        <div class="card border-0 shadow rounded mx-auto" style="max-width: 500px;">
+            <img id="agent-picture" src="" class="card-img-top" alt="Agent Picture">
+            <div class="card-body text-center">
+                <h5 id="agent-name" class="card-title"></h5>
+                <p id="agent-email" class="card-text"></p>
+                <p id="agent-phone" class="card-text"></p>
+                <button class="btn btn-primary mt-3" onclick="showSection('agents')">Back to Agents List</button>
+                <a href="{{ path('app_reservation_new') }}" class="btn btn-success mt-3 ms-2">
+                    <i class="bi bi-calendar-check"></i> Book
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function viewAgent(id, name, email, phone, picture) {
+        document.getElementById('agent-name').textContent = name;
+        document.getElementById('agent-email').textContent = email;
+        document.getElementById('agent-phone').textContent = phone;
+        document.getElementById('agent-picture').src = picture;
+
+        document.getElementById('agents-section').style.display = 'none';
+        document.getElementById('agent-detail-section').style.display = 'block';
+    }
+
+    function showSection(sectionId) {
+        document.getElementById('agents-section').style.display = sectionId === 'agents' ? 'block' : 'none';
+        document.getElementById('agent-detail-section').style.display = sectionId === 'agents' ? 'none' : 'block';
+    }
+
+    function filterAgents() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const agentCards = document.querySelectorAll('.agent-card');
+
+        agentCards.forEach(card => {
+            const name = card.getAttribute('data-name');
+            if (name.includes(input)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    async function getDogInfo(agentId) {
+        const breedInput = document.getElementById(`dog-breed-${agentId}`);
+        const breed = breedInput.value.trim();
+        
+        if (!breed) {
+            alert('Please enter a dog breed');
+            return;
+        }
+
+        try {
+            const response = await fetch(`https://api.api-ninjas.com/v1/dogs?name=${encodeURIComponent(breed)}`, {
+                headers: {
+                    'X-Api-Key': '3OVYo2fgoR0ISa71PLKy/g==5pmM2Xib5ZI4YMVo'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            
+            if (data && data.length > 0) {
+                const dogInfo = data[0];
+                const description = `
+                    <strong>${dogInfo.name}</strong><br>
+                    <strong>Good with children:</strong> ${dogInfo.good_with_children}<br>
+                    <strong>Good with other dogs:</strong> ${dogInfo.good_with_other_dogs}<br>
+                    <strong>Shedding:</strong> ${dogInfo.shedding}<br>
+                    <strong>Grooming:</strong> ${dogInfo.grooming}<br>
+                    <strong>Drooling:</strong> ${dogInfo.drooling}<br>
+                    <strong>Coat length:</strong> ${dogInfo.coat_length}<br>
+                    <strong>Good with strangers:</strong> ${dogInfo.good_with_strangers}<br>
+                    <strong>Playfulness:</strong> ${dogInfo.playfulness}<br>
+                    <strong>Protectiveness:</strong> ${dogInfo.protectiveness}<br>
+                    <strong>Trainability:</strong> ${dogInfo.trainability}<br>
+                    <strong>Energy:</strong> ${dogInfo.energy}<br>
+                    <strong>Barking:</strong> ${dogInfo.barking}<br>
+                    <strong>Min life expectancy:</strong> ${dogInfo.min_life_expectancy} years<br>
+                    <strong>Max life expectancy:</strong> ${dogInfo.max_life_expectancy} years<br>
+                    <strong>Max height male:</strong> ${dogInfo.max_height_male} inches<br>
+                    <strong>Max height female:</strong> ${dogInfo.max_height_female} inches<br>
+                    <strong>Max weight male:</strong> ${dogInfo.max_weight_male} pounds<br>
+                    <strong>Max weight female:</strong> ${dogInfo.max_weight_female} pounds<br>
+                    <strong>Min height male:</strong> ${dogInfo.min_height_male} inches<br>
+                    <strong>Min height female:</strong> ${dogInfo.min_height_female} inches<br>
+                    <strong>Min weight male:</strong> ${dogInfo.min_weight_male} pounds<br>
+                    <strong>Min weight female:</strong> ${dogInfo.min_weight_female} pounds
+                `;
+                
+                document.getElementById(`dog-description-${agentId}`).innerHTML = description;
+                document.getElementById(`dog-info-${agentId}`).style.display = 'block';
+            } else {
+                document.getElementById(`dog-description-${agentId}`).innerHTML = 'No information found for this breed.';
+                document.getElementById(`dog-info-${agentId}`).style.display = 'block';
+            }
+        } catch (error) {
+            console.error('Error fetching dog information:', error);
+            alert('Error fetching dog information. Please try again.');
+        }
+    }
+
+    let currentAudio = null;
+
+    async function readAloud(agentId) {
+        const description = document.getElementById(`dog-description-${agentId}`).textContent;
+        const playButton = document.getElementById(`play-button-${agentId}`);
+        const stopButton = document.getElementById(`stop-button-${agentId}`);
+        
+        // If there's already an audio playing, stop it
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+            currentAudio = null;
+        }
+        
+        try {
+            const response = await fetch('https://api.deepgram.com/v1/speak?model=aura-asteria-en', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Token 64f6772454979d903fe8f2cea797192bff7aacb8',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text: description
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const audioBlob = await response.blob();
+            const audioUrl = URL.createObjectURL(audioBlob);
+            currentAudio = new Audio(audioUrl);
+            
+            // Update button states
+            playButton.disabled = true;
+            stopButton.disabled = false;
+            
+            // Update play button icon
+            playButton.innerHTML = '<i class="bi bi-pause-fill"></i> Pause';
+            
+            // Add event listeners for audio completion
+            currentAudio.onended = function() {
+                playButton.disabled = false;
+                stopButton.disabled = true;
+                playButton.innerHTML = '<i class="bi bi-play-fill"></i> Play';
+                currentAudio = null;
+            };
+            
+            currentAudio.play();
+        } catch (error) {
+            console.error('Error converting text to speech:', error);
+            alert('Error converting text to speech. Please try again.');
+            playButton.disabled = false;
+            stopButton.disabled = true;
+        }
+    }
+
+    function stopReading(agentId) {
+        const playButton = document.getElementById(`play-button-${agentId}`);
+        const stopButton = document.getElementById(`stop-button-${agentId}`);
+        
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+            currentAudio = null;
+            
+            // Update button states
+            playButton.disabled = false;
+            stopButton.disabled = true;
+            playButton.innerHTML = '<i class="bi bi-play-fill"></i> Play';
+        }
+    }
+</script>
+{% endblock %}
+
+
+
+
+
+

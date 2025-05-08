@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pay for Ticket{% endblock %}
+
+{% block body %}
+<h1>Pay for your Ticket</h1>
+
+<p>Destination: {{ ticket.destination }}</p>
+<p>Price: {{ ticket.price / 100 }} €</p> {# if your price is stored in cents #}
+
+<form action="{{ path('ticket_payment_process', {id: ticket.id}) }}" method="POST">
+    <button type="submit" class="btn btn-success">Confirm Payment</button>
+</form>
+{% endblock %}

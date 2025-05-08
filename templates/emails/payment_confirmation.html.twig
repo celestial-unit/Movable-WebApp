@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        .highlight-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .details-section {
+            margin: 25px 0;
+        }
+        .detail-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .detail-label {
+            font-weight: bold;
+            width: 150px;
+        }
+        .receipt-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .receipt-table th {
+            text-align: left;
+            padding: 10px;
+            background-color: #f2f2f2;
+        }
+        .receipt-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .total-row {
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Your Ticket #{{ ticket.ticketNumber }}</div>
+    
+    <p>Thank you for your payment! Your ticket has been successfully issued.</p>
+    
+    <div class="highlight-box">
+        <strong>Your ticket is confirmed!</strong><br>
+        Please keep this confirmation for your records.
+    </div>
+    
+    <div class="details-section">
+        <div class="detail-row">
+            <div class="detail-label">Ticket Number:</div>
+            <div>{{ ticket.ticketNumber }}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Destination:</div>
+            <div>{{ ticket.destination ?? 'Not specified' }}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Transport:</div>
+            <div>{{ ticket.transport }}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Issued On:</div>
+            <div>{{ ticket.issueDate|date('F jS, Y \\a\\t g:i a') }}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Payment Method:</div>
+            <div>{{ ticket.paymentMode|capitalize }}</div>
+        </div>
+    </div>
+    
+    <h3>Payment Receipt</h3>
+    <table class="receipt-table">
+        <tr>
+            <th>ITEM DESCRIPTION</th>
+            <th>PRICE</th>
+        </tr>
+        <tr>
+            <td>{{ ticket.transport }} Ticket</td>
+            <td>${{ ticket.price|number_format(2) }}</td>
+        </tr>
+        <tr>
+            <td>Tax and Fees</td>
+            <td>${{ (ticket.price * 0.1)|number_format(2) }}</td>
+        </tr>
+        
+        <tr class="total-row">
+            <td>TOTAL</td>
+            <td>${{ (ticket.price + (ticket.price * 0.1) - payment.discount)|number_format(2) }}</td>
+        </tr>
+       
+    </table>
+    
+    <div class="footer">
+        <p><strong>Need Assistance?</strong></p>
+        <p>Contact our support team at support@yourservice.com</p>
+        <p>Thank you for choosing our service!</p>
+    </div>
+</body>
+</html>

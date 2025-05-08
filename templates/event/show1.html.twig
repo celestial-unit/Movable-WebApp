@@ -1,0 +1,405 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Event{% endblock %}
+
+{% block body %}
+    <h1>Event</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ event.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ event.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ event.description }}</td>
+            </tr>
+            <tr>
+                <th>Duration</th>
+                <td>{{ event.duration }}</td>
+            </tr>
+            <tr>
+                <th>PRICE</th>
+                <td>{{ event.type }}</td>
+            </tr>
+            <tr>
+                <th>State</th>
+                <td>{{ event.status }}</td>
+            </tr>
+            <tr>
+                <th>Dateevent</th>
+                <td>{{ event.dateevent|date('F j, Y') }}</td>
+            </tr>
+            <tr>
+                <th>StartEvent</th>
+                <td>{{ event.startEvent|date('g:i a') }}</td>
+            </tr>
+            <tr>
+    
+</tr>
+{# show1.html.twig #}
+
+{# ... keep existing template structure ... #}
+
+<tr>
+    <th>Weather</th>
+    <td>
+        <div id="weather-data" class="weather-card">
+            <div class="weather-loading">Loading weather...</div>
+            <div class="weather-content" style="display: none;">
+                <div class="weather-header">
+                    <div class="weather-current">
+                        <img class="weather-icon" alt="Weather icon">
+                        <div class="weather-temp">
+                            <span class="temp-main"></span>
+                            <span class="temp-feels-like"></span>
+                        </div>
+                    </div>
+                    <div class="weather-meta">
+                        <div class="location">{{ event.status }}</div>
+                        <div class="datetime"></div>
+                        <div class="description"></div>
+                    </div>
+                </div>
+                <div class="weather-details row mt-3">
+                    <div class="col-md-6">
+                        <div class="detail-item">
+                            <i class="bx bx-wind"></i>
+                            <div>
+                                <span class="label">Wind</span>
+                                <span class="value wind-speed"></span>
+                                <span class="value wind-deg"></span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="bx bx-droplet"></i>
+                            <div>
+                                <span class="label">Humidity</span>
+                                <span class="value humidity"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="detail-item">
+                            <i class="bx bx-cloud"></i>
+                            <div>
+                                <span class="label">Cloudiness</span>
+                                <span class="value clouds"></span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="bx bx-sun"></i>
+                            <div>
+                                <span class="label">UV Index</span>
+                                <span class="value uv-index"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="weather-hourly mt-3">
+                    <h6>Hourly Forecast</h6>
+                    <div class="hourly-items"></div>
+                </div>
+            </div>
+            <div class="weather-error alert alert-danger" style="display: none;"></div>
+        </div>
+    </td>
+</tr>
+
+<style>
+    .weather-card {
+        background: linear-gradient(135deg, #6B8DD6 0%, #8E37D6 100%);
+        border-radius: 15px;
+        color: white;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .weather-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .weather-icon {
+        width: 80px;
+        height: 80px;
+        margin-right: 15px;
+    }
+
+    .weather-temp {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+
+    .temp-feels-like {
+        display: block;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    .weather-meta {
+        text-align: right;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .detail-item i {
+        font-size: 1.5rem;
+        margin-right: 10px;
+        width: 30px;
+    }
+
+    .hourly-items {
+        display: flex;
+        overflow-x: auto;
+        gap: 15px;
+        padding: 10px 0;
+    }
+
+    .hourly-item {
+        flex: 0 0 auto;
+        text-align: center;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const weatherCard = {
+        loading: document.querySelector('.weather-loading'),
+        content: document.querySelector('.weather-content'),
+        error: document.querySelector('.weather-error'),
+        elements: {
+            icon: document.querySelector('.weather-icon'),
+            tempMain: document.querySelector('.temp-main'),
+            tempFeelsLike: document.querySelector('.temp-feels-like'),
+            datetime: document.querySelector('.datetime'),
+            description: document.querySelector('.description'),
+            windSpeed: document.querySelector('.wind-speed'),
+            windDeg: document.querySelector('.wind-deg'),
+            humidity: document.querySelector('.humidity'),
+            clouds: document.querySelector('.clouds'),
+            uvIndex: document.querySelector('.uv-index'),
+            hourly: document.querySelector('.hourly-items')
+        }
+    };
+
+    fetch('{{ path("eventback_weather", { 'id': event.id }) }}')
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) throw new Error(data.error);
+            
+            // Update current weather
+            const current = data[0];
+            weatherCard.elements.icon.src = `https://openweathermap.org/img/wn/${current.weather_icon}@4x.png`;
+            weatherCard.elements.tempMain.textContent = `${Math.round(current.temp)}°C`;
+            weatherCard.elements.tempFeelsLike.textContent = `Feels like ${Math.round(current.feels_like)}°C`;
+            weatherCard.elements.datetime.textContent = new Date(current.timestamp * 1000).toLocaleString();
+            weatherCard.elements.description.textContent = current.weather_description;
+            weatherCard.elements.windSpeed.textContent = `${current.wind_speed} m/s`;
+            weatherCard.elements.windDeg.textContent = `${current.wind_degrees}°`;
+            weatherCard.elements.humidity.textContent = `${current.humidity}%`;
+            weatherCard.elements.clouds.textContent = `${current.cloud_pct}%`;
+
+            // Update hourly forecast
+            data.slice(0, 8).forEach(hour => {
+                const div = document.createElement('div');
+                div.className = 'hourly-item';
+                div.innerHTML = `
+                    <div>${new Date(hour.timestamp * 1000).getHours()}:00</div>
+                    <img src="https://openweathermap.org/img/wn/${hour.weather_icon}.png" alt="${hour.weather}">
+                    <div>${Math.round(hour.temp)}°C</div>
+                `;
+                weatherCard.elements.hourly.appendChild(div);
+            });
+
+            weatherCard.loading.style.display = 'none';
+            weatherCard.content.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Weather error:', error);
+            weatherCard.loading.style.display = 'none';
+            weatherCard.error.textContent = `Weather unavailable: ${error.message}`;
+            weatherCard.error.style.display = 'block';
+        });
+});
+</script>
+
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_eventback_index') }}">back to list</a>
+
+    <a href="{{ path('app_eventback_edit', {'id': event.id}) }}">edit</a>
+
+    {{ include('event/_delete_form.html.twig') }}
+{% endblock %}
+
+{% block sidebar %}
+    <div class="app-brand demo">
+        <a href="{{ path('app_dashboard') }}" class="app-brand-link">
+            <span class="app-brand-logo demo">
+                <i class="bx bx-car fs-3 text-primary"></i>
+            </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">Movable Admin</span>
+        </a>
+
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+        <!-- Dashboard -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_dashboard' ? 'active' : '' }}">
+            <a href="{{ path('app_dashboard') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div>Dashboard</div>
+            </a>
+        </li>
+
+        <li class="menu-item">
+            <a href="{{ path('app_front_home') }}" class="menu-link front-website-link">
+                <i class="menu-icon tf-icons bx bx-world"></i>
+                <div>Visit Website</div>
+            </a>
+        </li>
+        
+        <li class="menu-item {{ app.request.get('_route') == 'app_admin_users' ? 'active' : '' }}">
+            <a href="{{ path('app_admin_users') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user-circle"></i>
+                <div>Users</div>
+            </a>
+        </li>
+
+        <!-- Claims Management -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_reclamation_dashboard' ? 'active' : '' }}">
+            <a href="{{ path('app_reclamation_dashboard') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-message-square-detail"></i>
+                <div>Claims</div>
+            </a>
+        </li>
+
+        <!-- Banned Users -->
+        <li class="menu-item {{ app.request.get('_route') == 'app_admin_banned_users' ? 'active' : '' }}">
+            <a href="{{ path('app_admin_banned_users') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-block"></i>
+                <div>Banned Users</div>
+            </a>
+        </li>
+
+        <!-- Events Management -->
+        <li class="menu-item {{ app.request.get('_route') starts with 'app_event' ? 'active' : '' }}">
+            <a href="{{ path('app_eventback_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar"></i>
+                <div>Events</div>
+            </a>
+        </li>
+         
+
+        <!-- Reservation Management -->
+        <li class="menu-item {{ app.request.get('_route') starts with 'admin_waitlist_' ? 'active' : '' }}">
+            <a href="{{ path('admin_waitlist_index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-calendar-check"></i>
+                <div>Reservations</div>
+            </a>
+        </li>
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">System</span>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block navbar %}
+    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+        <div class="navbar-nav align-items-center">
+            <div class="nav-item d-flex align-items-center">
+                <i class="bx bx-search fs-4 lh-0"></i>
+                <input type="text" class="form-control border-0 shadow-none ps-1" placeholder="Search..." aria-label="Search...">
+            </div>
+        </div>
+
+        <ul class="navbar-nav flex-row align-items-center ms-auto">
+            <!-- Admin User Dropdown -->
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                        <span class="avatar-initial rounded-circle bg-primary">
+                            {{ app.user.firstName|first }}{{ app.user.lastName|first }}
+                        </span>
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="avatar avatar-online">
+                                        <span class="avatar-initial rounded-circle bg-primary">
+                                            {{ app.user.firstName|first }}{{ app.user.lastName|first }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <span class="fw-semibold d-block">{{ app.user.fullName }}</span>
+                                    <small class="text-muted">Administrator</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('app_user_profile') }}">
+                            <i class="bx bx-user me-2"></i>
+                            <span class="align-middle">My Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('app_user_settings') }}">
+                            <i class="bx bx-cog me-2"></i>
+                            <span class="align-middle">Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ path('app_logout') }}">
+                            <i class="bx bx-power-off me-2"></i>
+                            <span class="align-middle">Log Out</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            
+            <!-- Visible Logout Button -->
+            <li class="nav-item ms-3">
+                <a href="{{ path('app_logout') }}" class="btn btn-danger d-flex align-items-center">
+                    <i class="bx bx-power-off me-2"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}

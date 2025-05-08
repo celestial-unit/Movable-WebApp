@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Movable</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="{{ asset('vendor/libs/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+    
+    <!-- Bootstrap -->
+    <link href="{{ asset('vendor/libs/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    
+    <!-- reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <style>
+        :root {
+            --primary: #3B82F6;
+            --primary-dark: #2563EB;
+            --success: #10B981;
+            --error: #EF4444;
+            --warning: #F59E0B;
+        }
+
+        body {
+            background: #F3F4F6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 2rem 1rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+
+        .auth-form-side {
+            flex: 1;
+            padding: 3rem;
+            max-width: 520px;
+        }
+
+        .auth-visual-side {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 3rem;
+            display: none;
+        }
+
+        @media (min-width: 1024px) {
+            .auth-visual-side {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        .auth-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .brand-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--primary);
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .brand-logo i {
+            font-size: 2rem;
+        }
+
+        .brand-logo span {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .form-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-subtitle {
+            color: #6B7280;
+        }
+
+        .social-login {
+            margin-bottom: 2rem;
+        }
+
+        .social-btn {
+            width: 100%;
+            padding: 0.875rem;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            background: white;
+            color: #374151;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .social-btn:hover {
+            background: #F9FAFB;
+            border-color: #D1D5DB;
+        }
+
+        .divider {
+            text-align: center;
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: #E5E7EB;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 1rem;
+            color: #6B7280;
+            position: relative;
+            font-size: 0.875rem;
+        }
+
+        .form-floating {
+            margin-bottom: 1rem;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #D1D5DB;
+            padding: 0.875rem;
+            height: auto;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .password-strength {
+            height: 4px;
+            background: #E5E7EB;
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: all 0.3s;
+        }
+
+        .password-hints {
+            margin-top: 0.75rem;
+            padding: 1rem;
+            background: #F9FAFB;
+            border-radius: 8px;
+        }
+
+        .password-hint {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6B7280;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .password-hint:last-child {
+            margin-bottom: 0;
+        }
+
+        .password-hint i {
+            font-size: 1rem;
+        }
+
+        .terms-check {
+            margin: 1.5rem 0;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--primary);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-register:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-register:focus {
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #6B7280;
+        }
+
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .promo-content {
+            color: white;
+            max-width: 400px;
+        }
+
+        .promo-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .promo-features {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .promo-feature {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .promo-feature-icon {
+            font-size: 2rem;
+            opacity: 0.9;
+        }
+
+        .promo-feature h4 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .promo-feature p {
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        /* Custom checkbox styling */
+        .custom-checkbox {
+            display: block;
+            position: relative;
+            padding-left: 2rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: #4B5563;
+        }
+
+        .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 1.25rem;
+            width: 1.25rem;
+            background-color: #fff;
+            border: 1px solid #D1D5DB;
+            border-radius: 4px;
+        }
+
+        .invalid-feedback {
+            display: block;
+            color: var(--error);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-form-side">
+            <div class="auth-header">
+                <a href="{{ path('app_front_home') }}" class="brand-logo">
+                    <i class='bx bx-car'></i>
+                    <span>Movable</span>
+                </a>
+                <h1 class="form-title">Create your account</h1>
+                <p class="form-subtitle">Join us and start managing your vehicles with ease</p>
+            </div>
+
+            <div class="social-login">
+                <a href="{{ path('connect_google') }}" class="social-btn">
+                    <i class='bx bxl-google' style="color: #EA4335;"></i>
+                    <span>Continue with Google</span>
+                </a>
+            </div>
+
+            <div class="divider">
+                <span>or register with email</span>
+            </div>
+
+            {{ form_start(registrationForm, {'attr': {'class': 'registration-form'}}) }}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form_widget(registrationForm.firstName, {
+                                'attr': {
+                                    'class': 'form-control' ~ (form_errors(registrationForm.firstName) ? ' is-invalid' : ''),
+                                    'placeholder': 'First Name'
+                                }
+                            }) }}
+                            {{ form_label(registrationForm.firstName) }}
+                            {{ form_errors(registrationForm.firstName) }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form_widget(registrationForm.lastName, {
+                                'attr': {
+                                    'class': 'form-control' ~ (form_errors(registrationForm.lastName) ? ' is-invalid' : ''),
+                                    'placeholder': 'Last Name'
+                                }
+                            }) }}
+                            {{ form_label(registrationForm.lastName) }}
+                            {{ form_errors(registrationForm.lastName) }}
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-floating">
+                            {{ form_widget(registrationForm.email, {
+                                'attr': {
+                                    'class': 'form-control' ~ (form_errors(registrationForm.email) ? ' is-invalid' : ''),
+                                    'placeholder': 'Email'
+                                }
+                            }) }}
+                            {{ form_label(registrationForm.email) }}
+                            {{ form_errors(registrationForm.email) }}
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-floating">
+                            {{ form_widget(registrationForm.plainPassword.first, {
+                                'attr': {
+                                    'class': 'form-control' ~ (form_errors(registrationForm.plainPassword.first) ? ' is-invalid' : ''),
+                                    'placeholder': 'Password'
+                                }
+                            }) }}
+                            {{ form_label(registrationForm.plainPassword.first) }}
+                            
+                            <div class="password-strength">
+                                <div class="password-strength-bar"></div>
+                            </div>
+
+                            <div class="password-hints">
+                                <div class="password-hint" data-requirement="length">
+                                    <i class='bx bx-check-circle'></i>
+                                    <span>At least 8 characters</span>
+                                </div>
+                                <div class="password-hint" data-requirement="uppercase">
+                                    <i class='bx bx-check-circle'></i>
+                                    <span>One uppercase letter</span>
+                                </div>
+                                <div class="password-hint" data-requirement="number">
+                                    <i class='bx bx-check-circle'></i>
+                                    <span>One number</span>
+                                </div>
+                                <div class="password-hint" data-requirement="special">
+                                    <i class='bx bx-check-circle'></i>
+                                    <span>One special character</span>
+                                </div>
+                            </div>
+                            {{ form_errors(registrationForm.plainPassword.first) }}
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-floating">
+                            {{ form_widget(registrationForm.plainPassword.second, {
+                                'attr': {
+                                    'class': 'form-control' ~ (form_errors(registrationForm.plainPassword.second) ? ' is-invalid' : ''),
+                                    'placeholder': 'Confirm Password'
+                                }
+                            }) }}
+                            {{ form_label(registrationForm.plainPassword.second) }}
+                            {{ form_errors(registrationForm.plainPassword.second) }}
+                        </div>
+                    </div>
+
+                   <div class="col-12">
+                        <div class="form-check">
+                            {{ form_widget(registrationForm.agreeTerms, {
+                                'attr': {
+                                    'class': 'form-check-input' ~ (form_errors(registrationForm.agreeTerms) ? ' is-invalid' : ''),
+                                    'id': 'agreeTerms'
+                                }
+                            }) }}
+                            <label class="form-check-label" for="agreeTerms">
+                                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                            </label>
+                            {{ form_errors(registrationForm.agreeTerms) }}
+                        </div>
+                    </div>
+                                        <div class="col-12 mb-3">
+                        {{ form_label(registrationForm.captcha, 'Verify you are human') }}
+                        {{ form_widget(registrationForm.captcha) }}
+                        {{ form_errors(registrationForm.captcha) }}
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn-register">Create Account</button>
+                    </div>
+                </div>
+            {{ form_end(registrationForm) }}
+
+            <div class="form-footer">
+                Already have an account? <a href="{{ path('app_login') }}">Sign in</a>
+            </div>
+        </div>
+
+        <div class="auth-visual-side">
+            <div class="promo-content">
+                <h2 class="promo-title">Welcome to Movable</h2>
+                <div class="promo-features">
+                    <div class="promo-feature">
+                        <i class='bx bx-car promo-feature-icon'></i>
+                        <div>
+                            <h4>Vehicle Management</h4>
+                            <p>Track and manage your vehicles with ease</p>
+                        </div>
+                    </div>
+                    <div class="promo-feature">
+                        <i class='bx bx-calendar promo-feature-icon'></i>
+                        <div>
+                            <h4>Smart Scheduling</h4>
+                            <p>Plan your trips and maintenance efficiently</p>
+                        </div>
+                    </div>
+                    <div class="promo-feature">
+                        <i class='bx bx-shield promo-feature-icon'></i>
+                        <div>
+                            <h4>Secure & Reliable</h4>
+                            <p>Your data is safe and protected</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const password = document.querySelector('input[type="password"]');
+            const strengthBar = document.querySelector('.password-strength-bar');
+            const hints = document.querySelectorAll('.password-hint');
+            
+            if (password) {
+                password.addEventListener('input', function() {
+                    const value = this.value;
+                    let strength = 0;
+                    
+                    const requirements = {
+                        length: value.length >= 8,
+                        uppercase: /[A-Z]/.test(value),
+                        number: /[0-9]/.test(value),
+                        special: /[^A-Za-z0-9]/.test(value)
+                    };
+                    
+                    hints.forEach(hint => {
+                        const type = hint.dataset.requirement;
+                        const icon = hint.querySelector('i');
+                        
+                        if (requirements[type]) {
+                            icon.className = 'bx bx-check-circle';
+                            icon.style.color = 'var(--success)';
+                            strength += 25;
+                        } else {
+                            icon.className = 'bx bx-x-circle';
+                            icon.style.color = '#6B7280';
+                        }
+                    });
+                    
+                    strengthBar.style.width = strength + '%';
+                    if (strength <= 25) {
+                        strengthBar.style.backgroundColor = 'var(--error)';
+                    } else if (strength <= 50) {
+                        strengthBar.style.backgroundColor = 'var(--warning)';
+                    } else {
+                        strengthBar.style.backgroundColor = 'var(--success)';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

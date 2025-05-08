@@ -1,0 +1,65 @@
+{% extends 'emails/base_email.html.twig' %}
+
+{% block content %}
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <!-- Header -->
+    <tr>
+        <td style="background-color: #dc3545; padding: 20px; text-align: center;">
+            <h1 style="color: #ffffff; margin: 0;">Reservation Rejected</h1>
+        </td>
+    </tr>
+    
+    <!-- Greeting -->
+    <tr>
+        <td style="padding: 30px 20px 10px 20px;">
+            <p style="font-size: 16px; line-height: 1.5;">Dear {{ user.firstName }} {{ user.lastName }},</p>
+            <p style="font-size: 16px; line-height: 1.5;">We regret to inform you that your reservation has been rejected.</p>
+        </td>
+    </tr>
+    
+    <!-- Reservation Details -->
+    <tr>
+        <td style="padding: 0 20px;">
+            <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <h2 style="color: #dc3545; margin-top: 0; border-bottom: 1px solid #eeeeee; padding-bottom: 10px;">Reservation Details</h2>
+                
+                <table width="100%" cellpadding="5" cellspacing="0">
+                    <tr>
+                        <td width="30%" style="font-weight: bold; color: #555555;">Destination</td>
+                        <td>{{ reservation.destination ? reservation.destination.name : reservation.location }}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: #555555;">Date & Time</td>
+                        <td>{{ reservation.date|date('F j, Y H:i') }}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: #555555;">Seats</td>
+                        <td>{{ reservation.seats }}</td>
+                    </tr>
+                    {% if reservation.transport %}
+                    <tr>
+                        <td style="font-weight: bold; color: #555555;">Transport</td>
+                        <td>{{ reservation.transport.type }}</td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </div>
+        </td>
+    </tr>
+    
+    <!-- Contact Information -->
+    <tr>
+        <td style="padding: 10px 20px 20px 20px;">
+            <p style="font-size: 16px; line-height: 1.5;">If you believe this was a mistake or have any questions, please contact our support team.</p>
+        </td>
+    </tr>
+    
+    <!-- Footer -->
+    <tr>
+        <td style="padding: 20px; background-color: #f8f9fa; text-align: center; font-size: 14px; color: #666666;">
+            <p>Thank you for your understanding.</p>
+            <p>We hope to serve you better in the future.</p>
+        </td>
+    </tr>
+</table>
+{% endblock %}
