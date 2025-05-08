@@ -59,3 +59,37 @@ wheels/
 .vscode/
 ###< Python virtual environments ###
 python_service/
+
+###> Additional exclusions for repository cleanup ###
+# Backup directory
+/backup/
+
+# Node modules and package files
+/node_modules/
+package-lock.json
+.package-lock.json
+
+# Public vendor and uploads
+/public/vendor/
+/public/uploads/
+
+# Logs
+/logs/
+*.log
+
+# Duplicate controllers
+/templates/Controller/
+
+# Cache and temporary files
+.cache/
+/temp/
+/tmp/
+
+# Additional IDE files
+.project
+.settings/
+.classpath
+*.sublime-*
+.DS_Store
+Thumbs.db
+###< Additional exclusions for repository cleanup ###
