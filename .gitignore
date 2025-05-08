@@ -58,3 +58,4 @@ wheels/
 .idea/
 .vscode/
 ###< Python virtual environments ###
+python_service/
