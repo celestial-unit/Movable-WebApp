@@ -61,29 +61,67 @@ wheels/
 python_service/
 
 ###> Additional exclusions for repository cleanup ###
-# Backup directory
+# Backup directory and backup files
 /backup/
+*.bak
+*.backup
+*.old
+*.orig
+*.tmp
+*.temp
+*~
 
 # Node modules and package files
 /node_modules/
+node_modules/
 package-lock.json
 .package-lock.json
+yarn.lock
+yarn-error.log
 
 # Public vendor and uploads
 /public/vendor/
-/public/uploads/
+/public/uploads/*
+!/public/uploads/.gitkeep
+/public/media/
+/public/cache/
 
-# Logs
+# Logs and database files
 /logs/
 *.log
+*.sql
+*.sqlite
+*.sqlite3
+/data/
 
-# Duplicate controllers
+# Duplicate templates and generated code
 /templates/Controller/
+/templates/Entity/
+/templates/Repository/
+/generated/
+
+# Vendor dependencies and composer files
+/vendor/*
+composer.phar
 
 # Cache and temporary files
 .cache/
 /temp/
 /tmp/
+/var/cache/
+/var/log/
+/var/sessions/
+.sass-cache/
+*.cache
+
+# Symfony specific cache
+/var/cache/dev/
+/var/cache/prod/
+/var/cache/test/
+
+# Build directories
+/bin/.phpunit/
+/build/
 
 # Additional IDE files
 .project
@@ -92,4 +130,17 @@ package-lock.json
 *.sublime-*
 .DS_Store
 Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Docker related
+docker-compose.override.yml
+
+# Environment files
+.env.test
+.env.*.local
+.env.dev.local
+.env.prod.local
 ###< Additional exclusions for repository cleanup ###
