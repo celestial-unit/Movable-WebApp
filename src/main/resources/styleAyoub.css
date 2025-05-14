@@ -1,0 +1,214 @@
+/* Color Constants */
+/* Primary: #66b3ff, Secondary: #358ad7, Danger: #d32f2f, Warning: #f67a14 */
+
+/* TextField - Unified padding and font size */
+/* Style for the search TextField */
+/* Style for the search TextField */
+.search-field {
+    -fx-background-color: #f4f4f4;  /* Lighter background */
+    -fx-border-color: #8CBD7A;      /* Green border */
+    -fx-border-width: 2px;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 30px 10px 10px; /* Extra padding for the icon */
+    -fx-pref-width: 300px;
+    -fx-border-radius: 5px;
+    -fx-focus-color: #8CBD7A;        /* Green focus color */
+    -fx-faint-focus-color: transparent;
+}
+
+/* Focus effect on the search field */
+.search-field:focused {
+    -fx-background-color: #ffffff;  /* White background when focused */
+    -fx-border-color: #8CBD7A;      /* Green border on focus */
+    -fx-border-width: 2px;
+}
+
+/* Search icon inside the TextField (using a background image) */
+
+
+/* Placeholder text style */
+.search-field .text {
+    -fx-opacity: 0.5; /* Slightly transparent text */
+}
+
+/* Custom styling for the TextField placeholder (Search text) */
+.search-field .prompt-text {
+    -fx-text-fill: #8CBD7A;  /* Green placeholder text */
+}
+
+
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #66b3ff;
+    -fx-border-radius: 12px;
+    -fx-padding: 12px;
+    -fx-font-size: 15px;
+    -fx-font-family: "Arial", sans-serif;
+    -fx-text-fill: #444444;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0, 0, 4);
+}
+
+.text-field:focused {
+    -fx-border-color: #358ad7;
+    -fx-border-width: 2px;
+    -fx-background-color: #e7f1ff;
+    -fx-effect: dropshadow(gaussian, rgba(53, 138, 215, 0.2), 8, 0, 0, 4);
+}
+
+/* ComboBox - Enhanced popup styling */
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #66b3ff;
+    -fx-border-radius: 12px;
+    -fx-padding: 12px;
+    -fx-font-size: 15px;
+    -fx-text-fill: #444444;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: white;
+    -fx-border-color: #66b3ff;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 6, 0, 0, 4);
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #66b3ff;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+/* Spinner - Styled increment/decrement buttons */
+.spinner {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #66b3ff;
+    -fx-border-radius: 12px;
+    -fx-padding: 12px;
+}
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: #66b3ff;
+    -fx-background-radius: 4px;
+}
+
+.spinner .increment-arrow,
+.spinner .decrement-arrow {
+    -fx-shape: "M 4 8 L 12 8 L 8 4 Z";
+    -fx-background-color: white;
+}
+
+/* DatePicker - Styled calendar button */
+.date-picker {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #66b3ff;
+    -fx-border-radius: 12px;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: #66b3ff;
+    -fx-background-radius: 0 8px 8px 0;
+}
+
+.date-picker .arrow {
+    -fx-background-color: white;
+}
+
+/* Buttons - Consistent padding and better focus */
+.button {
+    -fx-padding: 12px 20px;
+    -fx-border-radius: 12px;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0, 0, 4);
+}
+
+.button:focused {
+    -fx-effect: dropshadow(gaussian, rgba(53, 138, 215, 0.4), 8, 0, 0, 4);
+}
+
+/* ListView - Better scrollbar and cell spacing */
+#listView {
+    -fx-padding: 8px;
+    -fx-background-insets: 0;
+    -fx-selection-bar-non-focus-color: #66b3ff99;
+}
+
+#listView .list-cell {
+    -fx-background-insets: 0 0 8px 0;
+    -fx-padding: 12px;
+}
+
+#listView .scroll-bar:vertical .track,
+#listView .scroll-bar:horizontal .track {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 6px;
+}
+
+#listView .scroll-bar .thumb {
+    -fx-background-color: #66b3ff;
+    -fx-background-radius: 6px;
+}
+
+#listView .list-cell:hover {
+    -fx-background-color: #f0f8ff;
+    -fx-text-fill: #358ad7;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+    -fx-transition: background-color 0.3s ease, -fx-scale-x 0.2s ease, -fx-scale-y 0.2s ease;
+}
+#listView .list-cell:focused {
+    -fx-background-color: #e0f7fa;
+    -fx-text-fill: #00796b;
+}
+
+/* Unified hover effect */
+.text-field:hover,
+.combo-box:hover,
+.spinner:hover,
+.date-picker:hover {
+    -fx-background-color: #f5faff;
+    -fx-border-color: #358ad7;
+}
+
+/* Remove icon-related styles and adjust others */
+.sidebar-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #358ad7;
+    -fx-padding: 0 0 20px 0;
+}
+
+.sidebar-menu-item {
+    -fx-background-color: transparent;
+    -fx-padding: 12px 20px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-font-size: 15px;
+    -fx-text-fill: #444444;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.sidebar-menu-item:hover {
+    -fx-background-color: #f0f8ff;
+    -fx-text-fill: #358ad7;
+}
+
+/* Button Color Variations */
+#registrationButton { -fx-background-color: linear-gradient(to bottom, #66b3ff, #358ad7); }
+#addButton { -fx-background-color: linear-gradient(to bottom, #66b3ff, #358ad7); }
+#updateButton { -fx-background-color: linear-gradient(to bottom, #f67a14, #e86b10); }
+#deleteButton { -fx-background-color: linear-gradient(to bottom, #d32f2f, #b71c1c); }
+#openCalendarButton {
+    -fx-background-color: linear-gradient(to bottom, #A8E6A3, #8CBD7A);
+}
+#timeRemainingButton {
+    -fx-background-color: linear-gradient(to bottom, #fff9c4, #fff176);
+}
+
+
+#addButton:hover { -fx-background-color: #358ad7; }
+#updateButton:hover { -fx-background-color: #e86b10; }
+#deleteButton:hover { -fx-background-color: #b71c1c; }

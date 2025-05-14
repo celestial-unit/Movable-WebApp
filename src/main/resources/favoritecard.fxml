@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="Controllers.FavoriteCard"
+      styleClass="card-root"
+      spacing="15"
+      style="-fx-padding: 15; 
+             -fx-background-color: #FFFFFF; 
+             -fx-border-color: #FF85A2; 
+             -fx-border-width: 3; 
+             -fx-border-radius: 15; 
+             -fx-background-radius: 15;
+             -fx-effect: dropshadow(gaussian, rgba(255,182,193,0.5), 10, 0, 0, 3);
+             -fx-alignment: center;">
+    <ImageView fx:id="cardImage" styleClass="card-image"
+               fitWidth="200" fitHeight="150" preserveRatio="true"
+               style="-fx-border-color: #FFC0CB; 
+                      -fx-border-width: 3; 
+                      -fx-border-radius: 10;
+                      -fx-effect: dropshadow(gaussian, rgba(219,112,147,0.3), 5, 0, 0, 2);"/>
+    <Label fx:id="cardTitle" styleClass="card-title"
+           style="-fx-text-fill: #FF69B4; 
+                  -fx-font-weight: bold; 
+                  -fx-font-size: 16;
+                  -fx-font-family: 'Comic Sans MS', cursive;"/>
+    <Label fx:id="cardLocation" styleClass="card-location"
+           style="-fx-text-fill: #DB7093;
+                  -fx-font-style: italic;
+                  -fx-font-family: 'Comic Sans MS', cursive;"/>
+    
+    <!-- Decorative hearts element -->
+    <HBox alignment="CENTER" spacing="5">
+        <Label text="♥" style="-fx-text-fill: #FF85A2; -fx-font-size: 12;"/>
+        <Label text="♥" style="-fx-text-fill: #FF85A2; -fx-font-size: 14;"/>
+        <Label text="♥" style="-fx-text-fill: #FF69B4; -fx-font-size: 16;"/>
+        <Label text="♥" style="-fx-text-fill: #FF85A2; -fx-font-size: 14;"/>
+        <Label text="♥" style="-fx-text-fill: #FF85A2; -fx-font-size: 12;"/>
+    </HBox>
+</VBox>

@@ -1,0 +1,168 @@
+/* Global Styles */
+
+/* Sidebar Styling */
+.anchor-pane {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #dcdcdc;
+    -fx-border-width: 1;
+}
+
+/* Search Field */
+.search-field {
+    -fx-background-color: #f4f4f4;
+    -fx-border-color: #8CBD7A;
+    -fx-border-width: 2px;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 30px 10px 10px;
+    -fx-pref-width: 300px;
+    -fx-border-radius: 5px;
+}
+
+.search-field:focused {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #8CBD7A;
+    -fx-border-width: 2px;
+}
+
+.search-field .prompt-text {
+    -fx-text-fill: #8CBD7A;
+}
+
+/* ListViews */
+
+    #eventListView .list-cell {
+        -fx-background-insets: 0 0 8px 0;
+        -fx-padding: 12px;
+    }
+
+    #eventListView .scroll-bar:vertical .track,
+    #eventListView .scroll-bar:horizontal .track {
+        -fx-background-color: #f0f0f0;
+        -fx-background-radius: 6px;
+    }
+
+    #eventListView .scroll-bar .thumb {
+        -fx-background-color: #66b3ff;
+        -fx-background-radius: 6px;
+    }
+
+    #eventListView .list-cell:hover {
+        -fx-background-color: #f0f8ff;
+        -fx-text-fill: #358ad7;
+        -fx-scale-x: 1.03;
+        -fx-scale-y: 1.03;
+        -fx-transition: background-color 0.3s ease, -fx-scale-x 0.2s ease, -fx-scale-y 0.2s ease;
+    }
+    #eventListView .list-cell:focused {
+        -fx-background-color: #e0f7fa;
+        -fx-text-fill: #00796b;
+    }
+
+/* ComboBoxes */
+.combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #66b3ff;
+    -fx-border-radius: 12px;
+    -fx-padding: 12px;
+    -fx-font-size: 15px;
+    -fx-text-fill: #444444;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: white;
+    -fx-border-color: #66b3ff;
+    -fx-border-radius: 8px;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #66b3ff;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+/* Buttons */
+.button {
+    -fx-padding: 12px 20px;
+    -fx-border-radius: 12px;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0, 0, 4);
+}
+
+.button:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 0, 2);
+}
+
+/* Specific Button Colors */
+#registrationButton, #addButton {
+    -fx-background-color: linear-gradient(to bottom, #66b3ff, #358ad7);
+}
+
+#updateButton {
+    -fx-background-color: linear-gradient(to bottom, #f67a14, #e86b10);
+}
+
+#deleteButton {
+    -fx-background-color: linear-gradient(to bottom, #d32f2f, #b71c1c);
+}
+
+#openCalendarButton {
+    -fx-background-color: linear-gradient(to bottom, #A8E6A3, #8CBD7A);
+}
+
+#timeRemainingButton {
+    -fx-background-color: linear-gradient(to bottom, #fff9c4, #fff176);
+}
+
+/* Labels & Text */
+.label {
+    -fx-text-fill: #444444;
+    -fx-font-size: 14px;
+}
+
+.text {
+    -fx-fill: #444444;
+    -fx-font-size: 14px;
+}
+
+#weatherText {
+    -fx-fill: #2B579A;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+/* Scrollbars */
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #66b3ff;
+    -fx-background-radius: 6px;
+}
+
+.scroll-bar .track {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 6px;
+}
+
+/* Sidebar Menu */
+.sidebar-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #358ad7;
+    -fx-padding: 0 0 20px 0;
+}
+
+.sidebar-menu-item {
+    -fx-background-color: transparent;
+    -fx-padding: 12px 20px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-font-size: 15px;
+    -fx-text-fill: #444444;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.sidebar-menu-item:hover {
+    -fx-background-color: #f0f8ff;
+    -fx-text-fill: #358ad7;
+}

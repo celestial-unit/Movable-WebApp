@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.GaussianBlur?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane maxHeight="900.0" prefHeight="892.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.DestinationManagement">
+
+    <!-- Background Image Container -->
+    <StackPane alignment="CENTER" style="-fx-background-color: #f0f0f0;">
+        <ImageView fx:id="backgroundImage" fitHeight="800" fitWidth="1200" preserveRatio="false">
+            <image>
+                <Image url="@/background_image.jpg" />
+            </image>
+            <effect>
+                <GaussianBlur radius="8" />
+            </effect>
+        </ImageView>
+    </StackPane>
+
+    <!-- Main Content Container -->
+    <VBox minHeight="844.0" prefHeight="884.0" prefWidth="910.0" style="-fx-padding: 40 60;" StackPane.alignment="TOP_CENTER">
+        <!-- Header -->
+        <HBox alignment="CENTER" style="-fx-padding: 20;">
+            <Label style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.5), 2, 0.5, 0, 1);" text="Destination Management System" />
+        </HBox>
+
+        <!-- Content Area -->
+        <HBox maxHeight="800.0" minHeight="100" prefHeight="627.0" prefWidth="780.0" spacing="40">
+            <!-- Left Panel - Destination List -->
+            <VBox maxWidth="500" minWidth="260.0" prefHeight="623.0" prefWidth="289.0" spacing="15" style="-fx-background-color: rgba(255, 255, 255, 0.95); -fx-background-radius: 15; -fx-padding: 15;">
+                <effect>
+                    <DropShadow color="#00000033" radius="10" spread="0.1" />
+                </effect>
+
+                <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Destinations List" />
+
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <TextField fx:id="searchField" promptText="Search destinations..." style="-fx-background-radius: 20; -fx-padding: 10;" HBox.hgrow="ALWAYS" />
+                    <Button style="-fx-background-radius: 20; -fx-padding: 10 15;" text="🔍" />
+                </HBox>
+
+                <ListView fx:id="destinationList" prefHeight="554.0" prefWidth="239.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-font-size: 14px;">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList" />
+                    </items>
+                </ListView>
+            </VBox>
+
+            <!-- Right Panel - Destination Details Form -->
+            <VBox maxHeight="653.0" minHeight="100" prefHeight="615.0" prefWidth="550.0" spacing="20.0" style="-fx-background-color: rgba(255, 255, 255, 0.95); -fx-background-radius: 15; -fx-padding: 30;">
+                <effect>
+                    <DropShadow color="#00000033" radius="10" spread="0.1" />
+                </effect>
+
+                <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Destination Details" />
+
+                <GridPane hgap="30.0" prefHeight="385.0" prefWidth="361.0" style="-fx-padding: 1;" vgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="150" prefWidth="200" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" prefWidth="300.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" />
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" />
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" />
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" />
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" />
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" />
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" />
+                        <RowConstraints minHeight="100.0" prefHeight="100.0" />
+                  <RowConstraints minHeight="100.0" prefHeight="100.0" />
+                    </rowConstraints>
+
+                    <!-- Name Field -->
+                    <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <TextField fx:id="nameField" prefWidth="200.0" promptText="Enter name" style="-fx-padding: 5;" />
+                        <Label fx:id="nameError" minHeight="20" styleClass="error-label" />
+                    </VBox>
+
+                    <!-- Location Field -->
+                    <Label text="Location:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="locationField" prefWidth="200.0" promptText="Enter location" style="-fx-padding: 5;" />
+                        <Label fx:id="locationError" minHeight="20" styleClass="error-label" />
+                    </VBox>
+
+                    <!-- Category Field -->
+                    <Label text="Category:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <TextField fx:id="categoryField" promptText="Enter category" style="-fx-padding: 5;" />
+                        <Label fx:id="categoryError" minHeight="20" styleClass="error-label" />
+                    </VBox>
+
+                    <!-- Status Field -->
+                    <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <TextField fx:id="statusField" promptText="Enter status" style="-fx-padding: 5;" />
+                        <Label fx:id="statusError" minHeight="20" styleClass="error-label" />
+                    </VBox>
+
+                    <!-- Routes Field -->
+                    <Label text="Routes:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <TextField fx:id="routesField" promptText="Enter routes" style="-fx-padding: 5;" />
+                        <Label fx:id="routesError" minHeight="20" styleClass="error-label" />
+                    </VBox>
+
+                    <!-- Contact Info Field -->
+                    <Label text="Contact Info:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                        <TextField fx:id="contactField" promptText="Enter contact info" style="-fx-padding: 5;" />
+                        <Label fx:id="contactError" minHeight="20" styleClass="error-label" />
+                    </VBox>
+
+                    <!-- Rating Field -->
+                    <Label text="Rating:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                        <TextField fx:id="ratingField" promptText="Enter rating" style="-fx-padding: 5;" />
+                        <Label fx:id="ratingError" minHeight="20" styleClass="error-label" />
+                    </VBox>
+
+                    <!-- Description Field -->
+                    <Label text="Description:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                        <TextArea fx:id="descriptionArea" prefHeight="85.0" promptText="Enter description" style="-fx-padding: 5;" wrapText="true" />
+                    </VBox>
+                    <ImageView fx:id="imageView" fitHeight="75" fitWidth="75" GridPane.rowIndex="8" />
+      
+                   <!-- Image Upload Section -->
+                   <HBox alignment="CENTER_LEFT" prefHeight="122.0" prefWidth="212.0" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                       <Button fx:id="uploadImageButton" onAction="#handleImageUpload" style="-fx-padding: 8 15;" text="Upload Image" />
+                       <Button fx:id="clearImageButton" style="-fx-padding: 8 15;" text="Clear Image" />
+                   </HBox>
+                </GridPane>
+            </VBox>
+        </HBox>
+
+                                                                   <!-- Action Buttons -->
+          <HBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="780.0" spacing="15" style="-fx-padding: 20 0 0 0;">
+              <Button fx:id="addButton" onAction="#saveDestination" style="-fx-padding: 8 15;" text="Add" />
+              <Button fx:id="updateButton" onAction="#updateDestination" style="-fx-padding: 8 15;" text="Update" />
+              <Button fx:id="deleteButton" onAction="#deleteDestination" style="-fx-padding: 8 15;" text="Delete" />
+              <Button fx:id="clearButton" onAction="#clearFields" style="-fx-padding: 8 15;" text="Clear" />
+              <Button fx:id="goToParkingButton" onAction="#goToParking" style="-fx-padding: 8 15;" text="Manage Parking" />
+              <Button text="Open Map" onAction="#openMapView"/>
+
+          </HBox>
+    </VBox>
+</StackPane>

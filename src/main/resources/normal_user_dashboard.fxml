@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+
+<?import java.lang.String?>
+<?import javafx.scene.shape.Circle?>
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="Controllers.NormalUserDashboardController"
+           styleClass="root-container">
+
+    <stylesheets>
+        <String fx:value="/styles/app.css"/>
+    </stylesheets>
+
+    <!-- Background Gradient -->
+    <Rectangle width="2000" height="2000">
+        <fill>
+            <LinearGradient endX="1.0" endY="1.0">
+                <stops>
+                    <Stop color="#f0f2f5" />
+                    <Stop color="#e6e9ff" offset="1.0" />
+                </stops>
+            </LinearGradient>
+        </fill>
+    </Rectangle>
+
+    <!-- Main Content Container -->
+    <VBox spacing="30" styleClass="dashboard-container">
+        <!-- Header -->
+        <HBox alignment="CENTER" styleClass="button-with-hover">
+            <StackPane>
+                <Rectangle arcWidth="50" arcHeight="50" width="400" height="80" styleClass="primary-background">
+                    <effect>
+                        <DropShadow color="rgba(0,0,0,0.3)" radius="10" spread="0.1" />
+                    </effect>
+                </Rectangle>
+                <Text styleClass="page-title" text="User Dashboard" fill="WHITE" />
+            </StackPane>
+        </HBox>
+        
+        <!-- Navigation Bar -->
+        <HBox alignment="CENTER" spacing="10" styleClass="navigation-bar,button-with-hover">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10" />
+            </padding>
+            <Button text="Home" styleClass="button,button-blue,button-with-hover" onAction="#handleHome">
+                <graphic>
+                    <ImageView fitWidth="16" fitHeight="16" preserveRatio="true">
+                        <Image url="@/event-icon.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button text="Reservations" styleClass="button,button-blue,button-with-hover" onAction="#handleReservations">
+                <graphic>
+                    <ImageView fitWidth="16" fitHeight="16" preserveRatio="true">
+                        <Image url="@/ride-icon.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button text="Reclamation" styleClass="button,button-orange,button-with-hover" onAction="#handleReclamation">
+                <graphic>
+                    <ImageView fitWidth="16" fitHeight="16" preserveRatio="true">
+                        <Image url="@/reclamation-icon.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Pane HBox.hgrow="ALWAYS" />
+            <Button text="Logout" styleClass="button,button-secondary,button-with-hover" onAction="#handleLogOut">
+                <graphic>
+                    <ImageView fitWidth="16" fitHeight="16" preserveRatio="true">
+                        <Image url="@/history-icon.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+
+        <!-- Dashboard Content -->
+        <HBox spacing="20">
+            <!-- Left Panel - User Profile -->
+            <VBox styleClass="card,left-panel,button-with-hover" HBox.hgrow="ALWAYS" prefWidth="300">
+                <Text styleClass="card-title" text="User Profile" />
+                
+                <!-- Profile Image -->
+                <StackPane styleClass="button-with-hover,profile-image-container" alignment="CENTER" VBox.vgrow="NEVER">
+                    <Circle radius="50" fill="WHITE" />
+                    <ImageView fitWidth="90" fitHeight="90" preserveRatio="true">
+                        <Image url="@/default-avatar.png" />
+                    </ImageView>
+                </StackPane>
+                
+                <VBox spacing="15" alignment="CENTER">
+                    <Label styleClass="title" fx:id="userNameLabel" text="John Doe" />
+                    <Label styleClass="subtitle" fx:id="userEmailLabel" text="john.doe@example.com" />
+                    
+                    <Separator />
+                    
+                    <!-- User Information -->
+                    <GridPane styleClass="form-grid" vgap="10" hgap="10">
+                        <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="100" />
+                            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="150" />
+                        </columnConstraints>
+                        
+                        <Label styleClass="field-label" text="User ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                        <Label styleClass="field-value" fx:id="userIdLabel" text="12345" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                        
+                        <Label styleClass="field-label" text="Role:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                        <Label styleClass="field-value" fx:id="userRoleLabel" text="USER" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                        
+                        <Label styleClass="field-label" text="Joined:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                        <Label styleClass="field-value" fx:id="joinDateLabel" text="01/01/2023" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                        
+                        <Label styleClass="field-label" text="Status:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                        <Label styleClass="field-value" fx:id="userStatusLabel" text="Active" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                        
+                        <Label styleClass="field-label" text="Face ID:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                        <Label styleClass="field-value" fx:id="faceIdStatusLabel" text="Not Enabled" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+                    </GridPane>
+                    
+                    <Button styleClass="button,button-outline,button-with-hover" text="Edit Profile" fx:id="editProfileButton" onAction="#handleEditProfile" />
+                    <Button styleClass="button,button-outline,button-with-hover" text="Toggle Face ID" fx:id="faceIdToggleButton" onAction="#toggleFaceId" />
+                </VBox>
+            </VBox>
+            
+            <!-- Right Panel - Dashboard Summary -->
+            <VBox styleClass="card,right-panel,button-with-hover" HBox.hgrow="ALWAYS">
+                <Text styleClass="card-title" text="Dashboard Summary" />
+                
+                <!-- Statistics Cards -->
+                <HBox spacing="15" styleClass="button-with-hover">
+                    <!-- Activity Card -->
+                    <VBox styleClass="card" HBox.hgrow="ALWAYS">
+                        <Text styleClass="subtitle" text="Activity" />
+                        <Label styleClass="title" text="25" />
+                        <Label styleClass="text-small" text="Recent Actions" />
+                        <ProgressBar progress="0.6" prefWidth="150" />
+                    </VBox>
+                    
+                    <!-- Notifications Card -->
+                    <VBox styleClass="card" HBox.hgrow="ALWAYS">
+                        <Text styleClass="subtitle" text="Notifications" />
+                        <Label styleClass="title" text="8" />
+                        <Label styleClass="text-small" text="Unread Alerts" />
+                        <ProgressBar progress="0.4" prefWidth="150" />
+                    </VBox>
+                    
+                    <!-- Events Card -->
+                    <VBox styleClass="card" HBox.hgrow="ALWAYS">
+                        <Text styleClass="subtitle" text="Events" />
+                        <Label styleClass="title" text="12" />
+                        <Label styleClass="text-small" text="Upcoming Events" />
+                        <ProgressBar progress="0.8" prefWidth="150" />
+                    </VBox>
+                </HBox>
+                
+                <!-- Recent Activity -->
+                <VBox spacing="10" styleClass="button-with-hover">
+                    <Label styleClass="card-title" text="Recent Activity" />
+                    <ListView fx:id="recentActivityListView" prefHeight="150" styleClass="modern-list-view" />
+                </VBox>
+                
+                <!-- Quick Actions Section -->
+                <VBox spacing="10" styleClass="button-with-hover">
+                    <Label styleClass="card-title" text="Quick Actions" />
+                    
+                    <!-- Quick Action Buttons -->
+                    <HBox spacing="15" styleClass="action-buttons-container">
+                        <!-- View Events Button -->
+                        <Button styleClass="button,button-blue,button-with-hover" text="View Events" fx:id="viewEventsButton" onAction="#handleViewEvents">
+                            <graphic>
+                                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                                    <Image url="@/event-icon.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        
+                        <!-- Add Reclamation Button -->
+                        <Button styleClass="button,button-orange,button-with-hover" text="Add Reclamation" fx:id="addReclamationButton" onAction="#handleReclamation">
+                            <graphic>
+                                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                                    <Image url="@/reclamation-icon.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        
+                        <!-- Book Ride Button -->
+                        <Button styleClass="button,button-blue,button-with-hover" text="Book Ride" fx:id="bookRideButton" onAction="#handleBookRide">
+                            <graphic>
+                                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                                    <Image url="@/ride-icon.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        
+                        <!-- View History Button -->
+                        <Button styleClass="button,button-secondary,button-with-hover" text="View History" fx:id="viewHistoryButton" onAction="#handleViewHistory">
+                            <graphic>
+                                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                                    <Image url="@/history-icon.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </HBox>
+                    
+                    <!-- Additional Quick Links -->
+                    <HBox spacing="15" styleClass="action-buttons-container">
+                        <Hyperlink styleClass="text-link" text="Privacy Settings" fx:id="privacySettingsLink" onAction="#handlePrivacySettings" />
+                        <Hyperlink styleClass="text-link" text="Help Center" fx:id="helpCenterLink" onAction="#handleHelpCenter" />
+                        <Hyperlink styleClass="text-link" text="Contact Support" fx:id="contactSupportLink" onAction="#handleContactSupport" />
+                    </HBox>
+                </VBox>
+            </VBox>
+        </HBox>
+        
+        <!-- Footer -->
+        <HBox alignment="CENTER" styleClass="footer">
+            <Label styleClass="text-small" text="© 2023 Movable App. All rights reserved." />
+        </HBox>
+    </VBox>
+</StackPane>

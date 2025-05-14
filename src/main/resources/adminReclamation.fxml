@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.control.Label?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="Controllers.AdminReclamationController">
+
+    <!-- Background Image -->
+    <ImageView>
+        <image>
+            <Image url="@/Driver.jpg"/>
+        </image>
+    </ImageView>
+
+    <!-- Main Content -->
+    <VBox spacing="30" style="-fx-padding: 40 60;">
+
+        <!-- Button to go back to Admin Dashboard -->
+        <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 10 0 20 0;">
+            <Button fx:id="backBtn" text="Back to Admin Dashboard"
+                    style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 10 20; -fx-font-size: 14px;"
+                    onAction="#goBackToAdminDashboard"/>
+        </HBox>
+
+        <!-- Reclamation Edit Section -->
+        <VBox spacing="20" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-padding: 30; -fx-background-radius: 15;">
+            <effect>
+                <DropShadow color="#00000033" radius="10" spread="0.1"/>
+            </effect>
+
+            <Label text="Edit Reclamation Status" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+
+            <!-- Table for Reclamations -->
+            <TableView fx:id="reclamationTable" style="-fx-max-width: 500px;">
+                <columns>
+                    <TableColumn fx:id="titleColumn" text="Title" />
+                    <TableColumn fx:id="descriptionColumn" text="Description" />
+                    <TableColumn fx:id="statusColumn" text="Status" />
+                </columns>
+            </TableView>
+
+            <!-- ComboBox to select new status -->
+            <ComboBox fx:id="statusCb" style="-fx-max-width: 200px;" promptText="Select Status"/>
+
+            <!-- Button to save status changes -->
+            <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 20 0 0 0;">
+                <Button fx:id="saveBtn" text="Save Status"
+                        style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;"
+                        onAction="#saveStatus"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</StackPane>

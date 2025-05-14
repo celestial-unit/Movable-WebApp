@@ -1,0 +1,167 @@
+/* Color Constants */
+/* Primary: #66b3ff, Secondary: #358ad7, Danger: #d32f2f, Warning: #f67a14 */
+
+/* TextField - Unified padding and font size */
+/* TextField - Smooth design with shadow effect */
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #66b3ff;
+    -fx-border-radius: 12px;
+    -fx-padding: 12px;
+    -fx-font-size: 15px;
+    -fx-font-family: "Arial", sans-serif;
+    -fx-text-fill: #444444;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0, 0, 4);
+    -fx-transition: border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.text-field:focused {
+    -fx-border-color: #358ad7;
+    -fx-border-width: 2px;
+    -fx-background-color: #e7f1ff;
+    -fx-effect: dropshadow(gaussian, rgba(53, 138, 215, 0.3), 8, 0, 0, 4);
+}
+
+/* ComboBox - Modern popup styling */
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #66b3ff;
+    -fx-border-radius: 12px;
+    -fx-padding: 12px;
+    -fx-font-size: 15px;
+    -fx-text-fill: #444444;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: white;
+    -fx-border-color: #66b3ff;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 6, 0, 0, 4);
+}
+
+.combo-box .list-cell {
+    -fx-padding: 8px;
+    -fx-border-radius: 6px;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #66b3ff;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-transition: background-color 0.2s ease-in-out, text-fill 0.2s ease-in-out;
+}
+
+/* Spinner - Refined buttons with interactive feel */
+.spinner {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #66b3ff;
+    -fx-border-radius: 12px;
+    -fx-padding: 12px;
+}
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: #66b3ff;
+    -fx-background-radius: 4px;
+    -fx-transition: background-color 0.2s ease-in-out;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: #358ad7;
+}
+
+.spinner .increment-arrow,
+.spinner .decrement-arrow {
+    -fx-shape: "M 4 8 L 12 8 L 8 4 Z";
+    -fx-background-color: white;
+}
+
+/* DatePicker - Clean design with a subtle highlight */
+.date-picker {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #66b3ff;
+    -fx-border-radius: 12px;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: #66b3ff;
+    -fx-border-radius: 0 8px 8px 0;
+    -fx-transition: background-color 0.2s ease-in-out;
+}
+
+.date-picker .arrow-button:hover {
+    -fx-background-color: #358ad7;
+}
+
+.date-picker .arrow {
+    -fx-background-color: white;
+}
+
+
+/* Buttons - Consistent padding and better focus */
+.button {
+    -fx-padding: 12px 20px;
+    -fx-border-radius: 12px;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0, 0, 4);
+}
+
+.button:focused {
+    -fx-effect: dropshadow(gaussian, rgba(53, 138, 215, 0.4), 8, 0, 0, 4);
+}
+
+/* Updated ListView selectors to match fx:id="eventListView" */
+/* ListView - Better scrollbar and cell spacing */
+#eventListView {
+    -fx-padding: 8px;
+    -fx-background-insets: 0;
+    -fx-selection-bar-non-focus-color: #66b3ff99;
+}
+
+#eventListView .list-cell {
+    -fx-background-insets: 0 0 8px 0;
+    -fx-padding: 12px;
+}
+
+#eventListView .scroll-bar:vertical .track,
+#eventListView .scroll-bar:horizontal .track {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 6px;
+}
+
+#eventListView .scroll-bar .thumb {
+    -fx-background-color: #66b3ff;
+    -fx-background-radius: 6px;
+}
+
+#eventListView .list-cell:hover {
+    -fx-background-color: #f0f8ff;
+    -fx-text-fill: #358ad7;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+    -fx-transition: background-color 0.3s ease, -fx-scale-x 0.2s ease, -fx-scale-y 0.2s ease;
+}
+
+/* Unified hover effect */
+.text-field:hover,
+.combo-box:hover,
+.spinner:hover,
+.date-picker:hover {
+    -fx-background-color: #f5faff;
+    -fx-border-color: #358ad7;
+}
+
+/* Button Color Variations */
+#registerButton { -fx-background-color: linear-gradient(to bottom, #66b3ff, #358ad7); }
+#clearButton { -fx-background-color: linear-gradient(to bottom, #66b3ff, #358ad7); }
+#updateButton { -fx-background-color: linear-gradient(to bottom, #f67a14, #e86b10); }
+#deleteButton { -fx-background-color: linear-gradient(to bottom, #d32f2f, #b71c1c); }
+#registration { -fx-background-color: linear-gradient(to bottom, #66b3ff, #358ad7); }
+#generatePDFButton { -fx-background-color: linear-gradient(to bottom, #66b3ff, #358ad7); }
+
+#addButton:hover { -fx-background-color: #358ad7; }
+#updateButton:hover { -fx-background-color: #e86b10; }
+#deleteButton:hover { -fx-background-color: #b71c1c; }

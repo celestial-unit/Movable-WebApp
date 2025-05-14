@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.text.Text?>
+
+<StackPane xmlns="http://javafx.com/javafx/21.0.2"
+           xmlns:fx="http://javafx.com/fxml/1"
+           stylesheets="@/style.css"
+           fx:controller="Controllers.UserDestinationController"
+           style="-fx-background-color: #f0f8ff;">
+
+    <!-- Background Image -->
+    <ImageView fitHeight="800" fitWidth="1200" preserveRatio="true">
+        <Image url="@/background_image.jpg"/>
+    </ImageView>
+
+    <!-- Main Content Container -->
+    <SplitPane fx:id="splitPane"
+               dividerPositions="1.0"
+               style="-fx-background-color: rgba(255,255,255,0.9);">
+
+        <!-- Left Side - Destination Details -->
+        <VBox fx:id="detailSection"
+              visible="false"
+              managed="false"
+              spacing="15"
+              style="-fx-padding: 20;"
+              minWidth="250">
+            <ImageView fx:id="destinationImage" fitWidth="300" fitHeight="200" preserveRatio="true"/>
+            <Label fx:id="destinationName" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+            <Text fx:id="destinationDescription" wrappingWidth="300" style="-fx-font-size: 14px; -fx-fill: #34495e;"/>
+            <Button text="Check Parking Spots" onAction="#handleCheckParkingSpots"
+                    style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        </VBox>
+
+        <!-- Right Side - Destinations and Favorites -->
+        <!-- Add this HBox at the top of your right pane -->
+
+        <VBox spacing="10" style="-fx-padding: 10; -fx-background-color: #d7e6ff;">
+            <TextField fx:id="searchField"
+                       promptText="Search destination..."
+                       onKeyReleased="#handleSearch"
+                       style="-fx-font-size: 14px;
+                      -fx-background-color: #ffffff;
+                      -fx-border-color: #3498db;
+                      -fx-border-radius: 5px;
+                      -fx-padding: 10px 15px;
+                      -fx-pref-width: 10px;" />
+
+
+
+            <!-- Favorites Section (Initially Hidden) -->
+            <VBox fx:id="favoritesSection" visible="false" managed="false" spacing="10">
+                <Button text="Back" onAction="#handleBack"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+                <Label text="My Favorite Destinations" style="-fx-font-size: 16px; -fx-text-fill: #2c3e50;"/>
+                <FlowPane fx:id="favoritesContainer"
+                          hgap="20" vgap="20"
+                          prefWrapLength="800"
+                          style="-fx-padding: 20; -fx-background-color: #d7e6ff;">
+                    <!-- Favorite cards will be dynamically added here -->
+                </FlowPane>
+            </VBox>
+            <HBox spacing="10" style="-fx-padding: 10;">
+                <Button fx:id="showFavoritesButton"
+                        text="Show Favorites ♥"
+                        onAction="#handleShowFavorites"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+                
+                <Button fx:id="backToDashboardButton"
+                        text="Back to Dashboard"
+                        onAction="#handleBackToDashboard"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+                
+                <Button fx:id="backButton"
+                        text="Back to All Destinations"
+                        onAction="#handleShowAllDestinations"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white;"
+                        visible="false"/>
+            </HBox>
+
+            <!-- Scrollable List of Destination Cards -->
+            <ScrollPane fx:id="destinationsScrollPane" fitToWidth="true" fitToHeight="true" style="-fx-background: #d7e6ff;">
+                <FlowPane fx:id="destinationsContainer"
+                          hgap="20" vgap="20"
+                          prefWrapLength="800"
+                          style="-fx-padding: 20; -fx-background-color: #d7e6ff;">
+                    <!-- Cards will be dynamically added here -->
+                </FlowPane>
+            </ScrollPane>
+        </VBox>
+    </SplitPane>
+</StackPane>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.collections.FXCollections?>
+<StackPane xmlns="http://javafx.com/javafx/21.0.2"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="Controllers.UserParkingController"
+           style="-fx-background-color: #f0f8ff;">
+
+    <VBox spacing="20" style="-fx-padding: 40 60; -fx-background-color: rgba(255,255,255,0.9); -fx-background-radius: 15;">
+        <Button text="← Back to Destinations"
+                onAction="#goBackToDestinations"
+                style="-fx-background-radius: 15; -fx-padding: 8 15;"/>
+        <CheckBox fx:id="availabilityFilter" text="Available Only" onAction="#handleFilterAvailability"/>
+
+
+        <Label fx:id="titleLabel"
+               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+        <ListView fx:id="parkingList" style="-fx-background-radius: 10; -fx-border-radius: 10;">
+            <items>
+                <FXCollections fx:factory="observableArrayList" />
+            </items>
+        </ListView>
+        <Slider fx:id="feeSlider" min="0" max="100" value="50" showTickLabels="true" showTickMarks="true"/>
+        <Label fx:id="feeLabel" text="Max Fee: $50"/>
+
+    </VBox>
+</StackPane>

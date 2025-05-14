@@ -1,0 +1,206 @@
+/* Light Theme CSS */
+
+/* Color Variables */
+* {
+    -fx-primary-color: #007bff;
+    -fx-secondary-color: #4caf50;
+    -fx-accent-color: #FF5722;
+    -fx-grey-color: #b9b9b9;
+    -fx-light-grey-color: #d1d1d1;
+    -fx-lightest-grey-color: #F9F9F9;
+    
+    -fx-focus-color: -fx-primary-color;
+
+    /* Base colors for light theme */
+    -fx-background: #FFFFFF;
+    -fx-background-color: -fx-background;
+    -fx-control-background: #F4F4F4;
+    -fx-control-inner-background: #FFFFFF;
+    -fx-control-inner-background-alt: derive(-fx-control-inner-background, -2%);
+    
+    /* Text colors */
+    -fx-text-color: #333333;
+    -fx-text-inner-color: #333333;
+    -fx-inner-border-color: #E0E0E0;
+    -fx-outer-border-color: #CCCCCC;
+}
+
+/* Typography */
+.label {
+    -fx-text-fill: -fx-text-color;
+}
+
+.title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.subtitle {
+    -fx-font-size: 18px;
+    -fx-font-weight: normal;
+}
+
+.text {
+    -fx-font-smoothing-type: lcd;
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: white;
+    -fx-background-radius: 4px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: derive(-fx-primary-color, 20%);
+}
+
+.button:pressed {
+    -fx-background-color: derive(-fx-primary-color, -10%);
+}
+
+.button-secondary {
+    -fx-background-color: -fx-secondary-color;
+}
+
+.button-secondary:hover {
+    -fx-background-color: derive(-fx-secondary-color, 20%);
+}
+
+/* Text Fields */
+.text-field {
+    -fx-background-color: -fx-control-inner-background;
+    -fx-background-radius: 4px;
+    -fx-border-color: -fx-outer-border-color;
+    -fx-border-radius: 4px;
+    -fx-padding: 8px;
+}
+
+.text-field:focused {
+    -fx-border-color: -fx-primary-color;
+}
+
+/* Table View */
+.table-view {
+    -fx-background-color: -fx-control-inner-background;
+    -fx-border-color: -fx-outer-border-color;
+}
+
+.table-view .column-header {
+    -fx-background-color: -fx-control-background;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: -fx-text-color;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell {
+    -fx-background-color: -fx-control-inner-background;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: -fx-control-inner-background-alt;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: derive(-fx-primary-color, 70%);
+    -fx-text-fill: -fx-text-color;
+}
+
+/* List View */
+.list-view {
+    -fx-background-color: -fx-control-inner-background;
+    -fx-border-color: -fx-outer-border-color;
+}
+
+.list-cell {
+    -fx-background-color: -fx-control-inner-background;
+    -fx-padding: 8px;
+}
+
+.list-cell:odd {
+    -fx-background-color: -fx-control-inner-background-alt;
+}
+
+.list-cell:selected {
+    -fx-background-color: derive(-fx-primary-color, 70%);
+}
+
+/* Combo Box */
+.combo-box {
+    -fx-background-color: -fx-control-inner-background;
+    -fx-border-color: -fx-outer-border-color;
+    -fx-border-radius: 4px;
+}
+
+.combo-box:focused {
+    -fx-border-color: -fx-primary-color;
+}
+
+/* Tabs */
+.tab-pane {
+    -fx-background-color: -fx-background;
+}
+
+.tab {
+    -fx-background-color: -fx-control-background;
+}
+
+.tab:selected {
+    -fx-background-color: -fx-background;
+    -fx-border-color: -fx-primary-color -fx-primary-color transparent -fx-primary-color;
+}
+
+/* Dashboard panels */
+.dashboard-card {
+    -fx-background-color: -fx-control-inner-background;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 5);
+    -fx-padding: 15px;
+}
+
+/* Menu */
+.menu-bar {
+    -fx-background-color: -fx-control-background;
+}
+
+.menu:hover {
+    -fx-background-color: derive(-fx-control-background, -5%);
+}
+
+.menu-item {
+    -fx-background-color: -fx-control-inner-background;
+}
+
+.menu-item:hover {
+    -fx-background-color: derive(-fx-primary-color, 70%);
+}
+
+/* Charts */
+.chart {
+    -fx-background-color: -fx-background;
+}
+
+.chart-legend {
+    -fx-background-color: -fx-control-inner-background;
+}
+
+/* Scrollbars */
+.scroll-bar {
+    -fx-background-color: -fx-control-inner-background;
+}
+
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: -fx-light-grey-color;
+    -fx-background-radius: 5px;
+}
+
+.scroll-bar:vertical .thumb:hover,
+.scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: -fx-grey-color;
+}
+

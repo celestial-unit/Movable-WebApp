@@ -1,0 +1,357 @@
+/* Dark Theme CSS */
+
+/* Color variables */
+:root {
+    /* Primary colors */
+    --primary-color: #2a7af3;
+    --primary-color-hover: #1c5dc5;
+    --primary-color-pressed: #154aa3;
+    
+    /* Background colors */
+    --bg-color-main: #121212;
+    --bg-color-secondary: #1e1e1e;
+    --bg-color-tertiary: #2c2c2c;
+    --bg-color-elevated: #333333;
+    
+    /* Text colors */
+    --text-color-primary: #ffffff;
+    --text-color-secondary: #cccccc;
+    --text-color-tertiary: #b0b0b0;
+    --text-color-disabled: #6c6c6c;
+    
+    /* Border colors */
+    --border-color: #444444;
+    --border-color-light: #555555;
+    
+    /* Status colors */
+    --success-color: #42a942;
+    --warning-color: #f0a92e;
+    --error-color: #d14242;
+    --info-color: #4290d1;
+    
+    /* Shadow */
+    --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Typography */
+.label {
+    -fx-text-fill: var(--text-color-primary);
+}
+
+.text {
+    -fx-fill: var(--text-color-primary);
+}
+
+.title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: var(--text-color-primary);
+}
+
+.subtitle {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: var(--text-color-secondary);
+}
+
+/* Backgrounds */
+.root {
+    -fx-background-color: var(--bg-color-main);
+}
+
+.background {
+    -fx-background-color: var(--bg-color-main);
+}
+
+.secondary-background {
+    -fx-background-color: var(--bg-color-secondary);
+}
+
+.card {
+    -fx-background-color: var(--bg-color-secondary);
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(gaussian, var(--shadow-color), 5, 0, 0, 1);
+    -fx-padding: 10px;
+}
+
+/* Controls */
+.button {
+    -fx-background-color: var(--primary-color);
+    -fx-text-fill: white;
+    -fx-background-radius: 3px;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: var(--primary-color-hover);
+    -fx-cursor: hand;
+}
+
+.button:pressed {
+    -fx-background-color: var(--primary-color-pressed);
+}
+
+.button.secondary {
+    -fx-background-color: var(--bg-color-tertiary);
+    -fx-text-fill: var(--text-color-primary);
+    -fx-border-color: var(--border-color);
+}
+
+.button.secondary:hover {
+    -fx-background-color: var(--bg-color-elevated);
+}
+
+/* Text fields */
+.text-field {
+    -fx-background-color: var(--bg-color-tertiary);
+    -fx-text-fill: var(--text-color-primary);
+    -fx-prompt-text-fill: var(--text-color-tertiary);
+    -fx-border-color: var(--border-color);
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+}
+
+.text-field:focused {
+    -fx-border-color: var(--primary-color);
+}
+
+.text-area {
+    -fx-background-color: var(--bg-color-tertiary);
+    -fx-text-fill: var(--text-color-primary);
+    -fx-prompt-text-fill: var(--text-color-tertiary);
+    -fx-border-color: var(--border-color);
+}
+
+.text-area .content {
+    -fx-background-color: var(--bg-color-tertiary);
+}
+
+/* ComboBox */
+.combo-box {
+    -fx-background-color: var(--bg-color-tertiary);
+    -fx-border-color: var(--border-color);
+    -fx-text-fill: var(--text-color-primary);
+}
+
+.combo-box .list-cell {
+    -fx-background-color: var(--bg-color-tertiary);
+    -fx-text-fill: var(--text-color-primary);
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: var(--bg-color-tertiary);
+    -fx-border-color: var(--border-color);
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: var(--bg-color-tertiary);
+    -fx-text-fill: var(--text-color-primary);
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: var(--bg-color-elevated);
+}
+
+/* Tables */
+.table-view {
+    -fx-background-color: var(--bg-color-secondary);
+    -fx-border-color: var(--border-color);
+}
+
+.table-view .column-header {
+    -fx-background-color: var(--bg-color-tertiary);
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: var(--text-color-primary);
+    -fx-font-weight: bold;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: var(--bg-color-secondary);
+    -fx-border-color: var(--border-color-light);
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: var(--bg-color-tertiary);
+}
+
+.table-view .table-row-cell .text {
+    -fx-fill: var(--text-color-primary);
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: derive(var(--primary-color), -20%);
+}
+
+.table-view .table-row-cell:selected .text {
+    -fx-fill: white;
+}
+
+/* Tabs */
+.tab-pane {
+    -fx-background-color: var(--bg-color-secondary);
+}
+
+.tab {
+    -fx-background-color: var(--bg-color-tertiary);
+}
+
+.tab:selected {
+    -fx-background-color: var(--primary-color);
+}
+
+.tab .tab-label {
+    -fx-text-fill: var(--text-color-primary);
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: white;
+}
+
+/* Checkbox and Radio Button */
+.check-box {
+    -fx-text-fill: var(--text-color-primary);
+}
+
+.check-box .box {
+    -fx-background-color: var(--bg-color-tertiary);
+    -fx-border-color: var(--border-color);
+}
+
+.check-box:selected .box {
+    -fx-background-color: var(--primary-color);
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
+
+.radio-button {
+    -fx-text-fill: var(--text-color-primary);
+}
+
+.radio-button .radio {
+    -fx-background-color: var(--bg-color-tertiary);
+    -fx-border-color: var(--border-color);
+}
+
+.radio-button:selected .radio {
+    -fx-background-color: var(--primary-color);
+}
+
+.radio-button:selected .dot {
+    -fx-background-color: white;
+}
+
+/* ScrollBar */
+.scroll-bar {
+    -fx-background-color: var(--bg-color-main);
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: var(--bg-color-elevated);
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: var(--border-color);
+}
+
+/* Menu */
+.menu-bar {
+    -fx-background-color: var(--bg-color-secondary);
+}
+
+.menu .label {
+    -fx-text-fill: var(--text-color-primary);
+}
+
+.menu-item {
+    -fx-background-color: var(--bg-color-secondary);
+}
+
+.menu-item .label {
+    -fx-text-fill: var(--text-color-primary);
+}
+
+.menu-item:focused {
+    -fx-background-color: var(--primary-color);
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: white;
+}
+
+/* Chart styling */
+.chart {
+    -fx-background-color: var(--bg-color-secondary);
+}
+
+.chart-plot-background {
+    -fx-background-color: var(--bg-color-tertiary);
+}
+
+.chart-vertical-grid-lines {
+    -fx-stroke: var(--border-color-light);
+}
+
+.chart-horizontal-grid-lines {
+    -fx-stroke: var(--border-color-light);
+}
+
+.chart-title {
+    -fx-text-fill: var(--text-color-primary);
+}
+
+.axis {
+    -fx-tick-label-fill: var(--text-color-secondary);
+}
+
+.axis-label {
+    -fx-text-fill: var(--text-color-secondary);
+}
+
+/* Status indicators */
+.success-text {
+    -fx-text-fill: var(--success-color);
+}
+
+.warning-text {
+    -fx-text-fill: var(--warning-color);
+}
+
+.error-text {
+    -fx-text-fill: var(--error-color);
+}
+
+.info-text {
+    -fx-text-fill: var(--info-color);
+}
+
+/* Dialogs and alerts */
+.dialog-pane {
+    -fx-background-color: var(--bg-color-secondary);
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: var(--bg-color-tertiary);
+}
+
+.dialog-pane .header-panel .label {
+    -fx-text-fill: var(--text-color-primary);
+}
+
+.dialog-pane .content {
+    -fx-background-color: var(--bg-color-secondary);
+}
+
+.dialog-pane .button-bar {
+    -fx-background-color: var(--bg-color-secondary);
+}
+
+/* Tooltips */
+.tooltip {
+    -fx-background-color: var(--bg-color-elevated);
+    -fx-text-fill: var(--text-color-primary);
+}
+

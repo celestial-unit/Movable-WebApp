@@ -1,0 +1,1 @@
+click==8.1.8\ndlib==19.24.6\nface-recognition==1.3.0\nface_recognition_models==0.3.0\nnumpy==2.2.3\nopencv-python\npillow==11.1.0\nsetuptools==75.8.2

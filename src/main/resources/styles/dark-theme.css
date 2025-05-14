@@ -1,0 +1,341 @@
+/* Dark Theme CSS for JavaFX Application */
+
+/* Color Variables */
+* {
+    -fx-primary-color: #2e2e2e;
+    -fx-secondary-color: #1f1f1f;
+    -fx-accent-color: #4e8cd7;
+    -fx-focus-color: #4e8cd7;
+    -fx-text-color: #e0e0e0;
+    -fx-text-secondary-color: #b0b0b0;
+    -fx-border-color: #3c3c3c;
+    -fx-error-color: #cf6679;
+    -fx-success-color: #5cb85c;
+    -fx-warning-color: #ffa726;
+}
+
+/* Base Styles */
+.root {
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: -fx-text-color;
+    -fx-font-family: "System";
+}
+
+/* Labels */
+.label {
+    -fx-text-fill: -fx-text-color;
+}
+
+.label-secondary {
+    -fx-text-fill: -fx-text-secondary-color;
+}
+
+.title-label {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-color;
+}
+
+.subtitle-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: -fx-text-secondary-color;
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: -fx-text-color;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #494949;
+}
+
+.button:pressed {
+    -fx-background-color: #2c2c2c;
+}
+
+.button-primary {
+    -fx-background-color: -fx-accent-color;
+    -fx-text-fill: white;
+}
+
+.button-primary:hover {
+    -fx-background-color: derive(-fx-accent-color, 20%);
+}
+
+.button-primary:pressed {
+    -fx-background-color: derive(-fx-accent-color, -10%);
+}
+
+.button-danger {
+    -fx-background-color: -fx-error-color;
+    -fx-text-fill: white;
+}
+
+.button-danger:hover {
+    -fx-background-color: derive(-fx-error-color, 20%);
+}
+
+.button-success {
+    -fx-background-color: -fx-success-color;
+    -fx-text-fill: white;
+}
+
+.button-success:hover {
+    -fx-background-color: derive(-fx-success-color, 20%);
+}
+
+/* Text Fields */
+.text-field, .text-area, .password-field, .combo-box {
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: -fx-text-color;
+    -fx-prompt-text-fill: -fx-text-secondary-color;
+    -fx-border-color: #555555;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-padding: 5px;
+}
+
+.text-field:focused, .text-area:focused, .password-field:focused, .combo-box:focused {
+    -fx-border-color: -fx-accent-color;
+}
+
+.text-area .content {
+    -fx-background-color: #3c3c3c;
+}
+
+/* ComboBox */
+.combo-box .list-cell {
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: -fx-text-color;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #3c3c3c;
+    -fx-border-color: #555555;
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: -fx-text-color;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #494949;
+}
+
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: -fx-accent-color;
+}
+
+/* Tabs */
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: -fx-secondary-color;
+}
+
+.tab {
+    -fx-background-color: #3c3c3c;
+    -fx-focus-color: transparent;
+}
+
+.tab .tab-label {
+    -fx-text-fill: -fx-text-color;
+}
+
+.tab:selected {
+    -fx-background-color: -fx-primary-color;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: -fx-accent-color;
+}
+
+.tab-pane > .tab-content-area {
+    -fx-background-color: -fx-primary-color;
+}
+
+/* Tables */
+.table-view, .tree-table-view {
+    -fx-background-color: -fx-secondary-color;
+    -fx-border-color: -fx-border-color;
+}
+
+.table-view .column-header, .tree-table-view .column-header {
+    -fx-background-color: #3c3c3c;
+}
+
+.table-view .column-header .label, .tree-table-view .column-header .label {
+    -fx-text-fill: -fx-text-color;
+}
+
+.table-row-cell, .tree-table-row-cell {
+    -fx-background-color: -fx-secondary-color;
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-row-cell:odd, .tree-table-row-cell:odd {
+    -fx-background-color: derive(-fx-secondary-color, 5%);
+}
+
+.table-row-cell:selected, .tree-table-row-cell:selected {
+    -fx-background-color: -fx-accent-color;
+}
+
+.table-row-cell:selected .text, .tree-table-row-cell:selected .text {
+    -fx-fill: white;
+}
+
+.table-view .cell, .tree-table-view .cell {
+    -fx-text-fill: -fx-text-color;
+    -fx-alignment: center-left;
+}
+
+/* Scroll Bars */
+.scroll-bar {
+    -fx-background-color: -fx-secondary-color;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #666666;
+    -fx-background-radius: 8px;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #888888;
+}
+
+.scroll-bar .increment-button, .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .increment-arrow, .scroll-bar .decrement-arrow {
+    -fx-background-color: -fx-text-color;
+}
+
+/* Menu Items */
+.menu-bar {
+    -fx-background-color: -fx-secondary-color;
+}
+
+.menu, .menu-item {
+    -fx-background-color: -fx-secondary-color;
+}
+
+.menu .label, .menu-item .label {
+    -fx-text-fill: -fx-text-color;
+}
+
+.menu:hover, .menu-item:hover {
+    -fx-background-color: #494949;
+}
+
+.context-menu {
+    -fx-background-color: -fx-secondary-color;
+    -fx-border-color: -fx-border-color;
+}
+
+/* Progress Bar */
+.progress-bar > .track {
+    -fx-background-color: #3c3c3c;
+}
+
+.progress-bar > .bar {
+    -fx-background-color: -fx-accent-color;
+}
+
+/* Check Box */
+.check-box {
+    -fx-text-fill: -fx-text-color;
+}
+
+.check-box .box {
+    -fx-background-color: #3c3c3c;
+    -fx-border-color: #555555;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
+
+.check-box:selected .box {
+    -fx-background-color: -fx-accent-color;
+}
+
+/* Radio Button */
+.radio-button {
+    -fx-text-fill: -fx-text-color;
+}
+
+.radio-button .radio {
+    -fx-background-color: #3c3c3c;
+    -fx-border-color: #555555;
+}
+
+.radio-button:selected .dot {
+    -fx-background-color: white;
+}
+
+.radio-button:selected .radio {
+    -fx-background-color: -fx-accent-color;
+}
+
+/* List View */
+.list-view {
+    -fx-background-color: -fx-secondary-color;
+    -fx-border-color: -fx-border-color;
+}
+
+.list-view .list-cell {
+    -fx-background-color: -fx-secondary-color;
+    -fx-text-fill: -fx-text-color;
+}
+
+.list-view .list-cell:odd {
+    -fx-background-color: derive(-fx-secondary-color, 5%);
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: -fx-accent-color;
+    -fx-text-fill: white;
+}
+
+/* Dialog/Alert styling */
+.dialog-pane {
+    -fx-background-color: -fx-primary-color;
+}
+
+.dialog-pane .label {
+    -fx-text-fill: -fx-text-color;
+}
+
+.dialog-pane:header .header-panel {
+    -fx-background-color: -fx-secondary-color;
+}
+
+.dialog-pane:header .header-panel .label {
+    -fx-text-fill: -fx-text-color;
+    -fx-font-weight: bold;
+}
+
+/* General panes */
+.split-pane {
+    -fx-background-color: -fx-primary-color;
+}
+
+.split-pane:horizontal > .split-pane-divider {
+    -fx-background-color: derive(-fx-secondary-color, 5%);
+}
+
+.split-pane:vertical > .split-pane-divider {
+    -fx-background-color: derive(-fx-secondary-color, 5%);
+}
+
+.anchor-pane, .stack-pane, .grid-pane, .hbox, .vbox, .border-pane {
+    -fx-background-color: -fx-primary-color;
+}
+

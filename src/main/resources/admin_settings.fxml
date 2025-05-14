@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="Controllers.AdminSettingsController"
+            prefHeight="600.0" prefWidth="800.0">
+    <top>
+        <HBox alignment="CENTER" style="-fx-background-color: #3498db;" prefHeight="50.0">
+            <Label text="Admin Settings" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="18.0"/>
+                </font>
+            </Label>
+        </HBox>
+    </top>
+    
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            <Tab text="General Settings">
+                <VBox spacing="15.0">
+                    <padding>
+                        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                    </padding>
+                    <Label text="Theme" style="-fx-font-weight: bold;"/>
+                    <HBox spacing="10.0">
+                        <RadioButton fx:id="lightThemeRadio" text="Light" selected="true">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="themeGroup"/>
+                            </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="darkThemeRadio" text="Dark" toggleGroup="$themeGroup"/>
+                    </HBox>
+                    
+                    <Separator/>
+                    
+                    <Label text="Language" style="-fx-font-weight: bold;"/>
+                    <ComboBox fx:id="languageComboBox" prefWidth="200.0">
+                        <!-- Language items will be added programmatically -->
+                    </ComboBox>
+                    
+                    <Separator/>
+                    
+                    <Button fx:id="saveGeneralSettingsBtn" text="Save Settings" 
+                            style="-fx-background-color: #2ecc71;" textFill="WHITE"
+                            onAction="#saveGeneralSettings"/>
+                </VBox>
+            </Tab>
+            
+            <Tab text="User Management">
+                <VBox spacing="15.0">
+                    <padding>
+                        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                    </padding>
+                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                        <Label text="Search User:" style="-fx-font-weight: bold;"/>
+                        <TextField fx:id="userSearchField" prefWidth="200.0" promptText="Enter username or email"/>
+                        <Button text="Search" onAction="#searchUser"/>
+                    </HBox>
+                    
+                    <TableView fx:id="usersTableView" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="userIdColumn" text="ID" prefWidth="50.0"/>
+                            <TableColumn fx:id="usernameColumn" text="Username" prefWidth="150.0"/>
+                            <TableColumn fx:id="emailColumn" text="Email" prefWidth="200.0"/>
+                            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100.0"/>
+                            <TableColumn fx:id="lastLoginColumn" text="Last Login" prefWidth="150.0"/>
+                        </columns>
+                    </TableView>
+                    
+                    <TitledPane text="Ban User" collapsible="true">
+                        <VBox spacing="10.0">
+                            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                <Label text="Ban Duration:" style="-fx-font-weight: bold;"/>
+                                <ComboBox fx:id="banDurationComboBox" prefWidth="150.0">
+                                    <!-- Duration options will be added programmatically -->
+                                </ComboBox>
+                            </HBox>
+                            
+                            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                <Label text="Custom Period:" style="-fx-font-weight: bold;"/>
+                                <TextField fx:id="customBanPeriod" prefWidth="80.0" promptText="Number"/>
+                                <ComboBox fx:id="customBanUnitComboBox" prefWidth="100.0">
+                                    <!-- Unit options will be added programmatically -->
+                                </ComboBox>
+                            </HBox>
+                            
+                            <TextArea fx:id="banReasonTextArea" promptText="Reason for ban..." prefHeight="60.0"/>
+                            
+                            <HBox spacing="10.0">
+                                <Button fx:id="banUserBtn" text="Ban User" 
+                                        style="-fx-background-color: #e74c3c;" textFill="WHITE"
+                                        onAction="#banUser"/>
+                                <Button fx:id="unbanUserBtn" text="Unban User" 
+                                        style="-fx-background-color: #3498db;" textFill="WHITE"
+                                        onAction="#unbanUser"/>
+                            </HBox>
+                        </VBox>
+                    </TitledPane>
+                </VBox>
+            </Tab>
+            
+            <Tab text="Reclamation Statistics">
+                <VBox spacing="15.0">
+                    <padding>
+                        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                    </padding>
+                    <HBox spacing="20.0" alignment="CENTER">
+                        <!-- Total Reclamations Card -->
+                        <VBox style="-fx-background-color: #3498db; -fx-background-radius: 5;" 
+                              prefWidth="200.0" prefHeight="100.0" alignment="CENTER">
+                            <Label text="Total Reclamations" textFill="WHITE"/>
+                            <Label fx:id="totalReclamationsLabel" text="0" textFill="WHITE">
+                                <font>
+                                    <Font size="24.0" name="System Bold"/>
+                                </font>
+                            </Label>
+                        </VBox>
+                        
+                        <!-- Pending Reclamations Card -->
+                        <VBox style="-fx-background-color: #f39c12; -fx-background-radius: 5;" 
+                              prefWidth="200.0" prefHeight="100.0" alignment="CENTER">
+                            <Label text="Pending Reclamations" textFill="WHITE"/>
+                            <Label fx:id="pendingReclamationsLabel" text="0" textFill="WHITE">
+                                <font>
+                                    <Font size="24.0" name="System Bold"/>
+                                </font>
+                            </Label>
+                        </VBox>
+                        
+                        <!-- Resolved Reclamations Card -->
+                        <VBox style="-fx-background-color: #2ecc71; -fx-background-radius: 5;" 
+                              prefWidth="200.0" prefHeight="100.0" alignment="CENTER">
+                            <Label text="Resolved Reclamations" textFill="WHITE"/>
+                            <Label fx:id="resolvedReclamationsLabel" text="0" textFill="WHITE">
+                                <font>
+                                    <Font size="24.0" name="System Bold"/>
+                                </font>
+                            </Label>
+                        </VBox>
+                    </HBox>
+                    
+                    <Separator/>
+                    
+                    <Label text="Reclamations by Category" style="-fx-font-weight: bold;"/>
+                    <Pane fx:id="categoryChartContainer" VBox.vgrow="ALWAYS" prefHeight="200.0"/>
+                    
+                    <Separator/>
+                    
+                    <Label text="Monthly Reclamation Trend" style="-fx-font-weight: bold;"/>
+                    <Pane fx:id="monthlyTrendChartContainer" VBox.vgrow="ALWAYS" prefHeight="200.0"/>
+                    
+                    <Button text="Refresh Statistics" onAction="#refreshStatistics"/>
+                </VBox>
+            </Tab>
+            
+            <Tab text="Database Settings">
+                <VBox spacing="15.0">
+                    <padding>
+                        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                    </padding>
+                    <Label text="Database Connection" style="-fx-font-weight: bold;"/>
+                    
+                    <GridPane hgap="10" vgap="10">
+                        <columnConstraints>
+                            <ColumnConstraints minWidth="120.0" prefWidth="150.0"/>
+                            <ColumnConstraints prefWidth="250.0" hgrow="ALWAYS"/>
+                        </columnConstraints>
+                        
+                        <Label text="Database URL:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="dbUrlField" promptText="jdbc:mysql://localhost:3306/dbname" 
+                                  GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        
+                        <Label text="Username:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="dbUsernameField" promptText="username" 
+                                  GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        
+                        <Label text="Password:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <PasswordField fx:id="dbPasswordField" promptText="password" 
+                                      GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        
+                        <Label text="Connection Pool:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                        <HBox spacing="10.0" GridPane.rowIndex="3" GridPane.columnIndex="1">
+                            <Label text="Min:"/>
+                            <TextField fx:id="minPoolField" prefWidth="60.0" text="5"/>
+                            <Label text="Max:"/>
+                            <TextField fx:id="maxPoolField" prefWidth="60.0" text="20"/>
+                        </HBox>
+                    </GridPane>
+                    
+                    <HBox spacing="10.0">
+                        <Button text="Test Connection" onAction="#testDatabaseConnection"/>
+                        <Button text="Save Connection Settings" 
+                                style="-fx-background-color: #2ecc71;" textFill="WHITE"
+                                onAction="#saveDatabaseSettings"/>
+                    </HBox>
+                    
+                    <Separator/>
+                    
+                    <Label text="Database Maintenance" style="-fx-font-weight: bold;"/>
+                    <HBox spacing="10.0">
+                        <Button text="Backup Database" onAction="#backupDatabase"/>
+                        <Button text="Restore Database" onAction="#restoreDatabase"/>
+                        <Button text="Optimize Tables" onAction="#optimizeTables"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+        </TabPane>
+    </center>
+    
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #f5f5f5;">
+            <padding>
+                <Insets top="10.0" right="10.0" bottom="10.0" left="10.0"/>
+            </padding>
+            <Button text="Back to Dashboard" onAction="#backToDashboard"/>
+        </HBox>
+    </bottom>
+</BorderPane>
+

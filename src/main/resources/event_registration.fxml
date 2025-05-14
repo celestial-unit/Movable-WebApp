@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.EventRegistrationController">
+
+    <!-- Background Image -->
+    <ImageView>
+
+    </ImageView>
+
+    <!-- Main Content Container -->
+    <VBox spacing="30" style="-fx-padding: 40 60;">
+        <!-- Header -->
+        <HBox alignment="CENTER" style="-fx-padding: 20;">
+            <Label style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Event Registration System" />
+        </HBox>
+
+        <!-- Content Area -->
+        <HBox spacing="40" VBox.vgrow="ALWAYS">
+            <!-- Left Panel - Event List -->
+            <VBox maxWidth="500" minWidth="400" spacing="15" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 15; -fx-padding: 30;">
+                <effect>
+                    <DropShadow color="#00000033" radius="10" spread="0.1" />
+                </effect>
+
+                <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Event Registrations" />
+
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <TextField fx:id="searchField" promptText="Search events..." style="-fx-background-radius: 20; -fx-padding: 10;" HBox.hgrow="ALWAYS" />
+                    <Button style="-fx-background-radius: 20; -fx-padding: 10;" text="🔍" />
+                </HBox>
+
+                <ListView fx:id="eventListView" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-font-size: 14px;" VBox.vgrow="ALWAYS" />
+            </VBox>
+
+            <!-- Right Panel - Registration Form & Podium -->
+            <VBox spacing="20" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 15; -fx-padding: 30;" HBox.hgrow="ALWAYS">
+                <effect>
+                    <DropShadow color="#00000033" radius="10" spread="0.1" />
+                </effect>
+
+                <!-- Registration Form -->
+                <GridPane hgap="20" style="-fx-padding: 20;" vgap="20">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="150" prefWidth="200" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="200" prefWidth="300" />
+                    </columnConstraints>
+
+                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Event Title:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <ComboBox fx:id="titleComboBox" promptText="Select Event" style="-fx-background-radius: 5; -fx-padding: 5; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Event ID:" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="eventIdField" editable="false" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+
+                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Registration Date:" GridPane.rowIndex="1" />
+                    <TextField fx:id="registrationDateField" editable="false" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <ComboBox fx:id="statusComboBox" promptText="Select Status" style="-fx-background-radius: 5; -fx-padding: 5; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
+                </GridPane>
+
+                <!-- Action Buttons -->
+                <!-- Inside the Action Buttons HBox -->
+                <HBox alignment="CENTER_RIGHT" spacing="15" style="-fx-padding: 20 0 0 0;">
+                    <Button fx:id="registerButton" onAction="#handleRegister" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" text="Register" />
+                    <Button fx:id="updateButton" onAction="#handleUpdate" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" text="Update" />
+                    <Button fx:id="deleteButton" onAction="#handleDelete" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" text="Delete" />
+                    <Button fx:id="clearButton" onAction="#handleClear" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" text="Clear" />
+                    <!-- PDF Generation Button -->
+                    <Button fx:id="generatePDFButton" onAction="#generatePDF" style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" text="Generate TICKET" />
+                    <Button fx:id="openeventForm" layoutX="1117.0" layoutY="618.0" onAction="#openevent1Form" style="-fx-background-color: #8CBD7A; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10px 20px;" text="go back" />
+                </HBox>
+                <!-- Podium Section -->
+                <VBox spacing="20" style="-fx-padding: 40 0 0 0;">
+                    <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Top Events" />
+                    <HBox alignment="BOTTOM_CENTER" spacing="20">
+                        <!-- Second Place -->
+                        <VBox alignment="BOTTOM_CENTER" style="-fx-background-color: #e0e0e0; -fx-background-radius: 10 10 0 0;">
+                            <Label fx:id="secondPlaceLabel" style="-fx-font-size: 18px; -fx-padding: 0 0 20 0;" text="-" />
+                            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #757575;" text="2nd" />
+                            <Label fx:id="secondPlaceCount" style="-fx-font-size: 14px; -fx-padding: 0 0 10 0;" text="-" />
+                        </VBox>
+
+                        <!-- First Place -->
+                        <VBox alignment="BOTTOM_CENTER" style="-fx-background-color: #ffd700; -fx-background-radius: 10 10 0 0;">
+                            <Label fx:id="firstPlaceLabel" style="-fx-font-size: 18px; -fx-padding: 0 0 40 0;" text="-" />
+                            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #755700;" text="1st" />
+                            <Label fx:id="firstPlaceCount" style="-fx-font-size: 14px; -fx-padding: 0 0 20 0;" text="-" />
+                        </VBox>
+
+                        <!-- Third Place -->
+                        <VBox alignment="BOTTOM_CENTER" style="-fx-background-color: #cd7f32; -fx-background-radius: 10 10 0 0;">
+                            <Label fx:id="thirdPlaceLabel" style="-fx-font-size: 18px; -fx-padding: 0 0 10 0;" text="-" />
+                            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #5a3d1b;" text="3rd" />
+                            <Label fx:id="thirdPlaceCount" style="-fx-font-size: 14px; -fx-padding: 0 0 5 0;" text="-" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </VBox>
+        </HBox>
+    </VBox>
+</StackPane>

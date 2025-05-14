@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.effect.*?>
+
+<?import javafx.collections.FXCollections?>
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="Controllers.DriverDashboardController">
+
+    <!-- Background Image -->
+    <ImageView>
+        <image>
+            <Image url="@/Driver.jpg"/>
+        </image>
+    </ImageView>
+
+    <!-- Main Content -->
+    <VBox spacing="30" style="-fx-padding: 40 60;">
+        <HBox alignment="CENTER" style="-fx-padding: 20;">
+            <Label text="Driver Dashboard"
+                   style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        </HBox>
+
+        <!-- Driver-specific Features -->
+        <VBox spacing="20" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-padding: 30; -fx-background-radius: 15;">
+            <effect>
+                <DropShadow color="#00000033" radius="10" spread="0.1"/>
+            </effect>
+
+            <Label text="Your Deliveries" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+            <ListView fx:id="deliveriesListView">
+                <items>
+                    <FXCollections fx:factory="observableArrayList"/>
+                </items>
+            </ListView>
+
+            <HBox spacing="15" alignment="CENTER_RIGHT">
+                <Button text="Mark as Delivered"
+                        style="-fx-background-color: #2ecc71; -fx-text-fill: white;"
+                        onAction="#handleMarkDelivered"/>
+                <Button text="Log Out"
+                        style="-fx-background-color: #e74c3c; -fx-text-fill: white;"
+                        onAction="#handleLogOut"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</StackPane>

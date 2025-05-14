@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+
+<?import java.net.URL?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="Controllers.AdminCalendarViewController"
+            prefHeight="600.0" prefWidth="800.0"
+            styleClass="calendar-view">
+
+    <stylesheets>
+        <URL value="@styles/app.css" />
+    </stylesheets>
+
+    <VBox spacing="10" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" 
+          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+        
+        <!-- Header section -->
+        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #2196F3; -fx-padding: 10;">
+            <Label text="Admin Calendar View" style="-fx-font-size: 18; -fx-text-fill: white; -fx-font-weight: bold;" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Show Legend" onAction="#addStatusLegend" 
+                    style="-fx-background-color: white; -fx-text-fill: #2196F3;" />
+            <Button text="Refresh" onAction="#refreshCalendar" 
+                    style="-fx-background-color: white; -fx-text-fill: #2196F3;" />
+            <Button text="Back to Dashboard" onAction="#handleReturnToDashboard" 
+                    style="-fx-background-color: #FF9800; -fx-text-fill: white;" />
+        </HBox>
+        
+        <!-- Month navigation -->
+        <HBox spacing="10" alignment="CENTER">
+            <Button text="&lt;" onAction="#previousMonth" />
+            <Label fx:id="monthYearLabel" style="-fx-font-size: 16; -fx-font-weight: bold;" />
+            <Button text="&gt;" onAction="#nextMonth" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Today" onAction="#goToToday" />
+        </HBox>
+        
+        <!-- Calendar grid -->
+        <GridPane fx:id="calendarGrid" VBox.vgrow="ALWAYS" hgap="5" vgap="5">
+            <!-- Day headers will be added here programmatically -->
+        </GridPane>
+        
+        <!-- Status indicators -->
+        <HBox spacing="20" alignment="CENTER" style="-fx-padding: 10;">
+            <Label text="Approved:" />
+            <Rectangle width="15" height="15" fill="#4CAF50" />
+            
+            <Label text="Pending:" />
+            <Rectangle width="15" height="15" fill="#FFC107" />
+            
+            <Label text="Rejected:" />
+            <Rectangle width="15" height="15" fill="#F44336" />
+            
+            <Label text="No Registrations:" />
+            <Rectangle width="15" height="15" fill="#2196F3" />
+        </HBox>
+        
+        <!-- Help text -->
+        <HBox style="-fx-padding: 5; -fx-background-color: #E3F2FD;">
+            <Text text="Right-click on an event to approve/reject registrations or view details" 
+                  wrappingWidth="780" />
+        </HBox>
+    </VBox>
+</AnchorPane>
+

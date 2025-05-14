@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.image.*?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<StackPane prefHeight="700.0" prefWidth="1100.0" styleClass="root-container" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AdminReclamationController">
+    <children>
+        <!-- Background gradient -->
+        <Rectangle width="2000" height="2000">
+            <fill>
+                <LinearGradient endX="1.0" endY="1.0">
+                    <stops>
+                        <Stop color="#1a2a6c" />
+                        <Stop color="#b21f1f" offset="0.5" />
+                        <Stop color="#fdbb2d" offset="1.0" />
+                    </stops>
+                </LinearGradient>
+            </fill>
+        </Rectangle>
+
+        <BorderPane styleClass="main-container">
+            <!-- Top navigation bar -->
+            <top>
+                <HBox alignment="CENTER_LEFT" spacing="15" styleClass="top-bar">
+                    <padding>
+                        <Insets top="10" right="20" bottom="10" left="20" />
+                    </padding>
+                    <children>
+                        <!-- App Logo/Name -->
+                        <Label text="Admin Dashboard" styleClass="header-label">
+                            <font>
+                                <Font name="System Bold" size="24.0" />
+                            </font>
+                        </Label>
+                        
+                        <Region HBox.hgrow="ALWAYS" />
+                        
+                        <!-- Navigation buttons -->
+                        <Button fx:id="homeButton" onAction="#handleHome" styleClass="nav-button" text="Home">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="20.0">
+                                    <Image url="@images/home-icon.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        
+                        <Button fx:id="usersButton" onAction="#handleUsers" styleClass="nav-button" text="Users">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="20.0">
+                                    <Image url="@images/users-icon.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        
+                        <Button fx:id="driversButton" onAction="#handleDrivers" styleClass="nav-button" text="Drivers">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="20.0">
+                                    <Image url="@images/driver-icon.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        
+                        <Button fx:id="logoutButton" onAction="#handleLogOut" styleClass="nav-button, logout-button" text="Logout">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="20.0">
+                                    <Image url="@images/logout-icon.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        
+                        <!-- Admin avatar -->
+                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="avatar">
+                            <Image url="@images/admin-avatar.png" />
+                        </ImageView>
+                    </children>
+                </HBox>
+            </top>
+            
+            <!-- Left sidebar -->
+            <left>
+                <VBox spacing="10" styleClass="sidebar">
+                    <padding>
+                        <Insets top="20" right="10" bottom="20" left="10" />
+                    </padding>
+                    <children>
+                        <Label text="Management" styleClass="sidebar-header" />
+                        
+                        <Button fx:id="dashboardButton" onAction="#handleDashboard" styleClass="sidebar-button" text="Dashboard">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="20.0">
+                                    <Image url="@images/stats-icon.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        
+                        <Button fx:id="reclamationsButton" onAction="#handleReclamations" styleClass="sidebar-button, selected-sidebar-button" text="Reclamations">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="20.0">
+                                    <Image url="@images/reclamation-icon.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        
+                        <Button fx:id="ridesButton" onAction="#handleRides" styleClass="sidebar-button" text="Rides">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="20.0">
+                                    <Image url="@images/ride-icon.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        
+                        <Button fx:id="settingsButton" onAction="#handleSettings" styleClass="sidebar-button" text="Settings">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="20.0">
+                                    <Image url="@images/settings-icon.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </children>
+                </VBox>
+            </left>
+            
+            <!-- Main content area -->
+            <center>
+                <ScrollPane fitToWidth="true" styleClass="content-scrollpane">
+                    <content>
+                        <VBox spacing="20" styleClass="content-container">
+                            <padding>
+                                <Insets top="20" right="20" bottom="20" left="20" />
+                            </padding>
+                            <children>
+                                <!-- Page header -->
+                                <HBox alignment="CENTER_LEFT" spacing="15">
+                                    <children>
+                                        <Label text="Reclamation Management" styleClass="page-title">
+                                            <font>
+                                                <Font name="System Bold" size="20.0" />
+                                            </font>
+                                        </Label>
+                                        
+                                        <Region HBox.hgrow="ALWAYS" />
+                                        
+                                        <Button fx:id="refreshButton" onAction="#handleRefresh" styleClass="action-button" text="Refresh">
+                                            <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0">
+                                                    <Image url="@images/refresh-icon.png" />
+                                                </ImageView>
+                                            </graphic>
+                                        </Button>
+                                    </children>
+                                </HBox>
+                                
+                                <!-- Filters -->
+                                <VBox spacing="10" styleClass="filter-container">
+                                    <children>
+                                        <Label text="Filter Reclamations" styleClass="section-header" />
+                                        
+                                        <HBox spacing="15" alignment="CENTER_LEFT">
+                                            <children>
+                                                <Label text="Status:" />
+                                                <ComboBox fx:id="statusFilter" prefWidth="150.0" promptText="All Statuses" onAction="#handleStatusFilter">
+                                                    <items>
+                                                        <FXCollections fx:factory="observableArrayList">
+                                                            <String fx:value="All" />
+                                                            <String fx:value="Pending" />
+                                                            <String fx:value="Approved" />
+                                                            <String fx:value="Rejected" />
+                                                        </FXCollections>
+                                                    </items>
+                                                </ComboBox>
+                                                
+                                                <Label text="Date:" />
+                                                <DatePicker fx:id="dateFilter" promptText="Filter by date" onAction="#handleDateFilter" />
+                                                
+                                                <Region HBox.hgrow="ALWAYS" />
+                                                
+                                                <TextField fx:id="searchField" promptText="Search reclamations..." prefWidth="200.0" onKeyReleased="#handleSearch" />
+                                                <Button fx:id="searchButton" onAction="#handleSearch" styleClass="action-button" text="Search">
+                                                    <graphic>
+                                                        <ImageView fitHeight="16.0" fitWidth="16.0">
+                                                            <Image url="@images/search-icon.png" />
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Button>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                                
+                                <!-- Reclamations Table -->
+                                <VBox spacing="10" styleClass="content-card" VBox.vgrow="ALWAYS">
+                                    <children>
+                                        <Label text="All Reclamations" styleClass="section-header" />
+                                        
+                                        <TableView fx:id="reclamationsTable" VBox.vgrow="ALWAYS">
+                                            <columns>
+                                                <TableColumn fx:id="idColumn" text="ID" prefWidth="50" />
+                                                <TableColumn fx:id="userColumn" text="User" prefWidth="120" />
+                                                <TableColumn fx:id="titleColumn" text="Title" prefWidth="150" />
+                                                <TableColumn fx:id="dateColumn" text="Date" prefWidth="100" />
+                                                <TableColumn fx:id="statusColumn" text="Status" prefWidth="100" />
+                                                <TableColumn fx:id="priorityColumn" text="Priority" prefWidth="80" />
+                                                <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="150" />
+                                            </columns>
+                                        </TableView>
+                                        
+                                        <HBox spacing="10" alignment="CENTER_RIGHT">
+                                            <children>
+                                                <Label fx:id="totalReclamationsLabel" text="Total: 0 reclamations" />
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                                
+                                <!-- Reclamation Details -->
+                                <VBox fx:id="reclamationDetailContainer" spacing="10" styleClass="content-card" visible="false" managed="false">
+                                    <children>
+                                        <Label text="Reclamation Details" styleClass="section-header" />
+                                        
+                                        <GridPane hgap="15" vgap="10">
+                                            <columnConstraints>
+                                                <ColumnConstraints hgrow="NEVER" minWidth="100" prefWidth="120" />
+                                                <ColumnConstraints hgrow="ALWAYS" minWidth="200" />
+                                            </columnConstraints>
+                                            
+                                            <children>
+                                                <Label text="Reclamation ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                                <Label fx:id="detailIdLabel" text="--" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+                                                
+                                                <Label text="Submitted by:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                                                <Label fx:id="detailUserLabel" text="--" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+                                                
+                                                <Label text="Date:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                                                <Label fx:id="detailDateLabel" text="--" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+                                                
+                                                <Label text="Status:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                                                <Label fx:id="detailStatusLabel" text="--" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+                                                
+                                                <Label text="Title:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                                                <Label fx:id="detailTitleLabel" text="--" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+                                                
+                                                <Label text="Description:" GridPane.rowIndex="5" GridPane.columnIndex="0" alignment="TOP_LEFT" />
+                                                <TextArea fx:id="detailDescriptionArea" wrapText="true" editable="false" prefHeight="100" 
+                                                          GridPane.rowIndex="5" GridPane.columnIndex="1" />
+                                            </children>
+                                        </GridPane>
+                                        
+                                        <Separator />
+                                        
+                                        <Label text="Admin Response" styleClass="section-header" />
+                                        
+                                        <TextArea fx:id="responseTextArea" wrapText="true" promptText="Enter your response here..." prefHeight="100" />
+                                        
+                                        <HBox spacing="10" alignment="CENTER_RIGHT">
+                                            <children>
+                                                <Button fx:id="rejectButton" onAction="#handleReject" styleClass="action-button, danger-button" text="Reject">
+                                                    <graphic>
+                                                        <ImageView fitHeight="16.0" fitWidth="16.0">
+                                                            <Image url="@images/error-icon.png" />
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Button>
+                                                
+                                                <Button fx:id="approveButton" onAction="#handleApprove" styleClass="action-button, success-button" text="Approve">
+                                                    <graphic>
+                                                        <ImageView fitHeight="16.0" fitWidth="16.0">
+                                                            <Image url="@images/check-icon.png" />
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Button>
+                                                
+                                                <Button fx:id="sendResponseButton" onAction="#handleSendResponse" styleClass="action-button, primary-button" text="Send Response">
+                                                    <graphic>
+                                                        <ImageView fitHeight="16.0" fitWidth="16.0">
+                                                            <Image url="@images/submit-icon.png" />
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Button>
+                                                
+                                                <Button fx:id="closeDetailButton" onAction="#handleCloseDetail" styleClass="action-button" text="Close">
+                                                    <graphic>
+                                                        <ImageView fitHeight="16.0" fitWidth="16.0">
+                                                            <Image url="@images/back-icon.png" />
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Button>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                
+
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+            </center>
+        </BorderPane>
+    </children>
+</StackPane>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import java.lang.String?>
+
+<?import javafx.scene.control.ToggleButton?>
+<VBox styleClass="card-root" xmlns="http://javafx.com/javafx/21.0.2"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controllers.DestinationCardController"
+      spacing="15"
+      style="-fx-padding: 15; 
+             -fx-background-color: #FFFFFF; 
+             -fx-border-color: #FF85A2; 
+             -fx-border-width: 3; 
+             -fx-border-radius: 15; 
+             -fx-background-radius: 15;
+             -fx-effect: dropshadow(gaussian, rgba(255,182,193,0.5), 10, 0, 0, 3);
+             -fx-alignment: center;">
+
+    <!-- Heart Button -->
+    <ToggleButton fx:id="heartButton"
+                  styleClass="heart-button"
+                  text="♡"
+                  onAction="#handleHeartClick"
+                  style="-fx-font-size: 20;
+                         -fx-text-fill: #FF1493;
+                         -fx-background-color: transparent;
+                         -fx-padding: 5;
+                         -fx-cursor: hand;">
+        <styleClass>
+            <String fx:value="heart-button"/>
+        </styleClass>
+    </ToggleButton>
+
+    <ImageView fx:id="cardImage" styleClass="card-image"
+               fitWidth="200" fitHeight="150" preserveRatio="true"
+               style="-fx-border-color: #FFC0CB; 
+                      -fx-border-width: 3; 
+                      -fx-border-radius: 10;
+                      -fx-effect: dropshadow(gaussian, rgba(219,112,147,0.3), 5, 0, 0, 2);"/>
+
+    <Label fx:id="cardTitle" styleClass="card-title"
+           style="-fx-text-fill: #FF69B4; 
+                  -fx-font-weight: bold; 
+                  -fx-font-size: 16;
+                  -fx-font-family: 'Comic Sans MS', cursive;"/>
+    <Label fx:id="cardLocation" styleClass="card-location"
+           style="-fx-text-fill: #DB7093;
+                  -fx-font-style: italic;
+                  -fx-font-family: 'Comic Sans MS', cursive;"/>
+    
+    <!-- Decorative hearts element -->
+    <HBox alignment="CENTER" spacing="5">
+        <Label text="♥" style="-fx-text-fill: #FF85A2; -fx-font-size: 12;"/>
+        <Label text="♥" style="-fx-text-fill: #FF85A2; -fx-font-size: 14;"/>
+        <Label text="♥" style="-fx-text-fill: #FF69B4; -fx-font-size: 16;"/>
+        <Label text="♥" style="-fx-text-fill: #FF85A2; -fx-font-size: 14;"/>
+        <Label text="♥" style="-fx-text-fill: #FF85A2; -fx-font-size: 12;"/>
+    </HBox>
+
+</VBox>

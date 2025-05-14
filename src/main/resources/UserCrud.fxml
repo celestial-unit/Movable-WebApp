@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.URL?>
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="Controllers.UserCrudController"
+           styleClass="root-container">
+    
+    <stylesheets>
+        <URL value="@styles/app.css" />
+    </stylesheets>
+    <!-- Background Image with overlay -->
+    <StackPane>
+        <ImageView fx:id="backgroundImage" styleClass="background-image">
+            <image>
+                <Image url="@/Driver.jpg"/>
+            </image>
+        </ImageView>
+        <Region styleClass="background-overlay"/>
+    </StackPane>
+    <!-- Main Content Container -->
+    <VBox fx:id="dashboardVBox" spacing="30" styleClass="dashboard-container">
+        <!-- Header -->
+        <HBox alignment="CENTER" styleClass="header-container">
+            <Label text="User Management System" styleClass="page-title"/>
+        </HBox>
+        <!-- Content Area -->
+        <HBox spacing="40" VBox.vgrow="ALWAYS">
+            <!-- Left Panel - Users List -->
+            <VBox spacing="15" styleClass="card, left-panel" minWidth="400" maxWidth="500">
+                <effect>
+                    <DropShadow color="#00000055" radius="15" spread="0.05"/>
+                </effect>
+
+                <Label text="Users List" styleClass="card-title"/>
+
+                <HBox spacing="10" alignment="CENTER_LEFT" styleClass="search-container">
+                    <TextField fx:id="searchField" promptText="Search users..."
+                               styleClass="search-field" HBox.hgrow="ALWAYS"/>
+                    <Button text="🔍" styleClass="search-button, icon-button"/>
+                </HBox>
+
+                <ListView fx:id="usersListView" VBox.vgrow="ALWAYS" styleClass="modern-list-view">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList"/>
+                    </items>
+                </ListView>
+            </VBox>
+            <!-- Right Panel - User Details Form -->
+            <VBox spacing="20" styleClass="card, right-panel" HBox.hgrow="ALWAYS">
+                <effect>
+                    <DropShadow color="#00000055" radius="15" spread="0.05"/>
+                </effect>
+
+                <Label text="User Details" styleClass="card-title"/>
+
+                <GridPane hgap="20" vgap="20" styleClass="form-grid">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="150" prefWidth="200"/>
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="200" prefWidth="300"/>
+                    </columnConstraints>
+
+                    <Label text="First Name:" styleClass="form-label"
+                           GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <TextField fx:id="firstNameTf" promptText="Enter first name"
+                               styleClass="form-field"
+                               GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                    <Label text="Last Name:" styleClass="form-label"
+                           GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <TextField fx:id="lastNameTf" promptText="Enter last name"
+                               styleClass="form-field"
+                               GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                    <Label text="Email:" styleClass="form-label"
+                           GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <TextField fx:id="emailTf" promptText="Enter email address"
+                               styleClass="form-field"
+                               GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                    <Label text="Password:" styleClass="form-label"
+                           GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                    <PasswordField fx:id="passwordTf" promptText="Enter password"
+                                   styleClass="form-field"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                    <!-- Fixed Role Selection -->
+                    <Label text="Role:" styleClass="form-label"
+                           GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                    <ComboBox fx:id="roleCb"
+                              styleClass="form-field, form-combo-box"
+                              GridPane.columnIndex="1" GridPane.rowIndex="4" maxWidth="Infinity">
+                        <!-- No hardcoded roles here -->
+                    </ComboBox>
+                </GridPane>
+                <!-- Action Buttons -->
+                <HBox spacing="15" alignment="CENTER_RIGHT" styleClass="action-buttons-container">
+                    <Button fx:id="saveBtn" text="Save User"
+                            styleClass="button-primary, button-with-hover"
+                            onAction="#saveUser"/>
+                    <Button fx:id="updateBtn" text="Update User"
+                            styleClass="button-blue, button-with-hover"
+                            onAction="#updateUser"/>
+                    <Button fx:id="deleteBtn" text="Delete User"
+                            styleClass="button-orange, button-with-hover"
+                            onAction="#deleteUser"/>
+                    <Button fx:id="clearBtn" text="Clear Form"
+                            styleClass="button-gray, button-with-hover"
+                            onAction="#clearForm"/>
+                    <Button fx:id="driverCrudBtn" text="Go Back"
+                            styleClass="button-secondary, button-with-hover"
+                            onAction="#goToDriverCrud"/>
+                </HBox>
+            </VBox>
+        </HBox>
+    </VBox>
+</StackPane>

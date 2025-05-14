@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Controllers.CalendarViewController"
+            stylesheets="@calendar-style.css">
+
+    <top>
+        <HBox alignment="CENTER" spacing="20" style="-fx-padding: 10;">
+            <Button fx:id="prevMonthButton" text="&lt;" styleClass="nav-button" />
+            <Label fx:id="monthYearLabel" styleClass="month-year-label"/>
+            <Button fx:id="nextMonthButton" text="&gt;" styleClass="nav-button"/>
+            <Button fx:id="openeventForm" layoutX="1117.0" layoutY="618.0" onAction="#openeventForm" text="go back" style="-fx-background-color: #8CBD7A; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10px 20px;" />
+
+        </HBox>
+    </top>
+
+    <center>
+        <GridPane fx:id="calendarGrid" styleClass="calendar-grid">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="14.28"/>
+                <ColumnConstraints percentWidth="14.28"/>
+                <ColumnConstraints percentWidth="14.28"/>
+                <ColumnConstraints percentWidth="14.28"/>
+                <ColumnConstraints percentWidth="14.28"/>
+                <ColumnConstraints percentWidth="14.28"/>
+                <ColumnConstraints percentWidth="14.28"/>
+            </columnConstraints>
+        </GridPane>
+    </center>
+</BorderPane>

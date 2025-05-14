@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.geometry.Insets?>
+<?import java.lang.String?>
+
+<StackPane xmlns="http://javafx.com/javafx/23.0.1" 
+           xmlns:fx="http://javafx.com/fxml/1" 
+           fx:controller="Controllers.UserController"
+           styleClass="root-container">
+
+    <stylesheets>
+        <String fx:value="@style3.css"/>
+        <String fx:value="@styles/app.css"/>
+    </stylesheets>
+    
+    <!-- Background Gradient -->
+    <Rectangle width="2000" height="2000">
+        <fill>
+            <LinearGradient endX="1.0" endY="1.0">
+                <stops>
+                    <Stop color="#f8f9fa" />
+                    <Stop color="#e9ecef" offset="0.5" />
+                    <Stop color="#dee2e6" offset="1.0" />
+                </stops>
+            </LinearGradient>
+        </fill>
+        <opacity>0.2</opacity>
+    </Rectangle>
+    
+    <!-- Background Texture -->
+    <StackPane style="-fx-background-image: url('background_image.jpg'); -fx-background-repeat: repeat;" opacity="0.05"/>
+    
+    <!-- Main Content -->
+    <BorderPane>
+        <!-- Left Sidebar -->
+        <left>
+            <VBox styleClass="card,left-panel,sidebar" spacing="15" prefWidth="240" 
+                  style="-fx-background-color: linear-gradient(to bottom, #4e54c8, #8f94fb); 
+                         -fx-background-radius: 0 20 20 0;
+                         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 15, 0.2, 0, 0);">
+                <padding>
+                    <Insets top="30" right="15" bottom="30" left="15" />
+                </padding>
+                
+                <!-- Logo -->
+                <StackPane alignment="CENTER" style="-fx-background-color: rgba(255,255,255,0.1);
+                                       -fx-background-radius: 50%;
+                                       -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.2, 0, 0);">
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10" />
+                    </padding>
+                    <ImageView fitHeight="90" fitWidth="90" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@movable.png" />
+                        </image>
+                        <effect>
+                            <javafx.scene.effect.DropShadow radius="10" color="rgba(0,0,0,0.3)" />
+                        </effect>
+                    </ImageView>
+                </StackPane>
+                
+                <Separator style="-fx-background-color: rgba(255,255,255,0.2);" />
+                
+                <!-- Back to Dashboard Button - Prominent -->
+                <Button onAction="#handleBackToDashboard" 
+                        styleClass="button,button-primary,sidebar-button" 
+                        text="Back to Dashboard"
+                        style="-fx-background-color: linear-gradient(to right, #6a11cb, #2575fc);
+                               -fx-background-radius: 30;
+                               -fx-text-fill: white;
+                               -fx-font-weight: bold;
+                               -fx-font-size: 14px;
+                               -fx-padding: 12 20;
+                               -fx-effect: dropshadow(gaussian, rgba(42, 17, 203, 0.5), 10, 0.1, 0, 4);">
+                    <graphic>
+                        <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                            <Image url="@/history-icon.png" />
+                            <effect>
+                                <javafx.scene.effect.ColorAdjust brightness="0.7" />
+                            </effect>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                
+                <VBox spacing="5" VBox.vgrow="ALWAYS">
+                    <!-- Weather Display -->
+                    <VBox styleClass="weather-card" spacing="10" 
+                          style="-fx-background-color: rgba(255,255,255,0.1); 
+                                 -fx-background-radius: 15;
+                                 -fx-padding: 15;">
+                        <Label text="Current Weather" style="-fx-text-fill: rgba(255,255,255,0.8); -fx-font-weight: bold;" />
+                        <Text fx:id="weatherText" styleClass="field-value" wrappingWidth="180" 
+                              style="-fx-fill: rgba(255,255,255,0.9); -fx-font-size: 14px;" />
+                        
+                        <Button onAction="#handleCheckWeather" 
+                                styleClass="button,button-outline,sidebar-button" 
+                                text="Check Weather"
+                                style="-fx-background-color: rgba(255,255,255,0.2);
+                                       -fx-background-radius: 20;
+                                       -fx-text-fill: white;
+                                       -fx-border-color: rgba(255,255,255,0.3);
+                                       -fx-border-radius: 20;" />
+                    </VBox>
+                </VBox>
+            </VBox>
+        </left>
+        
+        <!-- Main Content Area -->
+        <center>
+            <VBox styleClass="card,right-panel" spacing="25"
+                  style="-fx-background-color: rgba(255,255,255,0.9);
+                         -fx-background-radius: 20;
+                         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0.1, 0, 0);">
+                <padding>
+                    <Insets top="25" right="30" bottom="25" left="30" />
+                </padding>
+                
+                <!-- Header Title -->
+                <StackPane>
+                    <Rectangle arcWidth="30" arcHeight="30" width="350" height="70" styleClass="primary-background">
+                        <fill>
+                            <LinearGradient endX="1.0" endY="0">
+                                <stops>
+                                    <Stop color="#4776E6" />
+                                    <Stop color="#8E54E9" offset="1.0" />
+                                </stops>
+                            </LinearGradient>
+                        </fill>
+                        <effect>
+                            <javafx.scene.effect.DropShadow radius="15" color="rgba(127,0,255,0.3)" />
+                        </effect>
+                    </Rectangle>
+                    <HBox alignment="CENTER" spacing="15">
+                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                            <Image url="@/event-icon.png" />
+                            <effect>
+                                <javafx.scene.effect.ColorAdjust brightness="0.7" />
+                            </effect>
+                        </ImageView>
+                        <Text styleClass="page-title" text="Events Explorer" fill="WHITE" 
+                              style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-font-family: 'Segoe UI';
+                                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 3, 0, 0, 1);" />
+                    </HBox>
+                </StackPane>
+                
+                <!-- Search and Filter Bar -->
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <TextField fx:id="searchField" prefHeight="45" prefWidth="320" 
+                               promptText="Search events..." 
+                               styleClass="search-field"
+                               style="-fx-background-color: #FFFFFF;
+                                      -fx-background-radius: 30;
+                                      -fx-border-radius: 30;
+                                      -fx-border-color: #e2e2e2;
+                                      -fx-border-width: 1;
+                                      -fx-padding: 10;
+                                      -fx-font-size: 14px;
+                                      -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" />
+                               
+                    <ComboBox fx:id="locationFilter" prefHeight="45" prefWidth="220" 
+                              promptText="Filter by location" 
+                              styleClass="form-combo-box"
+                              style="-fx-background-color: #FFFFFF;
+                                     -fx-background-radius: 30;
+                                     -fx-border-radius: 30;
+                                     -fx-border-color: #e2e2e2;
+                                     -fx-border-width: 1;
+                                     -fx-padding: 5;
+                                     -fx-font-size: 14px;
+                                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" />
+                              
+                    <ComboBox fx:id="typeFilter" prefHeight="45" prefWidth="200" 
+                              promptText="Filter by price" 
+                              styleClass="form-combo-box"
+                              style="-fx-background-color: #FFFFFF;
+                                     -fx-background-radius: 30;
+                                     -fx-border-radius: 30;
+                                     -fx-border-color: #e2e2e2; 
+                                     -fx-border-width: 1;
+                                     -fx-padding: 5;
+                                     -fx-font-size: 14px;
+                                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" />
+                              
+                    <Pane HBox.hgrow="ALWAYS" />
+                    
+                    <Button fx:id="timeRemainingButton" 
+                            onAction="#handleShowRemainingTime"
+                            styleClass="button,button-success" 
+                            text="Time Remaining"
+                            style="-fx-background-color: linear-gradient(to right, #11998e, #38ef7d);
+                                   -fx-background-radius: 30;
+                                   -fx-text-fill: white;
+                                   -fx-font-weight: bold;
+                                   -fx-effect: dropshadow(gaussian, rgba(17, 153, 142, 0.3), 10, 0.1, 0, 2);">
+                        <graphic>
+                            <ImageView fitWidth="16" fitHeight="16" preserveRatio="true">
+                                <Image url="@images/history-icon.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </HBox>
+                
+                <!-- Events List View -->
+                <ListView fx:id="eventListView" VBox.vgrow="ALWAYS" 
+                          styleClass="modern-list-view" 
+                          prefHeight="350" />
+                
+                <!-- Action Buttons -->
+                <HBox spacing="15" styleClass="action-buttons-container">
+                    <Button onAction="#handleShowOnMap" 
+                            styleClass="button,button-orange" 
+                            text="Show on Map"
+                            style="-fx-background-color: linear-gradient(to right, #FF8008, #FFC837);
+                                   -fx-background-radius: 30;
+                                   -fx-text-fill: white;
+                                   -fx-font-weight: bold;
+                                   -fx-effect: dropshadow(gaussian, rgba(255, 128, 8, 0.3), 10, 0.1, 0, 2);">
+                        <graphic>
+                            <ImageView fitWidth="16" fitHeight="16" preserveRatio="true">
+                                <Image url="@/history-icon.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    
+                    <Button onAction="#openCalendarView" 
+                            styleClass="button,button-secondary" 
+                            text="Open Calendar"
+                            style="-fx-background-color: linear-gradient(to right, #654ea3, #eaafc8);
+                                   -fx-background-radius: 30;
+                                   -fx-text-fill: white;
+                                   -fx-font-weight: bold;
+                                   -fx-effect: dropshadow(gaussian, rgba(101, 78, 163, 0.3), 10, 0.1, 0, 2);">
+                        <graphic>
+                            <ImageView fitWidth="16" fitHeight="16" preserveRatio="true">
+                                <Image url="@/ride-icon.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    
+                    <Button onAction="#handleOpenRegistration" 
+                            styleClass="button,button-secondary" 
+                            text="Register for Event"
+                            style="-fx-background-color: linear-gradient(to right, #4568dc, #b06ab3);
+                                   -fx-background-radius: 30;
+                                   -fx-text-fill: white;
+                                   -fx-font-weight: bold;
+                                   -fx-effect: dropshadow(gaussian, rgba(69, 104, 220, 0.3), 10, 0.1, 0, 2);">
+                        <graphic>
+                            <ImageView fitWidth="16" fitHeight="16" preserveRatio="true">
+                                <Image url="@/default-avatar.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    
+                    <Pane HBox.hgrow="ALWAYS" />
+                    
+                    <Button onAction="#initialize" 
+                            styleClass="button,button-primary" 
+                            text="Refresh"
+                            style="-fx-background-color: linear-gradient(to right, #00c6ff, #0072ff);
+                                   -fx-background-radius: 30;
+                                   -fx-text-fill: white;
+                                   -fx-font-weight: bold;
+                                   -fx-effect: dropshadow(gaussian, rgba(0, 114, 255, 0.3), 10, 0.1, 0, 2);" />
+                </HBox>
+                
+                <!-- Events Summary Section -->
+                <HBox spacing="15">
+                    <!-- Next Event Card -->
+                    <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="10">
+                        <Label styleClass="card-title" text="Next Upcoming Event" />
+                        <Label fx:id="closestEventLabel" prefHeight="54" wrapText="true" styleClass="field-value" />
+                    </VBox>
+                    
+                    <!-- Completed Events Card -->
+                    <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="10">
+                        <Label styleClass="card-title" text="Completed Events" />
+                        <ListView fx:id="pastEventsListView" prefHeight="100" styleClass="modern-list-view" />
+                        <Button onAction="#handleShowCoordinates" 
+                                styleClass="button,button-orange" 
+                                text="Show Coordinates"
+                                style="-fx-background-color: linear-gradient(to right, #f46b45, #eea849);
+                                       -fx-background-radius: 30;
+                                       -fx-text-fill: white;
+                                       -fx-font-weight: bold;
+                                       -fx-effect: dropshadow(gaussian, rgba(244, 107, 69, 0.3), 10, 0.1, 0, 2);" />
+                    </VBox>
+                </HBox>
+            </VBox>
+        </center>
+    </BorderPane>
+</StackPane>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginController" stylesheets="@styles/app.css">
+
+    <!-- Background Image with a semi-transparent overlay -->
+    <StackPane>
+        <ImageView fx:id="backgroundImage" fitHeight="1080" fitWidth="1920" preserveRatio="false">
+            <image>
+                <Image url="@Home.jpg" />
+            </image>
+        </ImageView>
+        <Pane styleClass="overlay" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-view-order: 1;" />
+    </StackPane>
+
+    <!-- Main Container: HBox for Split View -->
+    <HBox alignment="CENTER">
+        
+        <!-- Left Half: Information Panel -->
+        <VBox alignment="CENTER" spacing="20" styleClass="left-panel" HBox.hgrow="ALWAYS" style="-fx-padding: 50 20 50 50; -fx-alignment: center-left;">
+            <!-- Logo -->
+            <ImageView fitHeight="80" fitWidth="150" preserveRatio="true">
+                <image>
+                    <Image url="@movable.png" />
+                </image>
+                <VBox.margin>
+                    <Insets bottom="20" />
+                </VBox.margin>
+            </ImageView>
+            <Label styleClass="title" style="-fx-font-size: 42px; -fx-font-weight: bold; -fx-text-fill: white;" text="Welcome Back" />
+            <Label styleClass="subtitle" style="-fx-font-size: 16px; -fx-text-fill: white; -fx-opacity: 0.9;" text="Sign in to continue your journey with Movable" wrapText="true" />
+            
+            <VBox spacing="15" style="-fx-padding: 30 0 0 0;">
+                <Label styleClass="feature-item" style="-fx-font-size: 14px; -fx-text-fill: white; -fx-opacity: 0.8;" text="✓ Secure and fast authentication" />
+                <Label styleClass="feature-item" style="-fx-font-size: 14px; -fx-text-fill: white; -fx-opacity: 0.8;" text="✓ Multiple sign-in options" />
+                <Label styleClass="feature-item" style="-fx-font-size: 14px; -fx-text-fill: white; -fx-opacity: 0.8;" text="✓ Cutting-edge facial recognition" />
+            </VBox>
+        </VBox>
+        
+        <!-- Right Half: Login Form -->
+        <VBox alignment="CENTER" styleClass="login-container card" spacing="15" style="-fx-margin: 50; -fx-max-width: 450px; -fx-min-width: 350px; -fx-background-color: rgba(255, 255, 255, 0.98); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 15, 0, 0, 0); -fx-border-radius: 8; -fx-background-radius: 8; -fx-view-order: -1;">
+            <padding>
+                <Insets top="30" right="40" bottom="30" left="40" />
+            </padding>
+            
+            <Label styleClass="login-title" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1a73e8;" text="Login" />
+            <Label styleClass="login-subtitle" style="-fx-font-size: 14px; -fx-text-fill: #5f6368;" text="Please enter your credentials" />
+            
+            <!-- Email Field -->
+            <VBox styleClass="form-container" spacing="5">
+                <Label styleClass="form-label" style="-fx-font-weight: bold; -fx-text-fill: #3c4043;" text="Email" />
+                <TextField fx:id="emailTf" promptText="Enter your email" styleClass="form-field" style="-fx-background-color: #f1f3f4; -fx-border-color: #dadce0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 10 15;" />
+            </VBox>
+            
+            <!-- Password Field -->
+            <VBox styleClass="form-container" spacing="5">
+                <Label styleClass="form-label" style="-fx-font-weight: bold; -fx-text-fill: #3c4043;" text="Password" />
+                <PasswordField fx:id="passwordTf" promptText="Enter your password" styleClass="form-field" style="-fx-background-color: #f1f3f4; -fx-border-color: #dadce0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 10 15;" />
+            </VBox>
+            
+            <!-- Sign In Button -->
+            <Button fx:id="signInBtn" onAction="#handleSignIn" styleClass="button-accent" text="Sign In" maxWidth="Infinity" style="-fx-background-color: #1a73e8; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 12 15; -fx-background-radius: 4; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0);"
+                   onMouseEntered="#handleButtonHover" onMouseExited="#handleButtonExit">
+                <VBox.margin>
+                    <Insets top="10" />
+                </VBox.margin>
+            </Button>
+            
+            <HBox styleClass="form-divider" alignment="CENTER">
+                <Label text="Or continue with" styleClass="text-small" style="-fx-text-fill: #5f6368;" />
+            </HBox>
+            
+            <!-- Social Login Buttons -->
+            <HBox spacing="10" alignment="CENTER">
+                <!-- Google Sign-In Button -->
+                <Button fx:id="googleSignInBtn" onAction="#handleGoogleSignIn" styleClass="social-login-button" text="Google" maxWidth="Infinity" HBox.hgrow="ALWAYS" 
+                       style="-fx-background-color: white; -fx-border-color: #dadce0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-text-fill: #3c4043; -fx-cursor: hand;" 
+                       onMouseEntered="#handleButtonHover" onMouseExited="#handleButtonExit" />
+                
+                <!-- Face ID Login Button -->
+                <Button fx:id="faceIdBtn" onAction="#handleFaceIdLogin" styleClass="social-login-button" text="Face ID" maxWidth="Infinity" HBox.hgrow="ALWAYS" 
+                       style="-fx-background-color: white; -fx-border-color: #dadce0; -fx-border-radius: 4; -fx-background-radius: 4; -fx-text-fill: #3c4043; -fx-cursor: hand;" 
+                       onMouseEntered="#handleButtonHover" onMouseExited="#handleButtonExit" />
+            </HBox>
+            
+            <!-- Sign Up Link -->
+            <HBox alignment="CENTER" spacing="5" style="-fx-padding: 15 0 0 0;">
+                <Label text="Don't have an account?" styleClass="text-small" style="-fx-text-fill: #5f6368;" />
+                <Label onMouseClicked="#handleSignUp" styleClass="button-text" text="Sign up" style="-fx-cursor: hand; -fx-text-fill: #1a73e8; -fx-font-weight: bold;" 
+                       onMouseEntered="#handleLinkHover" onMouseExited="#handleLinkExit" />
+            </HBox>
+        </VBox>
+        
+        <!-- Add right margin -->
+        <Pane minWidth="50" />
+    </HBox>
+
+</StackPane>

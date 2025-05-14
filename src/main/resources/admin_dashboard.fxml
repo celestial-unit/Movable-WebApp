@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.Insets?>
+
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="Controllers.AdminDashboardController"
+           stylesheets="@styles/app.css"
+           styleClass="root-container">
+
+    <!-- Background Gradient -->
+    <Rectangle width="2000" height="2000">
+        <fill>
+            <LinearGradient startX="0.0" startY="0.0" endX="1.0" endY="1.0">
+                <stops>
+                    <Stop color="#1a237e" offset="0.0" />
+                    <Stop color="#283593" offset="0.3" />
+                    <Stop color="#3949ab" offset="0.6" />
+                    <Stop color="#3f51b5" offset="1.0" />
+                </stops>
+            </LinearGradient>
+        </fill>
+    </Rectangle>
+    
+    <!-- Main Content Container -->
+    <VBox fx:id="dashboardVBox" spacing="30" styleClass="dashboard-container">
+        <padding>
+            <Insets top="30" right="50" bottom="30" left="50" />
+        </padding>
+        <!-- Header with Navigation Bar -->
+        <HBox alignment="CENTER_LEFT" styleClass="header-container">
+            <Label text="Admin Dashboard" styleClass="header-text"/>
+            <HBox alignment="CENTER_RIGHT" spacing="15" HBox.hgrow="ALWAYS">
+                <Button fx:id="homeBtn" text="Home" styleClass="nav-button" onAction="#goToHome"/>
+                <Button fx:id="helpBtn" text="Help" styleClass="nav-button" onAction="#goToHelp"/>
+                <Button fx:id="logoutBtn" text="Logout" styleClass="nav-button, logout-button" onAction="#logout"/>
+            </HBox>
+        </HBox>
+        
+        <!-- Admin Info Card -->
+        <HBox styleClass="user-info-card" alignment="CENTER_LEFT" spacing="20">
+            <ImageView fitHeight="64" fitWidth="64" pickOnBounds="true" preserveRatio="true">
+                <Image url="@images/admin-avatar.png"/>
+            </ImageView>
+            <VBox spacing="5">
+                <Label text="Administrator" styleClass="user-name-label"/>
+                <Label text="System Administrator" styleClass="user-role-label"/>
+                <Label fx:id="lastLoginLabel" text="Last login: Today, 10:30 AM" styleClass="user-email-label"/>
+            </VBox>
+        </HBox>
+
+        <!-- Content Area -->
+        <HBox spacing="30" VBox.vgrow="ALWAYS">
+            <!-- Left Panel - Navigation Buttons -->
+            <VBox spacing="15" styleClass="card-container" minWidth="300" maxWidth="350">
+                <Label text="Administration" styleClass="section-header"/>
+                
+                <!-- Navigation Buttons with Icons -->
+                <HBox styleClass="menu-item" onMouseClicked="#checkUsers">
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@images/users-icon.png"/>
+                    </ImageView>
+                    <Label text="Manage Users" styleClass="menu-item-text"/>
+                </HBox>
+                
+                <HBox styleClass="menu-item" onMouseClicked="#viewStatistics">
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@images/stats-icon.png"/>
+                    </ImageView>
+                    <Label text="View Statistics" styleClass="menu-item-text"/>
+                </HBox>
+                
+                <HBox styleClass="menu-item" onMouseClicked="#manageDrivers">
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@images/driver-icon.png"/>
+                    </ImageView>
+                    <Label text="Manage Drivers" styleClass="menu-item-text"/>
+                </HBox>
+                
+                <HBox styleClass="menu-item" onMouseClicked="#handleReclamations">
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@images/reclamation-icon.png"/>
+                    </ImageView>
+                    <Label text="Manage Reclamations" styleClass="menu-item-text"/>
+                </HBox>
+                
+                <HBox styleClass="menu-item" onMouseClicked="#openDestinationManagement">
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@images/calendar-icon.png"/>
+                    </ImageView>
+                    <Label text="Event Registration" styleClass="menu-item-text"/>
+                </HBox>
+                <HBox styleClass="menu-item" onMouseClicked="#openEventRegistration">
+                <ImageView fitHeight="24" fitWidth="24">
+                    <Image url="@images/calendar-icon.png"/>
+                </ImageView>
+                <Label text="Event Registration" styleClass="menu-item-text"/>
+            </HBox>
+                
+                <HBox styleClass="menu-item" onMouseClicked="#handleEventRegistrationManagement">
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@images/calendar-icon.png"/>
+                    </ImageView>
+                    <Label text="Event Registration Management" styleClass="menu-item-text"/>
+                </HBox>
+                
+                <Separator styleClass="menu-separator"/>
+                
+                <HBox styleClass="menu-item" onMouseClicked="#handleSettings">
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@images/settings-icon.png"/>
+                    </ImageView>
+                    <Label text="System Settings" styleClass="menu-item-text"/>
+                </HBox>
+            </VBox>
+            <!-- Right Panel - Dashboard Content -->
+            <VBox spacing="20" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+                <!-- Statistics Cards Row -->
+                <HBox spacing="20">
+                    <!-- Total Users Card -->
+                    <VBox styleClass="stat-card, blue-gradient">
+                        <HBox styleClass="stat-card-header">
+                            <Label text="Total Users" styleClass="stat-card-title"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <ImageView fitHeight="24" fitWidth="24">
+                                <Image url="@images/users-icon.png"/>
+                            </ImageView>
+                        </HBox>
+                        <HBox styleClass="stat-card-content" alignment="CENTER_LEFT" spacing="10">
+                            <Label fx:id="totalUsersLabel" text="124" styleClass="stat-card-value"/>
+                            <Label text="users" styleClass="stat-card-unit"/>
+                        </HBox>
+                        <HBox styleClass="stat-card-footer">
+                            <Label text="+12% from last month" styleClass="stat-card-trend-positive"/>
+                        </HBox>
+                    </VBox>
+                    
+                    <!-- Active Drivers Card -->
+                    <VBox styleClass="stat-card, green-gradient">
+                        <HBox styleClass="stat-card-header">
+                            <Label text="Active Drivers" styleClass="stat-card-title"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <ImageView fitHeight="24" fitWidth="24">
+                                <Image url="@images/driver-icon.png"/>
+                            </ImageView>
+                        </HBox>
+                        <HBox styleClass="stat-card-content" alignment="CENTER_LEFT" spacing="10">
+                            <Label fx:id="activeDriversLabel" text="45" styleClass="stat-card-value"/>
+                            <Label text="drivers" styleClass="stat-card-unit"/>
+                        </HBox>
+                        <HBox styleClass="stat-card-footer">
+                            <Label text="+5% from last month" styleClass="stat-card-trend-positive"/>
+                        </HBox>
+                    </VBox>
+                    
+                    <!-- Pending Reservations Card -->
+                    <VBox styleClass="stat-card, purple-gradient">
+                        <HBox styleClass="stat-card-header">
+                            <Label text="Pending Reservations" styleClass="stat-card-title"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <ImageView fitHeight="24" fitWidth="24">
+                                <Image url="@/reclamation-icon.png"/>
+                            </ImageView>
+                        </HBox>
+                        <HBox styleClass="stat-card-content" alignment="CENTER_LEFT" spacing="10">
+                            <Label fx:id="pendingReservationsLabel" text="18" styleClass="stat-card-value"/>
+                            <Label text="pending" styleClass="stat-card-unit"/>
+                        </HBox>
+                        <HBox styleClass="stat-card-footer">
+                            <Label text="-3% from last month" styleClass="stat-card-trend-negative"/>
+                        </HBox>
+                    </VBox>
+                </HBox>
+                
+                <!-- Recent Activities Section -->
+                <VBox spacing="15" styleClass="card-container" VBox.vgrow="ALWAYS">
+                    <HBox styleClass="section-header-container">
+                        <Label text="Recent Activities" styleClass="section-header"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="View All" styleClass="small-button" onAction="#viewAllActivities"/>
+                    </HBox>
+                    
+                    <ListView fx:id="recentActivitiesListView" VBox.vgrow="ALWAYS" styleClass="modern-list-view"/>
+                </VBox>
+            </VBox>
+            
+            <!-- Third Panel - System Alerts -->
+            <VBox spacing="15" styleClass="card-container" minWidth="300" maxWidth="350">
+                <HBox styleClass="section-header-container">
+                    <Label text="System Alerts" styleClass="section-header"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="Clear All" styleClass="small-button" onAction="#clearAllAlerts"/>
+                </HBox>
+                
+                <!-- Alert Item 1 -->
+                <VBox styleClass="alert-item, alert-warning">
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <ImageView fitHeight="24" fitWidth="24">
+                            <Image url="@images/warning-icon.png"/>
+                        </ImageView>
+                        <Label text="System Update Required" styleClass="alert-title"/>
+                    </HBox>
+                    <Label text="System needs to be updated to the latest version." 
+                           styleClass="alert-message" wrapText="true"/>
+                    <HBox styleClass="alert-footer">
+                        <Label text="2 hours ago" styleClass="alert-timestamp"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="Update Now" styleClass="small-button, alert-action-button" 
+                                onAction="#handleSystemUpdate"/>
+                    </HBox>
+                </VBox>
+                
+                <!-- Alert Item 2 -->
+                <VBox styleClass="alert-item, alert-info">
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <ImageView fitHeight="24" fitWidth="24">
+                            <Image url="@images/info-icon.png"/>
+                        </ImageView>
+                        <Label text="New User Registration" styleClass="alert-title"/>
+                    </HBox>
+                    <Label text="5 new users registered today." 
+                           styleClass="alert-message" wrapText="true"/>
+                    <HBox styleClass="alert-footer">
+                        <Label text="4 hours ago" styleClass="alert-timestamp"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="View Users" styleClass="small-button, alert-action-button" 
+                                onAction="#viewNewUsers"/>
+                    </HBox>
+                </VBox>
+                
+                <!-- Alert Item 3 -->
+                <VBox styleClass="alert-item, alert-error">
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <ImageView fitHeight="24" fitWidth="24">
+                            <Image url="@images/error-icon.png"/>
+                        </ImageView>
+                        <Label text="Database Connection Issue" styleClass="alert-title"/>
+                    </HBox>
+                    <Label text="Database connection error occurred at 10:45 AM. Automatic recovery successful." 
+                           styleClass="alert-message" wrapText="true"/>
+                    <HBox styleClass="alert-footer">
+                        <Label text="5 hours ago" styleClass="alert-timestamp"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="View Logs" styleClass="small-button, alert-action-button" 
+                                onAction="#viewDatabaseLogs"/>
+                    </HBox>
+                </VBox>
+                
+                <!-- System Status -->
+                <Separator/>
+                <HBox styleClass="system-status-container" alignment="CENTER_LEFT" spacing="10">
+                    <Circle radius="8" styleClass="status-indicator-online"/>
+                    <Label text="System Status: Online" styleClass="status-text"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label text="Uptime: 14 days" styleClass="uptime-text"/>
+                </HBox>
+            </VBox>
+        </HBox>
+        
+        <!-- Footer -->
+        <HBox styleClass="footer-container" alignment="CENTER">
+            <Label text="© 2023 Admin Dashboard - All rights reserved" styleClass="footer-text"/>
+        </HBox>
+    </VBox>
+</StackPane>

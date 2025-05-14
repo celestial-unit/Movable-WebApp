@@ -1,0 +1,73 @@
+/* Calendar container styling */
+.calendar-grid {
+    -fx-background-color: #ffffff;
+    -fx-padding: 10px;
+}
+
+/* Day header styling */
+.day-header {
+    -fx-font-weight: bold;
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-padding: 5px;
+}
+
+/* Individual day cell styling */
+.day-cell {
+    -fx-min-height: 80px;
+    -fx-pref-height: 80px;
+    -fx-border-color: #ecf0f1;
+    -fx-border-width: 1px;
+    -fx-padding: 5px;
+    -fx-background-color: white;
+}
+
+.day-cell:hover {
+    -fx-background-color: #f8f9fa;
+}
+
+/* Current day highlighting */
+.current-day {
+    -fx-background-color: #e3f2fd;
+    -fx-border-color: #3498db;
+}
+
+/* Event label styling */
+.event-label {
+    -fx-font-size: 10px;
+    -fx-text-fill: white;
+    -fx-background-color: #2ecc71;
+    -fx-padding: 2px 5px;
+    -fx-background-radius: 3px;
+    -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.1), 1, 0.0, 0, 1);
+}
+
+/* Navigation button styling */
+.nav-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-background-radius: 15px;
+}
+
+.nav-button:hover {
+    -fx-background-color: #2980b9;
+}
+
+/* Month/year label styling */
+.month-year-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+}
+
+/* Weekend day styling */
+.weekend-day {
+    -fx-background-color: #f8f9fa;
+}
+
+/* Days with many events */
+.busy-day {
+    -fx-background-color: #fff3e0;
+}

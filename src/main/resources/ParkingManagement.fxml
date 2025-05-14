@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ParkingManagement">
+
+    <!-- Background Image Container -->
+    <StackPane alignment="CENTER" style="-fx-background-color: #f0f0f0;">
+        <ImageView fitHeight="800" fitWidth="1200" preserveRatio="false">
+            <image>
+                <Image url="@/background_image.jpg" />
+            </image>
+            <effect>
+                <GaussianBlur radius="8" />
+            </effect>
+        </ImageView>
+    </StackPane>
+
+    <!-- Main Content Container -->
+    <VBox prefHeight="700.0" prefWidth="1000.0" style="-fx-padding: 40 60;" StackPane.alignment="TOP_CENTER">
+        <!-- Header -->
+        <HBox alignment="CENTER" style="-fx-padding: 20;">
+            <Label style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.5), 2, 0.5, 0, 1);"
+                   text="Parking Management System" />
+        </HBox>
+
+        <!-- Content Area -->
+        <HBox maxHeight="600.0" prefHeight="600.0" prefWidth="900.0" spacing="40">
+            <!-- Left Panel - Form -->
+            <VBox maxWidth="300" minWidth="260.0" prefHeight="600.0" spacing="15"
+                  style="-fx-background-color: rgba(255, 255, 255, 0.95); -fx-background-radius: 15; -fx-padding: 20;">
+                <effect>
+                    <DropShadow color="#00000033" radius="10" spread="0.1" />
+                </effect>
+
+                <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Parking Details" />
+
+                <!-- Original Fields with Same fx:id -->
+                <VBox spacing="15">
+                    <VBox spacing="5">
+                        <TextField fx:id="idField" promptText="ID Destination" style="-fx-padding: 5;" />
+                        <Label fx:id="idError" styleClass="error-label" minHeight="20" />
+                    </VBox>
+
+                    <VBox spacing="5">
+                        <TextField fx:id="sizeField" promptText="Size" style="-fx-padding: 5;" />
+                        <Label fx:id="sizeError" styleClass="error-label" minHeight="20" />
+                    </VBox>
+
+                    <VBox spacing="5">
+                        <TextField fx:id="feesField" promptText="Fees" style="-fx-padding: 5;" />
+                        <Label fx:id="feesError" styleClass="error-label" minHeight="20" />
+                    </VBox>
+
+                    <VBox spacing="5">
+                        <TextField fx:id="spotNumberField" promptText="Spot Number" style="-fx-padding: 5;" />
+                        <Label fx:id="spotNumberError" styleClass="error-label" minHeight="20" />
+                    </VBox>
+
+                    <VBox spacing="5">
+                        <TextField fx:id="notesArea" prefHeight="60" promptText="Notes" style="-fx-padding: 5;" />
+                    </VBox>
+
+                    <HBox spacing="15">
+                        <CheckBox fx:id="availableCheckBox" text="Available" />
+                        <CheckBox fx:id="accessibleCheckBox" text="Accessible" />
+                    </HBox>
+                </VBox>
+
+                <ImageView fitHeight="75" fitWidth="75" preserveRatio="true" />
+            </VBox>
+
+            <!-- Right Panel - List -->
+            <VBox prefHeight="600.0" prefWidth="600.0" spacing="15"
+                  style="-fx-background-color: rgba(255, 255, 255, 0.95); -fx-background-radius: 15; -fx-padding: 20;">
+                <effect>
+                    <DropShadow color="#00000033" radius="10" spread="0.1" />
+                </effect>
+
+                <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Parking Spots" />
+
+                <ListView fx:id="parkingSpotList" prefHeight="500.0" style="-fx-background-radius: 5; -fx-border-radius: 5;">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList" />
+                    </items>
+                </ListView>
+
+                <!-- Original Buttons with Same fx:id and onAction -->
+                <HBox alignment="CENTER_RIGHT" spacing="15" style="-fx-padding: 20 0 0 0;">
+                    <Button fx:id="addButton" onAction="#saveParkingSpot" style="-fx-padding: 8 15;" text="Add" />
+                    <Button fx:id="updateButton" onAction="#updateParkingSpot" style="-fx-padding: 8 15;" text="Update" />
+                    <Button fx:id="deleteButton" onAction="#deleteParkingSpot" style="-fx-padding: 8 15;" text="Delete" />
+                    <Button fx:id="clearButton" onAction="#clearFields" style="-fx-padding: 8 15;" text="Clear" />
+                </HBox>
+            </VBox>
+        </HBox>
+    </VBox>
+</StackPane>
