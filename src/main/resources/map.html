@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realtime Location Tracker - Tunis</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { width: 100%; height: 100vh; }
+        #debug-info {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 10px;
+            z-index: 1000;
+            max-width: 300px;
+            overflow-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<div id="debug-info"></div>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    function updateLocationFromJava(lat, lon) {
+        console.log("Location from Java: ", lat, lon);
+
+        var userMarker = L.marker([lat, lon]).addTo(map)
+            .bindPopup('Location from Java')
+            .openPopup();
+
+        map.setView([lat, lon], 12);
+    }
+</script>
+
+<script>
+    // Enhanced debug logging function
+    function debugLog(message) {
+        console.log(message);
+
+        // Update debug info div
+        const debugInfoDiv = document.getElementById('debug-info');
+        if (debugInfoDiv) {
+            debugInfoDiv.innerHTML += message + '<br>';
+        }
+
+        // Use Java bridge if available
+        if (window.javaApp) {
+            window.javaApp.log(message);
+        }
+    }
+
+    function debugError(message) {
+        console.error(message);
+
+        // Use Java bridge if available
+        if (window.javaApp) {
+            window.javaApp.error(message);
+        }
+    }
+
+    // Coordinates for Tunis, Tunisia
+    const TUNIS_LAT = 36.8065;
+    const TUNIS_LON = 10.1815;
+
+    // Map initialization centered on Tunis
+    var map = L.map('map').setView([TUNIS_LAT, TUNIS_LON], 12);
+
+    // OpenStreetMap layer
+    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
+    osm.addTo(map);
+
+    // Tunis marker
+    var tunisMarker = L.marker([TUNIS_LAT, TUNIS_LON]).addTo(map)
+        .bindPopup('Tunis, Tunisia')
+        .openPopup();
+
+    // Geolocation tracking
+    function startGeolocation() {
+        debugLog("Attempting to start geolocation...");
+
+        // Check if geolocation is supported
+        if (!navigator.geolocation) {
+            debugError("Geolocation is not supported by this browser.");
+            return;
+        }
+
+        // Request permission and get location
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                const accuracy = position.coords.accuracy;
+
+                debugLog(`Location found: Lat ${lat}, Lon ${lon}, Accuracy ${accuracy}m`);
+
+                // Update map with user's location
+                var userMarker = L.marker([lat, lon]).addTo(map)
+                    .bindPopup('Your Location')
+                    .openPopup();
+
+                // Accuracy circle
+                L.circle([lat, lon], {
+                    color: 'red',
+                    fillColor: '#f03',
+                    fillOpacity: 0.2,
+                    radius: accuracy
+                }).addTo(map);
+
+                // Adjust map view
+                map.setView([lat, lon], 12);
+
+                // Share the location with Java (using the bridge)
+                if (window.javaApp) {
+                    window.javaApp.updateLocation(lat, lon);
+                }
+            },
+            (error) => {
+                // Detailed error handling
+                switch(error.code) {
+                    case error.PERMISSION_DENIED:
+                        debugError("User denied the request for Geolocation.");
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        debugError("Location information is unavailable.");
+                        break;
+                    case error.TIMEOUT:
+                        debugError("The request to get user location timed out.");
+                        break;
+                    default:
+                        debugError("An unknown error occurred: " + error.message);
+                }
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
+        );
+    }
+
+    // Start geolocation when page loads
+    window.onload = startGeolocation;
+</script>
+</body>
+</html>

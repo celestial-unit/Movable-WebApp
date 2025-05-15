@@ -1,0 +1,37 @@
+/* General Background and Styling */
+.anchor-pane {
+    -fx-background-color: #f1f1f1; /* Light gray background */
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+/* Sidebar Styles */
+.sidebar-pane {
+    -fx-background-color: #ffffff; /* White background for sidebar */
+    -fx-border-color: #e0e0e0; /* Light gray border */
+    -fx-border-width: 1;
+    -fx-padding: 20px;
+}
+
+/* TextField Styles */
+.text-field {
+    -fx-background-color: #ffffff; /* White background */
+    -fx-border-color: #007BFF; /* Blue border */
+    -fx-border-radius: 5;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused {
+    -fx-border-color: #FF5733; /* Orange border when focused */
+}
+
+/* Button Styles */
+.button {
+    -fx-background-color: #007BFF; /* Blue background */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0.0, 0, 2);
+}

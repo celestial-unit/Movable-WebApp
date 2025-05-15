@@ -23,14 +23,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import services.AssistanceAgent;
+import Services.AssistanceAgent;
+import Services.NavigationService;
 import utils.myConnection;
 
 public class AssistanceAgentController {
 
     public Button viewCalendar;
     public Button Dashboard;
+    public Button backToDashboardButton;
     private AssistanceAgent AssistanceService;
+    private final NavigationService navigationService = NavigationService.getInstance();
 
     @FXML
     private Button viewRatesButton;
@@ -538,6 +541,30 @@ public class AssistanceAgentController {
             stage.show();
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Unable to open the calendar window.");
+        }
+    }
+    
+    /**
+     * Navigate back to the admin dashboard
+     */
+    @FXML
+    void backToDashboard(ActionEvent event) {
+        try {
+            // Get the current stage from the event source
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            
+            // Set the stage in NavigationService
+            navigationService.setPrimaryStage(stage);
+            
+            // Navigate to admin dashboard
+            navigationService.navigateToAdminDashboard();
+        } catch (Exception e) {
+            System.err.println("Error navigating to admin dashboard: " + e.getMessage());
+            e.printStackTrace();
+            
+            // Show alert about the navigation error
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", 
+                      "Unable to navigate to the dashboard. Please try again.");
         }
     }
 }

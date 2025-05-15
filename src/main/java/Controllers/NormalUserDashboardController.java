@@ -31,7 +31,8 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class NormalUserDashboardController implements Initializable {
-
+    @FXML
+    public Button ViewAgent;
     @FXML
     private ListView<String> reservationsListView; // Referenced in navigation methods
     
@@ -344,22 +345,7 @@ public class NormalUserDashboardController implements Initializable {
         }
     }
     
-    /**
-     * Handles creating a new reservation
-     */
-    @FXML
-    private void handleNewReservation() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/new_reservation.fxml"));
-            Stage stage = (Stage) userNameLabel.getScene().getWindow();
-            stage.setScene(new Scene(loader.load()));
-        } catch (Exception e) {
-            // Show alert if page doesn't exist yet
-            showAlert(Alert.AlertType.INFORMATION, "Coming Soon", null, 
-                    "The New Reservation feature is coming soon!");
-            e.printStackTrace();
-        }
-    }
+
     /**
      * Handles navigation to the reclamation page
      */
@@ -409,7 +395,7 @@ public class NormalUserDashboardController implements Initializable {
     @FXML
     private void handleReservations() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/reservations.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Reservation.fxml"));
             // Use userNameLabel for navigation to avoid null pointer issues
             Stage stage = (Stage) userNameLabel.getScene().getWindow();
             stage.setScene(new Scene(loader.load()));
@@ -472,6 +458,14 @@ public class NormalUserDashboardController implements Initializable {
     @FXML
     private void handleBookRide() {
         try {
+            // Get current user ID - could be 0 or negative if no session
+            int userId = SharedContext.getLoggedInUserId();
+            
+            // Always set the UserSession ID, even if it's 0
+            // This ensures consistency between SharedContext and UserSession
+            UserSession.setCurrentUserId(userId);
+            System.out.println("Setting UserSession ID to: " + userId);
+            
             // Load the user_destinations.fxml file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/user_destinations.fxml"));
             
@@ -481,21 +475,16 @@ public class NormalUserDashboardController implements Initializable {
             // After loading, get the controller instance that was created by FXMLLoader
             UserDestinationController destinationController = loader.getController();
             
-            // Pass the current user ID to the UserDestinationController
-            int userId = SharedContext.getLoggedInUserId();
-            
-            // Set the user ID in SharedContext to ensure it's accessible in UserSession
-            // This ensures the favorites will be loaded for the correct user
-            UserSession.setCurrentUserId(userId);
-            
             // Set the scene
             Stage stage = (Stage) userNameLabel.getScene().getWindow();
             stage.setScene(new Scene(root));
+            
+            System.out.println("Successfully navigated to destination view");
         } catch (Exception e) {
-            // Show alert if page doesn't exist yet
-            showAlert(Alert.AlertType.INFORMATION, "Coming Soon", null, 
-                    "The Book Ride feature is coming soon!");
+            System.err.println("Error navigating to Book Ride page: " + e.getMessage());
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Cannot Navigate", 
+                    "Failed to open destination booking page. Error: " + e.getMessage());
         }
     }
     
@@ -513,6 +502,55 @@ public class NormalUserDashboardController implements Initializable {
             showAlert(Alert.AlertType.INFORMATION, "Coming Soon", null, 
                     "The History feature is coming soon!");
             e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handleAgent() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AssistantUser.fxml"));
+            Stage stage = (Stage) userNameLabel.getScene().getWindow();
+            stage.setScene(new Scene(loader.load()));
+        } catch (Exception e) {
+            // Show alert if page doesn't exist yet
+            showAlert(Alert.AlertType.INFORMATION, "Coming Soon", null,
+                    "The History feature is coming soon!");
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Navigates to the destinations management page
+     */
+    @FXML
+    private void handleDestinations() {
+        try {
+            // Get current user ID - could be 0 or negative if no session
+            int userId = SharedContext.getLoggedInUserId();
+            
+            // Always set the UserSession ID, even if it's 0
+            // This ensures consistency between SharedContext and UserSession
+            UserSession.setCurrentUserId(userId);
+            System.out.println("Setting UserSession ID to: " + userId);
+            
+            // Load the correct FXML file for user destinations
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/user_destinations.fxml"));
+            Parent root = loader.load();
+            
+            // Get the controller and set up any necessary data
+            UserDestinationController destinationController = loader.getController();
+            
+            // Set the scene
+            Stage stage = (Stage) userNameLabel.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+            
+            System.out.println("Successfully navigated to destination view");
+        } catch (Exception e) {
+            System.err.println("Error navigating to Destinations page: " + e.getMessage());
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", 
+                     "Error loading destinations", 
+                     "Unable to load the destinations page. Error: " + e.getMessage());
         }
     }
     

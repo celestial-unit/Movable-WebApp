@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.Insets?>
+
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="Controllers.DriverController">
+
+    <!-- Background Image -->
+    <ImageView fx:id="backgroundImage" fitWidth="Infinity" fitHeight="Infinity" preserveRatio="true">
+        <image>
+            <Image url="@/images/Driver.jpg"/>
+        </image>
+    </ImageView>
+
+    <!-- Main Content Container -->
+    <VBox spacing="30" style="-fx-padding: 40 60;">
+        <!-- Header -->
+        <HBox alignment="CENTER" style="-fx-padding: 20;">
+            <Label text="Driver Management System"
+                   style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        </HBox>
+
+        <!-- Content Area -->
+        <HBox spacing="40" VBox.vgrow="ALWAYS">
+            <!-- Left Panel - Driver List -->
+            <VBox spacing="15" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 15; -fx-padding: 30;"
+                  minWidth="400" maxWidth="500">
+                <effect>
+                    <DropShadow color="#00000033" radius="10" spread="0.1"/>
+                </effect>
+
+                <Label text="Driver List" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <TextField fx:id="destinationTextField" promptText="Search driver..."
+                               style="-fx-background-radius: 20; -fx-padding: 10;" HBox.hgrow="ALWAYS"/>
+                    <Button text="🔍" style="-fx-background-radius: 20; -fx-padding: 10;"/>
+                </HBox>
+
+                <ListView fx:id="driverListView" VBox.vgrow="ALWAYS"
+                          style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-font-size: 14px;"/>
+                <Button text="Create" onAction="#create" style="-fx-font-size: 16px; -fx-background-color: #3498db; -fx-text-fill: white;"/>
+            </VBox>
+
+            <!-- Right Panel - Driver Details Form -->
+            <VBox spacing="20" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 15; -fx-padding: 30;"
+                  HBox.hgrow="ALWAYS">
+                <effect>
+                    <DropShadow color="#00000033" radius="10" spread="0.1"/>
+                </effect>
+
+                <Label text="Driver Details" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+                <GridPane hgap="20" vgap="20" style="-fx-padding: 20;">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="150" prefWidth="200"/>
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="200" prefWidth="300"/>
+                    </columnConstraints>
+
+                    <Label text="Name:" style="-fx-font-size: 16px; -fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <TextField fx:id="nameField" promptText="Enter name" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                    <Label text="Licence:" style="-fx-font-size: 16px; -fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <TextField fx:id="licenceField" promptText="Enter licence number" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                </GridPane>
+
+                <!-- Action Buttons -->
+                <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 20 0 0 0;">
+                    <Button fx:id="btnSave" text="Save" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" onAction="#create"/>
+                    <Button fx:id="btnUpdate" text="Update" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" onAction="#update"/>
+                    <Button fx:id="btnDelete" text="Delete" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" onAction="#delete"/>
+                    <Button fx:id="btnSwitchToTransport" text="Go to Transport" style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" onAction="#switchToTransport"/>
+                    <!--text="Live" style="-fx-background-color: #0c80ff; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" -->
+                </HBox>
+            </VBox>
+        </HBox>
+    </VBox>
+</StackPane>

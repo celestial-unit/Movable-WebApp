@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Label?>
+
+<AnchorPane prefHeight="620.0" prefWidth="972.0" style="-fx-background-image: url('img/background.jpg'); -fx-background-size: cover; -fx-background-position: center;" stylesheets="@style1.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AssistanceAgentController">
+    <children>
+        <!-- Sidebar Panel -->
+        <AnchorPane layoutY="3.0" prefHeight="620" prefWidth="250" style="-fx-background-color: #BBDEFB; -fx-border-color: #90CAF9; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10;">
+            <Label layoutX="10.0" layoutY="10.0" text="Agent Management" style="-fx-font-size: 18px; -fx-text-fill: #FF9800; -fx-font-weight: bold;" />
+
+            <!-- Input Fields on Sidebar -->
+            <TextField fx:id="nameField" layoutX="10.0" layoutY="50.0" prefWidth="230.0" promptText="Full Name" style="-fx-background-radius: 5;" />
+            <TextField fx:id="emailField" layoutX="10.0" layoutY="100.0" prefWidth="230.0" promptText="Email" style="-fx-background-radius: 5;" />
+            <DatePicker fx:id="birthDatePicker" layoutX="10.0" layoutY="150.0" prefWidth="230.0" promptText="Birthdate" style="-fx-background-radius: 5;" />
+            <ComboBox fx:id="typeComboBox" layoutX="10.0" layoutY="200.0" prefWidth="230.0" promptText="Type">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Male" />
+                        <String fx:value="Female" />
+                        <String fx:value="Pet" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+            <ComboBox fx:id="officeComboBox" layoutX="10.0" layoutY="250.0" prefWidth="230.0" promptText="Office">
+                <items>
+                    <FXCollections fx:factory="observableArrayList" />
+                </items>
+            </ComboBox>
+            <TextField fx:id="picturePathField" layoutX="10.0" layoutY="300.0" prefWidth="230.0" promptText="Picture Path" style="-fx-background-radius: 5;" />
+            <TextField fx:id="phoneField" layoutX="10.0" layoutY="350.0" prefWidth="230.0" promptText="Phone Number" style="-fx-background-radius: 5;" />
+
+            <!-- Add Photo Button -->
+            <Button fx:id="addPhotoButton" layoutX="20.0" layoutY="400.0" onAction="#addPhoto" prefWidth="210.0" text="Select Photo" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand;" />
+
+            <!-- Add & Update Buttons -->
+            <Button fx:id="addButton" layoutX="20.0" layoutY="460.0" onAction="#saveAgent" prefHeight="41.0" prefWidth="210.0" text="Add Agent" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand;" />
+            <Button fx:id="updateButton" layoutX="20.0" layoutY="520.0" onAction="#updateAssistant" text="Update Agent" prefHeight="41.0" prefWidth="210.0" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand;" />
+        </AnchorPane>
+
+        <!-- HBox for Cards -->
+        <HBox fx:id="assistantsBox" layoutX="270.0" layoutY="20.0" prefHeight="362.0" prefWidth="680.0" spacing="20.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #BBDEFB; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 10;" />
+
+        <!-- Action Buttons -->
+        <Button fx:id="deleteButton" layoutX="280.0" layoutY="400.0" onAction="#deleteAssistant" text="Delete" prefHeight="41.0" prefWidth="120.0" style="-fx-background-color: #E53935; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand;" />
+        <Button fx:id="viewCalendar" layoutX="420.0" layoutY="495.0" onAction="#viewCalendar" prefHeight="41.0" prefWidth="146.0" text="View Calendar" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand;" />
+        <Button fx:id="viewRatesButton" layoutX="600.0" layoutY="495.0" onAction="#viewRates" prefWidth="126.0" text="View Rates" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand;" />
+        <Button fx:id="goToOfficesForm" layoutX="770.0" layoutY="495.0" onAction="#goToOfficeForm" prefHeight="41.0" prefWidth="139.0" text="List Offices" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand;" />
+        <Button fx:id="backToDashboardButton" layoutX="420.0" layoutY="555.0" onAction="#backToDashboard" prefHeight="41.0" prefWidth="200.0" text="Back to Dashboard" style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 1); -fx-border-color: #2c3e50; -fx-border-width: 1; -fx-border-radius: 10;" />
+    </children>
+</AnchorPane>

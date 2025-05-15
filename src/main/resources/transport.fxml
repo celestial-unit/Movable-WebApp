@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.Insets?>
+
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="Controllers.TransportController">
+
+    <!-- Background Image -->
+    <ImageView fx:id="backgroundImage" fitWidth="1280" fitHeight="720" preserveRatio="false">
+        <image>
+            <Image url="@images/Driver.jpg"/>
+        </image>
+    </ImageView>
+
+    <!-- Main Content Container -->
+    <VBox spacing="30" style="-fx-padding: 40 60;" alignment="CENTER">
+        <!-- Header -->
+        <HBox alignment="CENTER" style="-fx-padding: 20;">
+            <Label text="Transport Management System"
+                   style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        </HBox>
+
+        <!-- Content Area -->
+        <HBox spacing="40" VBox.vgrow="ALWAYS">
+            <!-- Left Panel - Transport List -->
+            <VBox spacing="15" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 15; -fx-padding: 30;"
+                  minWidth="400" maxWidth="500">
+                <effect>
+                    <DropShadow color="#00000033" radius="10" spread="0.1"/>
+                </effect>
+
+                <Label text="Transport List" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+                <!-- Filters -->
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <TextField fx:id="destinationTextField" promptText="Search destination..."
+                               style="-fx-background-radius: 20; -fx-padding: 10;" HBox.hgrow="ALWAYS"/>
+                    <TextField fx:id="capacityTextField" promptText="Min Capacity"
+                               style="-fx-background-radius: 20; -fx-padding: 10;" HBox.hgrow="ALWAYS"/>
+                    <Button text="🔍" style="-fx-background-radius: 20; -fx-padding: 10;" onAction="#filterTransport"/>
+                </HBox>
+
+                <!-- Transport List -->
+                <ListView fx:id="transportListView" VBox.vgrow="ALWAYS"
+                          style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-font-size: 14px;"/>
+            </VBox>
+
+            <!-- Right Panel - Transport Details Form -->
+            <VBox spacing="20" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 15; -fx-padding: 30;"
+                  HBox.hgrow="ALWAYS">
+                <effect>
+                    <DropShadow color="#00000033" radius="10" spread="0.1"/>
+                </effect>
+
+                <Label text="Transport Details" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+                <GridPane hgap="20" vgap="20" style="-fx-padding: 20;">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="150" prefWidth="200"/>
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="200" prefWidth="300"/>
+                    </columnConstraints>
+
+                    <Label text="Type:" style="-fx-font-size: 16px; -fx-font-weight: bold;"
+                           GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <ComboBox fx:id="type" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                              style="-fx-background-radius: 5; -fx-padding: 5; -fx-font-size: 14px;"/>
+
+                    <Label text="Capacity:" style="-fx-font-size: 16px; -fx-font-weight: bold;"
+                           GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <TextField fx:id="capacity" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                               promptText="Enter capacity" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;"/>
+
+                    <Label text="Disponibility:" style="-fx-font-size: 16px; -fx-font-weight: bold;"
+                           GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <TextField fx:id="disponibilty" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                               promptText="Enter disponibility" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;"/>
+
+                    <Label text="Destination:" style="-fx-font-size: 16px; -fx-font-weight: bold;"
+                           GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                    <ComboBox fx:id="destination" GridPane.columnIndex="1" GridPane.rowIndex="3"
+                              style="-fx-background-radius: 5; -fx-padding: 5; -fx-font-size: 14px;">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList"/>
+                        </items>
+                    </ComboBox>
+                </GridPane>
+
+                <!-- Action Buttons -->
+                <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 20 0 0 0;">
+                    <Button fx:id="btnSave" text="Save" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" onAction="#create"/>
+                    <Button fx:id="btnUpdate" text="Update" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" onAction="#update"/>
+                    <Button fx:id="btnDelete" text="Delete" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" onAction="#delete"/>
+                    <Button fx:id="btnSwitchToDriver" text="Go to Driver" style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" onAction="#switchToDriver"/>
+                    <Button fx:id="btnShowStats" text="Show Stats" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" onAction="#showStats"/>
+
+                </HBox>
+                
+                <!-- Back Button -->
+                <HBox alignment="CENTER" style="-fx-padding: 10 0 0 0;">
+                    <Button fx:id="btnBackToDashboard" text="Back to Dashboard" style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px; -fx-min-width: 200px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 1); -fx-border-color: #2c3e50; -fx-border-width: 1; -fx-border-radius: 5;" onAction="#backToDashboard"/>
+                </HBox>
+            </VBox>
+        </HBox>
+    </VBox>
+</StackPane>

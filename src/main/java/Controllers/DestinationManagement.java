@@ -13,8 +13,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import Services.DestinationService;
@@ -623,4 +626,26 @@ public class DestinationManagement {
         }
     }
 
+    /**
+     * Navigate back to the normal user dashboard
+     */
+    @FXML
+    public void backToDashboard(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/normal_user_dashboard.fxml"));
+            Parent root = loader.load();
+            
+            // Get the current stage from the event source
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            
+            // Set the new scene
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", 
+                     "Unable to return to dashboard. Please try again.");
+        }
+    }
 }

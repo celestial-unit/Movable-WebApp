@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<ScrollPane fitToHeight="true" fitToWidth="false" hbarPolicy="ALWAYS" prefHeight="637.0" prefWidth="846.0" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.UserController1">
+    <content>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="672.0" prefWidth="886.0">
+            <children>
+                <ImageView fitHeight="615.0" fitWidth="826.0">
+                    <image>
+                        <Image url="@css/Driver.jpg" />
+                    </image>
+                </ImageView>
+                <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="604.0" prefWidth="782.0" spacing="20" style="-fx-padding: 40 60;">
+                    <children>
+                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="64.0" prefWidth="705.0" style="-fx-padding: 20;">
+                            <children>
+                                <Label prefHeight="54.0" prefWidth="567.0" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Reservation Status">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="473.0" prefWidth="710.0" spacing="15" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 15; -fx-padding: 30;">
+                            <children>
+                                <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Check Your Reservation" />
+                                <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Enter your email:" />
+                                <TextField fx:id="emailField" promptText="Email" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;" />
+                                <HBox alignment="CENTER" prefHeight="44.0" prefWidth="676.0" spacing="20">
+                                    <children>
+                                        <Button onAction="#checkStatus" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" text="Check Status" />
+                                        <Button onAction="#Back" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" text="Back to Reservation" />
+                                        <Button fx:id="redirectButton" onAction="#redirectToTicketInterface" style="-fx-background-color: #e67e22; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" text="Proceed to Ticket" visible="false" />
+                                        <Button fx:id="redirectButtonCalendar" onAction="#redirectToCalendarInterface" style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" text="Proceed to Calendar" visible="false" />
+                                    </children>
+                                </HBox>
+                                <Label fx:id="statusLabel" style="-fx-font-size: 14px; -fx-text-fill: #2c3e50;" />
+                                <Label fx:id="notificationLabel" style="-fx-text-fill: rgba(232,112,63,0.86); -fx-font-size: 14px;" />
+                                <!-- Event ListView -->
+                                <ListView fx:id="eventListView" VBox.vgrow="ALWAYS">
+                                    <placeholder>
+                                        <Label text="No upcoming events found." />
+                                    </placeholder>
+                                </ListView>
+                            </children>
+                            <effect>
+                                <DropShadow color="#00000033" radius="10" spread="0.1" />
+                            </effect>
+                        </VBox>
+                    </children>
+                </VBox>
+            </children>
+        </AnchorPane>
+    </content>
+</ScrollPane>

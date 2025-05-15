@@ -1,6 +1,6 @@
-package services;
+package Services;
 
-import entities.Rate;
+import Models.Rate;
 import utils.myConnection;
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fx:id="mainScrollPane" fitToHeight="true" fitToWidth="false" hbarPolicy="ALWAYS" prefHeight="774.0" prefWidth="1228.0" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.TicketController">
+   <content>
+      <AnchorPane fx:id="rootAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="1240.0">
+         <children>
+            <!-- Background Image -->
+            <ImageView fx:id="filter">
+               <image>
+                  <Image url="@css/Driver.jpg" /> <!-- Replace with your background image URL -->
+               </image>
+            </ImageView>
+
+            <!-- Main Content Container -->
+            <VBox spacing="30" style="-fx-padding: 40 60;">
+   <children>
+                  <!-- Header -->
+                  <HBox alignment="CENTER" style="-fx-padding: 20;">
+                     <children>
+                        <Label style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Ticket Management System" />
+                     </children>
+                  </HBox>
+   
+                  <!-- Content Area -->
+                  <HBox prefHeight="591.0" prefWidth="1141.0" spacing="40" VBox.vgrow="ALWAYS">
+      <children>
+                        <!-- Left Panel - Tickets List -->
+                        <VBox maxWidth="515.0" minWidth="400" prefHeight="596.0" prefWidth="515.0" spacing="15" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 15; -fx-padding: 30;">
+                           <effect>
+                              <DropShadow color="#00000033" radius="10" spread="0.1" />
+                           </effect>
+                           <children>
+         
+                              <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Tickets List" />
+         
+                              <HBox alignment="CENTER_LEFT" spacing="10">
+            <children>
+                                    <TextField fx:id="searchField" promptText="Enter your email..." style="-fx-background-radius: 20; -fx-padding: 10;" HBox.hgrow="ALWAYS" />
+                                    <Button onAction="#searchTicket" style="-fx-background-radius: 20; -fx-padding: 10;" text="🔍 Search" />
+            </children>
+                              </HBox>
+         
+                              <ListView fx:id="ticketListView" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-font-size: 14px;" VBox.vgrow="ALWAYS" />
+         
+                              <!-- Filter and Sort Buttons -->
+                              <HBox alignment="CENTER" spacing="10">
+            <children>
+                                    <Button fx:id="sortByPriceButton" onAction="#sortByPrice" style="-fx-background-radius: 20; -fx-padding: 10;" text="Sort by Price" />
+                                    <Button fx:id="sortByDateButton" onAction="#sortByDate" style="-fx-background-radius: 20; -fx-padding: 10;" text="Sort by Date" />
+                                    <MenuButton fx:id="filterByTransportButton" style="-fx-background-radius: 20; -fx-padding: 10;" text="Filter by Transport">
+                                       <items>
+                                          <MenuItem onAction="#filterByTransport" text="Car" />
+                                          <MenuItem onAction="#filterByTransport" text="Bus" />
+                                          <MenuItem onAction="#filterByTransport" text="Taxi" />
+                                          <MenuItem onAction="#filterByTransport" text="Train" />
+                                       </items>
+                                    </MenuButton>
+                                    <Button onAction="#clearFilter" style="-fx-background-radius: 20; -fx-padding: 10;" text="Clear Filter" />
+            </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+      
+                        <!-- Right Panel - Ticket Details Form -->
+                        <VBox prefHeight="609.0" prefWidth="586.0" spacing="20" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 15; -fx-padding: 30;" HBox.hgrow="ALWAYS">
+                           <effect>
+                              <DropShadow color="#00000033" radius="10" spread="0.1" />
+                           </effect>
+         <children>
+         
+                              <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Ticket Details" />
+         
+                              <GridPane hgap="20" style="-fx-padding: 20;" vgap="20">
+                                 <columnConstraints>
+                                    <ColumnConstraints minWidth="150" prefWidth="200" />
+                                    <ColumnConstraints hgrow="ALWAYS" minWidth="200" prefWidth="300" />
+                                 </columnConstraints>
+            <children>
+            
+                                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                    <TextField fx:id="nameField" promptText="John MIlako" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            
+                                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Destination:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                    <TextField fx:id="destinationField" promptText="Tunis" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            
+                                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Date:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                    <TextField fx:id="dateField" promptText="03/03/2023" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            
+                                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Price:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                    <TextField fx:id="priceField" promptText="TDN" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            
+                                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Payment Mode:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                    <TextField fx:id="paymentmodefield" promptText="Card/Cash" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            </children>
+                                 <rowConstraints>
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                 </rowConstraints>
+                              </GridPane>
+         
+                              <!-- Action Buttons -->
+                              <HBox alignment="CENTER_RIGHT" spacing="15" style="-fx-padding: 20 0 0 0;">
+            <children>
+
+                                    <Button onAction="#handlePayButton" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;"  fx:id="payButton" text="Pay" />
+                <Button onAction="#saveTicket" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" text="Save Ticket" />
+
+                <Button onAction="#updateTicket" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" text="Update Ticket" />
+                                    <Button onAction="#deleteTicket" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" text="Delete Ticket" />
+            </children>
+                              </HBox>
+         </children>
+                        </VBox>
+      </children>
+                  </HBox>
+   </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </content>
+</ScrollPane>

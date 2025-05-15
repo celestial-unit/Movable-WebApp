@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="Controller.FaceRecognitionController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <!-- Label d'information -->
+    <Label text="Sélectionnez une image pour détecter les visages"
+           layoutX="150" layoutY="20"/>
+
+    <!-- Bouton pour sélectionner une image -->
+    <Button text="Sélectionner une image" layoutX="50" layoutY="350" onAction="#handleImageSelection"/>
+
+    <!-- ImageView pour afficher l'image sélectionnée -->
+    <ImageView fx:id="imageView" fitHeight="200" fitWidth="200" layoutX="200" layoutY="50"/>
+
+    <!-- Bouton pour analyser l'image -->
+    <Button text="Analyser" layoutX="250" layoutY="350" onAction="#analyzeFace"/>
+
+    <!-- Label pour afficher le résultat -->
+    <Label fx:id="resultLabel" text="Résultat ici" layoutX="50" layoutY="280"/>
+</AnchorPane>

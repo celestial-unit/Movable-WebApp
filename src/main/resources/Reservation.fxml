@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<ScrollPane fitToHeight="true" fitToWidth="false" hbarPolicy="ALWAYS" prefHeight="941.0" prefWidth="1198.0" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ReservationAdd">
+   <content>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="953.0" prefWidth="1206.0">
+         <children>
+            <ImageView fitHeight="931.0" fitWidth="1206.0">
+               <image>
+                  <Image url="@css/Driver.jpg" />
+               </image>
+            </ImageView>
+            <VBox layoutX="10.0" layoutY="-8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="838.0" prefWidth="1097.0" spacing="30" style="-fx-padding: 40 60;">
+               <children>
+                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="64.0" prefWidth="788.0" style="-fx-padding: 20;" spacing="15">
+                     <children>
+                        <Button fx:id="backButton" onAction="#backToUserDashboard" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 10 15; -fx-font-size: 14px;" text="← Back to Dashboard" />
+                        <Label prefHeight="54.0" prefWidth="567.0" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Reservation Management System">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="652.0" prefWidth="939.0" spacing="40" VBox.vgrow="ALWAYS">
+                     <children>
+                        <VBox maxHeight="-Infinity" maxWidth="565.0" minHeight="-Infinity" minWidth="389.0" prefHeight="631.0" prefWidth="442.0" spacing="15" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 15; -fx-padding: 30;">
+                           <children>
+                              <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Reservations List" />
+                              <HBox alignment="CENTER_LEFT" spacing="10">
+                                 <children>
+                                    <TextField fx:id="searchField" promptText="Search reservations..." style="-fx-background-radius: 20; -fx-padding: 10;" HBox.hgrow="ALWAYS" />
+                                    <Button onAction="#searchreservation" style="-fx-background-radius: 20; -fx-padding: 10;" text="🔍 Search" />
+                                 </children>
+                              </HBox>
+                              <ListView fx:id="reservationListView" prefHeight="597.0" prefWidth="299.0" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-font-size: 14px;" VBox.vgrow="ALWAYS">
+                                 <items>
+                                    <FXCollections fx:factory="observableArrayList" />
+                                 </items>
+                              </ListView>
+                              <HBox alignment="CENTER" spacing="10">
+                                 <children>
+                                    <Button fx:id="sortByDateButton" onAction="#sortByDate" style="-fx-background-radius: 20; -fx-padding: 10;" text="Sort by Date" />
+                                    <MenuButton fx:id="filterByTransportButton" style="-fx-background-radius: 20; -fx-padding: 10;" text="Filter by Transport">
+                                       <items>
+                                          <MenuItem onAction="#filterByTransport" text="Car" />
+                                          <MenuItem onAction="#filterByTransport" text="Bus" />
+                                          <MenuItem onAction="#filterByTransport" text="Taxi" />
+                                          <MenuItem onAction="#filterByTransport" text="Train" />
+                                       </items>
+                                    </MenuButton>
+   
+                                    <MenuButton fx:id="filterByAgenttButton" style="-fx-background-radius: 20; -fx-padding: 10;" text="Filter by Agent">
+                                       <items>
+                                          <MenuItem onAction="#filterByAgent" text="Pet" />
+                                          <MenuItem onAction="#filterByAgent" text="Medical Assistance Agent" />
+                                          <MenuItem onAction="#filterByAgent" text="Normal Assistance Agent" />
+                                       </items>
+                                    </MenuButton>
+                                    <MenuButton fx:id="filterByPaymenttButton" style="-fx-background-radius: 20; -fx-padding: 10;" text="Filter by Payment">
+                                       <items>
+                                          <MenuItem onAction="#filterByPayment" text="cash" />
+                                          <MenuItem onAction="#filterByPayment" text="card" />
+                                       </items>
+                                    </MenuButton>
+                                    <Button onAction="#clearFilter" prefHeight="41.0" prefWidth="53.0" style="-fx-background-radius: 20; -fx-padding: 10;" text="Clear Filter" />
+                                 </children>
+                              </HBox>
+
+                           </children>
+                           <effect>
+                              <DropShadow color="#00000033" radius="10" spread="0.1" />
+                           </effect>
+                        </VBox>
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="639.0" prefWidth="468.0" spacing="20" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-background-radius: 15; -fx-padding: 30;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <GridPane hgap="20" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="383.0" style="-fx-padding: 20;" vgap="20">
+                                 <children>
+                                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                    <TextField fx:id="firstNameTf" promptText="Enter first name" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Last Name:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                    <TextField fx:id="lastNameTf" promptText="Enter last name" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Age:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                    <TextField fx:id="ageTf" promptText="Enter age" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                    <TextField fx:id="emailField" promptText="Enter email" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Date:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                    <DatePicker fx:id="dateField" promptText="Select date" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Location:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                                    <TextField fx:id="locationField" promptText="Enter location" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Seats:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                                    <TextField fx:id="seatsField" promptText="Enter number of seats" style="-fx-background-radius: 5; -fx-padding: 10; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Agent Type:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                                    <ComboBox fx:id="agentTypeField" promptText="Select agent type" style="-fx-background-radius: 5; -fx-padding: 5; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                       <items>
+                                          <FXCollections fx:factory="observableArrayList">
+                                             <String fx:value="Medical Assistance Agent" />
+                                             <String fx:value="Normal Assistance Agent" />
+                                             <String fx:value="Pet" />
+                                          </FXCollections>
+                                       </items>
+                                    </ComboBox>
+                                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Payment Mode:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                                    <ComboBox fx:id="paymentModeField" promptText="Select payment mode" style="-fx-background-radius: 5; -fx-padding: 5; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                       <items>
+                                          <FXCollections fx:factory="observableArrayList">
+                                             <String fx:value="Cash" />
+                                             <String fx:value="Card" />
+                                          </FXCollections>
+                                       </items>
+                                    </ComboBox>
+                                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Transport:" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+                                    <ComboBox fx:id="transportField" promptText="Select transport" style="-fx-background-radius: 5; -fx-padding: 5; -fx-font-size: 14px;" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                       <items>
+                                          <FXCollections fx:factory="observableArrayList">
+                                             <String fx:value="Car" />
+                                             <String fx:value="Taxi" />
+                                             <String fx:value="Bus" />
+                                             <String fx:value="Train" />
+                                          </FXCollections>
+                                       </items>
+                                    </ComboBox>
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints minWidth="150" prefWidth="200" />
+                                    <ColumnConstraints hgrow="ALWAYS" minWidth="200" prefWidth="300" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                 </rowConstraints>
+                              </GridPane>
+                              <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="561.0" spacing="15" style="-fx-padding: 20 0 0 0;">
+                                 <children>
+                                    <Button onAction="#saveReservation" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" text="Save Reservation" />
+                                    <Button onAction="#updateReservation" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" text="Update Reservations" />
+                                    <Button layoutX="304.0" layoutY="32.0" onAction="#deleteReservation" prefHeight="44.0" prefWidth="197.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 12 25; -fx-font-size: 14px;" text="Delete Reservation" />
+                                 </children>
+                              </HBox>
+                           </children>
+                           <effect>
+                              <DropShadow color="#00000033" radius="10" spread="0.1" />
+                           </effect>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </content>
+</ScrollPane>

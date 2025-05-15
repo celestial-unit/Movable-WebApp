@@ -1,6 +1,6 @@
-package services;
+package Services;
 
-import entities.Assistant;
+import Models.Assistant;
 import javafx.scene.control.Alert;
 import utils.myConnection;
 

@@ -91,19 +91,38 @@
                     <Label text="Manage Reclamations" styleClass="menu-item-text"/>
                 </HBox>
                 
-                <HBox styleClass="menu-item" onMouseClicked="#openDestinationManagement">
-                    <ImageView fitHeight="24" fitWidth="24">
-                        <Image url="@images/calendar-icon.png"/>
-                    </ImageView>
-                    <Label text="Event Registration" styleClass="menu-item-text"/>
-                </HBox>
                 <HBox styleClass="menu-item" onMouseClicked="#openEventRegistration">
                 <ImageView fitHeight="24" fitWidth="24">
                     <Image url="@images/calendar-icon.png"/>
                 </ImageView>
                 <Label text="Event Registration" styleClass="menu-item-text"/>
-            </HBox>
-                
+                </HBox>
+                <HBox styleClass="menu-item" onMouseClicked="#openAgent">
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@images/calendar-icon.png"/>
+                    </ImageView>
+                    <Label text="Agent" styleClass="menu-item-text"/>
+                </HBox>
+                <HBox styleClass="menu-item" onMouseClicked="#openReservation">
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@images/calendar-icon.png"/>
+                    </ImageView>
+                    <Label text="Reservation" styleClass="menu-item-text"/>
+                </HBox>
+                <HBox styleClass="menu-item" onMouseClicked="#openWeb">
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@images/calendar-icon.png"/>
+                    </ImageView>
+                    <Label text="Web Browser" styleClass="menu-item-text"/>
+                </HBox>
+                <HBox styleClass="menu-item" onMouseClicked="#openTransport">
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@images/calendar-icon.png"/>
+                    </ImageView>
+                    <Label text="Transport" styleClass="menu-item-text"/>
+                </HBox>
+
+
                 <HBox styleClass="menu-item" onMouseClicked="#handleEventRegistrationManagement">
                     <ImageView fitHeight="24" fitWidth="24">
                         <Image url="@images/calendar-icon.png"/>

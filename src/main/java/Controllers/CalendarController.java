@@ -1,6 +1,6 @@
 package Controllers;
 import Models.CalendarActivity;
-import services.CalendarService;
+import Services.CalendarService;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

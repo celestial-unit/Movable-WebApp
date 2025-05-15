@@ -32,6 +32,7 @@ public class UserSideAssistanceAgentController {
     public Button TrackButton;
     public Button rateAgentButton;
     public Button ViewCalendar;
+    public Button backToDashboardButton;
     @FXML
     private ComboBox<String> assistantComboBox;
 
@@ -354,6 +355,34 @@ public class UserSideAssistanceAgentController {
             Desktop.getDesktop().browse(new URI("http://localhost:63342/projetPidev/map.html"));
         } catch (IOException | java.net.URISyntaxException e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Unable to open the map page.");
+        }
+    }
+    
+    /**
+     * Navigate back to the normal user dashboard
+     */
+    @FXML
+    public void backToDashboard(ActionEvent event) {
+        try {
+            // Load the normal user dashboard
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/normal_user_dashboard.fxml"));
+            Parent root = loader.load();
+            
+            // Get the current stage from the event source
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            
+            // Replace the scene content
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("User Dashboard");
+            
+            // Optional: Center on screen for better UX
+            stage.centerOnScreen();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", 
+                      "Unable to navigate to the dashboard. Please try again.");
         }
     }
 

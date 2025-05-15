@@ -340,6 +340,132 @@ public class AdminDashboardController {
         }
     }
     @FXML
+    public void openAgent() {
+        try {
+            // Load the event view FXML directly
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AssistantAdmin.fxml"));
+            Parent root = loader.load();
+
+            // Create and display the new scene
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) dashboardVBox.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Event Management");
+            alert.setHeaderText(null);
+            alert.setContentText("Navigating to Event View page...");
+            alert.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Error in event management: " + e.getMessage());
+        }
+    }
+    @FXML
+    public void openReservation() {
+        try {
+            // Load the event view FXML directly
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminInterface.fxml"));
+            Parent root = loader.load();
+
+            // Create and display the new scene
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) dashboardVBox.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Error  " + e.getMessage());
+        }
+    }
+    @FXML
+    public void openTransport() {
+        try {
+            System.out.println("Attempting to open Transport view...");
+            
+            // Check if the FXML resource exists
+            if (getClass().getResource("/transport.fxml") == null) {
+                System.err.println("ERROR: transport.fxml not found in resources!");
+                showError("Resource Error: transport.fxml not found in classpath");
+                return;
+            }
+            
+            // Load the transport FXML
+            System.out.println("Loading transport.fxml...");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/transport.fxml"));
+            
+            try {
+                // Load the FXML content
+                Parent root = loader.load();
+                System.out.println("FXML loaded successfully");
+                
+                // Check if the controller was loaded
+                if (loader.getController() == null) {
+                    System.err.println("WARNING: Controller not found or not loaded");
+                }
+                
+                // Create and display the new scene
+                System.out.println("Creating new scene...");
+                Scene scene = new Scene(root);
+                
+                // Get the stage
+                Stage stage = (Stage) dashboardVBox.getScene().getWindow();
+                
+                // Set the new scene
+                System.out.println("Setting scene to stage...");
+                stage.setScene(scene);
+                stage.show();
+                System.out.println("Transport view loaded successfully!");
+                
+            } catch (java.io.IOException e) {
+                System.err.println("ERROR: Failed to load FXML content: " + e.getMessage());
+                e.printStackTrace();
+                showError("Failed to load Transport view: " + e.getMessage() + 
+                          "\nPlease check that all required resources are available.");
+            }
+        } catch (NullPointerException e) {
+            System.err.println("ERROR: NullPointerException when opening Transport view");
+            e.printStackTrace();
+            showError("Navigation Error: A null reference was encountered.\n" +
+                     "Details: " + e.getMessage() + "\n" +
+                     "This might be caused by a missing UI element or controller.");
+        } catch (IllegalStateException e) {
+            System.err.println("ERROR: IllegalStateException when opening Transport view");
+            e.printStackTrace();
+            showError("State Error: The application is in an invalid state.\n" +
+                     "Details: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("ERROR: Unexpected exception when opening Transport view");
+            e.printStackTrace();
+            showError("Unexpected Error: " + e.getClass().getName() + "\n" +
+                     "Message: " + e.getMessage() + "\n" +
+                     "Please check the console output for more details.");
+        }
+    }
+    public void openWeb() {
+        try {
+            // Load the event view FXML directly
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/webBrowser.fxml"));
+            Parent root = loader.load();
+
+            // Create and display the new scene
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) dashboardVBox.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Event Management");
+            alert.setHeaderText(null);
+            alert.setContentText("Navigating to Event View page...");
+            alert.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Error in event management: " + e.getMessage());
+        }
+    }
+    @FXML
     public void openEventRegistration() {
         try {
             // Load the event view FXML directly
@@ -399,7 +525,7 @@ public class AdminDashboardController {
     public void handleEventRegistrationManagement() {
         try {
             // Load the admin event registration management FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/admin_event_registration_management.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/event_registration.fxml"));
             Parent root = loader.load();
             
             // Create and display the new scene

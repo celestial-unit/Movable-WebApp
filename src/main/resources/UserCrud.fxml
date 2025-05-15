@@ -20,7 +20,7 @@
     <StackPane>
         <ImageView fx:id="backgroundImage" styleClass="background-image">
             <image>
-                <Image url="@/Driver.jpg"/>
+                <Image url="@background_image.jpg"/>
             </image>
         </ImageView>
         <Region styleClass="background-overlay"/>

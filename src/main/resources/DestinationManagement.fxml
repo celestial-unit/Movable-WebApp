@@ -157,6 +157,9 @@
               <Button fx:id="deleteButton" onAction="#deleteDestination" style="-fx-padding: 8 15;" text="Delete" />
               <Button fx:id="clearButton" onAction="#clearFields" style="-fx-padding: 8 15;" text="Clear" />
               <Button fx:id="goToParkingButton" onAction="#goToParking" style="-fx-padding: 8 15;" text="Manage Parking" />
+              <Button fx:id="backToDashboardButton" onAction="#backToDashboard" 
+                     style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-padding: 8 15; -fx-background-radius: 5;" 
+                     text="Back to Dashboard" />
               <Button text="Open Map" onAction="#openMapView"/>
 
           </HBox>

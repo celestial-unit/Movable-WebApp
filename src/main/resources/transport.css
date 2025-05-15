@@ -1,0 +1,40 @@
+/* transport.css */
+
+/* Style de fond général */
+.root {
+    -fx-background-color: #f8f9fa;
+}
+
+/* Labels */
+.label {
+    -fx-text-fill: #004aad;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* Champs de texte et combobox */
+.text-field, .combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #47a4f2;
+    -fx-border-radius: 5;
+    -fx-padding: 5px;
+}
+
+/* Style des boutons */
+.button {
+    -fx-background-color: #47a4f2;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+.button:hover {
+    -fx-background-color: #004aad;
+}
+
+/* ListView */
+.list-view {
+    -fx-border-color: #f67a14;
+    -fx-border-width: 2px;
+    -fx-background-color: white;
+}

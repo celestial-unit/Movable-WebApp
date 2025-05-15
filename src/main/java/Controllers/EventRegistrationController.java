@@ -153,12 +153,11 @@ public class EventRegistrationController {
     }
 
     private void loadInitialData() {
-        // If we have a valid userId, show only that user's registrations
-        if (userId > 0) {
-            registrations.setAll(service.getRegistrationsByUserId(userId));
-        } else {
-            // Otherwise show all registrations (admin view)
+        // Admin (ID 1) sees all registrations, others see their own
+        if (userId == 1) {
             registrations.setAll(service.getAllRegistrations());
+        } else {
+            registrations.setAll(service.getRegistrationsByUserId(userId));
         }
         eventListView.setItems(registrations);
     }
@@ -269,18 +268,17 @@ public class EventRegistrationController {
 
     private void updateRegistrationFromInput(EventRegistration registration) {
         registration.setEventId(Integer.parseInt(eventIdField.getText()));
-        registration.setUserId(utils.SharedContext.getLoggedInUserId()); // Get user ID from SharedContext
+         // Get user ID from SharedContext
         registration.setRegistrationDate(Timestamp.valueOf(registrationDateField.getText()));
         registration.setStatus(statusComboBox.getValue());
     }
 
     private void refreshListView() {
-        // If we have a valid userId, show only that user's registrations
-        if (userId > 0) {
-            registrations.setAll(service.getRegistrationsByUserId(userId));
-        } else {
-            // Otherwise show all registrations (admin view)
+        // Admin (ID 1) sees all registrations, others see their own
+        if (userId == 1) {
             registrations.setAll(service.getAllRegistrations());
+        } else {
+            registrations.setAll(service.getRegistrationsByUserId(userId));
         }
         updatePodium();
     }
@@ -471,23 +469,18 @@ public class EventRegistrationController {
      */
     public void setUserId(int userId) {
         this.userId = userId;
-        
-        // Update the SharedContext for application-wide access
         utils.SharedContext.setLoggedInUserId(userId);
-        
-        // Refresh the view based on the user ID
-        if (userId > 0) {
-            // User view - show only this user's registrations
-            registrations.setAll(service.getRegistrationsByUserId(userId));
-            // Update UI to show we're in user mode
-            updateUiForUserMode(true);
-        } else {
+
+        if (userId == 1) {
             // Admin view - show all registrations
             registrations.setAll(service.getAllRegistrations());
-            // Update UI to show we're in admin mode
-            updateUiForUserMode(false);
+            updateUiForUserMode(false); // Admin mode
+        } else {
+            // User view - show their own registrations
+            registrations.setAll(service.getRegistrationsByUserId(userId));
+            updateUiForUserMode(true); // User mode
         }
-        
+
         updatePodium();
     }
     

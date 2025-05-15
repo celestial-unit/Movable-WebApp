@@ -1,0 +1,121 @@
+/* Color Scheme */
+:root {
+    -primary-color: #2962FF;
+    -secondary-color: #455A64;
+    -background-color: #F5F5F5;
+    -card-background: #FFFFFF;
+    -text-color: #212121;
+}
+
+/* Base Styles */
+.root {
+    -fx-background-color: -background-color;
+    -fx-font-family: 'Segoe UI', sans-serif;
+}
+
+/* Header Styles */
+.header-box {
+    -fx-background-color: -primary-color;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 3);
+}
+
+.header-title {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.logo {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+/* Form Container */
+.form-container {
+    -fx-padding: 30;
+    -fx-spacing: 20;
+}
+
+.form-title {
+    -fx-text-fill: -primary-color;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+/* Form Grid Layout */
+.form-grid {
+    -fx-padding: 20;
+    -fx-background-color: -card-background;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 3);
+}
+
+/* Form Elements */
+.form-label {
+    -fx-text-fill: -secondary-color;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.form-input {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #BDBDBD;
+    -fx-border-radius: 4;
+    -fx-padding: 8;
+    -fx-font-size: 14px;
+}
+
+.form-input:focused {
+    -fx-border-color: -primary-color;
+    -fx-effect: dropshadow(three-pass-box, rgba(41,98,255,0.2), 5, 0, 0, 2);
+}
+
+/* Buttons */
+.primary-button {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #1E88E5;
+}
+
+.secondary-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -primary-color;
+    -fx-border-color: -primary-color;
+    -fx-border-radius: 4;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #E3F2FD;
+}
+
+/* Card Styles */
+.card {
+    -fx-background-color: -card-background;
+    -fx-background-radius: 8;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 3);
+}
+
+.card-title {
+    -fx-text-fill: -primary-color;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 15 0;
+}
+
+/* Footer Styles */
+.footer {
+    -fx-background-color: -card-background;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, -3);
+}

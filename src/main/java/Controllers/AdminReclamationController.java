@@ -290,10 +290,24 @@ public class AdminReclamationController implements Initializable {
         }
 
         try {
-            selectedReclamation.setStatus("Approved");
-            reclamationService.update(selectedReclamation);
+            // Validate current status
+            String currentStatus = selectedReclamation.getStatus();
+            if (!"Pending".equals(currentStatus)) {
+                showError("Invalid Operation", "Only pending reclamations can be approved");
+                return;
+            }
 
-            // Update UI
+            // Update status in the model
+            selectedReclamation.setStatus("Approved");
+            
+            // Update in database
+            boolean updated = reclamationService.update(selectedReclamation);
+            
+            if (!updated) {
+                throw new SQLException("Failed to update reclamation status in database");
+            }
+
+            // Update UI elements
             detailStatusLabel.setText("Approved");
             approveButton.setDisable(true);
             rejectButton.setDisable(true);
@@ -303,7 +317,11 @@ public class AdminReclamationController implements Initializable {
 
             showInformation("Success", "Reclamation has been approved successfully.");
         } catch (SQLException e) {
-            showError("Error", "Failed to approve reclamation: " + e.getMessage());
+            // Revert status in model if database update failed
+            selectedReclamation.setStatus("Pending");
+            showError("Database Error", "Failed to approve reclamation: " + e.getMessage());
+        } catch (Exception e) {
+            showError("System Error", "An unexpected error occurred: " + e.getMessage());
         }
     }
 
@@ -315,10 +333,24 @@ public class AdminReclamationController implements Initializable {
         }
 
         try {
-            selectedReclamation.setStatus("Rejected");
-            reclamationService.update(selectedReclamation);
+            // Validate current status
+            String currentStatus = selectedReclamation.getStatus();
+            if (!"Pending".equals(currentStatus)) {
+                showError("Invalid Operation", "Only pending reclamations can be rejected");
+                return;
+            }
 
-            // Update UI
+            // Update status in the model
+            selectedReclamation.setStatus("Rejected");
+            
+            // Update in database
+            boolean updated = reclamationService.update(selectedReclamation);
+            
+            if (!updated) {
+                throw new SQLException("Failed to update reclamation status in database");
+            }
+
+            // Update UI elements
             detailStatusLabel.setText("Rejected");
             approveButton.setDisable(true);
             rejectButton.setDisable(true);
@@ -326,9 +358,13 @@ public class AdminReclamationController implements Initializable {
             // Refresh the table
             refreshTable();
 
-            showInformation("Success", "Reclamation has been rejected.");
+            showInformation("Success", "Reclamation has been rejected successfully.");
         } catch (SQLException e) {
-            showError("Error", "Failed to reject reclamation: " + e.getMessage());
+            // Revert status in model if database update failed
+            selectedReclamation.setStatus("Pending");
+            showError("Database Error", "Failed to reject reclamation: " + e.getMessage());
+        } catch (Exception e) {
+            showError("System Error", "An unexpected error occurred: " + e.getMessage());
         }
     }
 
@@ -374,6 +410,20 @@ public class AdminReclamationController implements Initializable {
         } catch (SQLException e) {
             showError("Error", "Failed to refresh table: " + e.getMessage());
         }
+    }
+    
+    /**
+     * Validates whether a status transition is allowed
+     * @param currentStatus The current status of the reclamation
+     * @param newStatus The proposed new status
+     * @return true if the transition is valid, false otherwise
+     */
+    private boolean isValidStatusTransition(String currentStatus, String newStatus) {
+        // Only allow transitions from Pending to Approved/Rejected
+        if ("Pending".equals(currentStatus)) {
+            return "Approved".equals(newStatus) || "Rejected".equals(newStatus);
+        }
+        return false;
     }
 
     // NAVIGATION METHODS

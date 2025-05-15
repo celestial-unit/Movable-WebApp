@@ -14,7 +14,7 @@ public class MainUserCrudFx extends Application {
         try {
             // Load the Login FXML
             System.out.println("Attempting to load Login.fxml...");
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/user_destinations.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
             Pane root = loader.load();
             System.out.println("Login.fxml loaded successfully");
 

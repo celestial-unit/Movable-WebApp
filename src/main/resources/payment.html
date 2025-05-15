@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stripe Payment</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+<form id="payment-form">
+    <div id="card-element">
+        <!-- A Stripe Element will be inserted here. -->
+    </div>
+    <button id="submit">Submit Payment</button>
+    <div id="card-errors" role="alert"></div>
+</form>
+
+<script>
+    var stripe = Stripe('pk_test_51QvgNPGMD19Kg6VCGsxnBy83Rj8XekKMyerOLOJvv9oI1RlFCQBF9iGrLKoVgoD0a96SeAtyyNHREXxosX4KnYyx002vLrAHbt'); // Replace with your Publishable Key
+    var elements = stripe.elements();
+    var card = elements.create('card');
+    card.mount('#card-element');
+
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        stripe.createToken(card).then(function(result) {
+            if (result.error) {
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = result.error.message;
+            } else {
+                console.log("Token created:", result.token.id); // Log the token
+                if (window.javaConnector && window.javaConnector.processToken) {
+                    console.log("Calling processToken with token:", result.token.id);
+                    window.javaConnector.processToken(result.token.id); // Call Java method
+                } else {
+                    console.error("javaConnector or processToken is not defined!");
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

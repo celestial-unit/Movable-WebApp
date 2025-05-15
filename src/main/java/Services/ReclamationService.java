@@ -104,15 +104,31 @@ public class ReclamationService {
     }
 
     // Update an existing reclamation (admin edits a reclamation)
-    public void update(Reclamation reclamation) throws SQLException {
-        if (connection == null) return;
-        String sql = "UPDATE reclamations SET title = ?, description = ?, status = ? WHERE id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+    public boolean update(Reclamation reclamation) throws SQLException {
+        if (connection == null || connection.isClosed()) {
+            throw new SQLException("Database connection is not available");
+        }
+        
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        
+        try (PreparedStatement ps = connection.prepareStatement(
+            "UPDATE reclamations SET title = ?, description = ?, status = ? WHERE id = ?")) {
+            
             ps.setString(1, reclamation.getTitle());
             ps.setString(2, reclamation.getDescription());
             ps.setString(3, reclamation.getStatus());
             ps.setInt(4, reclamation.getId());
-            ps.executeUpdate();
+            
+            int rowsAffected = ps.executeUpdate();
+            connection.commit();
+            
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            connection.rollback();
+            throw new SQLException("Failed to update reclamation: " + e.getMessage(), e);
+        } finally {
+            connection.setAutoCommit(autoCommit);
         }
     }
 
@@ -127,13 +143,29 @@ public class ReclamationService {
     }
 
     // Update the status of a reclamation (admin updates the status)
-    public void updateStatus(int id, String status) throws SQLException {
-        if (connection == null) return;
-        String sql = "UPDATE reclamations SET status = ? WHERE id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+    public boolean updateStatus(int id, String status) throws SQLException {
+        if (connection == null || connection.isClosed()) {
+            throw new SQLException("Database connection is not available");
+        }
+        
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        
+        try (PreparedStatement ps = connection.prepareStatement(
+            "UPDATE reclamations SET status = ? WHERE id = ?")) {
+            
             ps.setString(1, status);
             ps.setInt(2, id);
-            ps.executeUpdate();
+            
+            int rowsAffected = ps.executeUpdate();
+            connection.commit();
+            
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            connection.rollback();
+            throw new SQLException("Failed to update reclamation status: " + e.getMessage(), e);
+        } finally {
+            connection.setAutoCommit(autoCommit);
         }
     }
     // Get reclamation statistics (total count, pending count, resolved count)

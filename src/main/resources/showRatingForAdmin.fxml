@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ShowRatingForAdminController">
+
+    <!-- TableView with larger dimensions -->
+    <TableView fx:id="agentRatingsTable" layoutX="14.0" layoutY="14.0" prefHeight="500.0" prefWidth="900.0">
+        <columns>
+            <TableColumn fx:id="nameColumn" prefWidth="180.0" text="Agent Name" />
+            <TableColumn fx:id="ratingColumn" prefWidth="150.0" text="Rating" />
+            <TableColumn fx:id="commentColumn" prefWidth="300.0" text="Comment" />
+            <!-- New columns for Sentiment and Sentiment Score -->
+            <TableColumn fx:id="sentimentColumn" prefWidth="150.0" text="Sentiment" />
+            <TableColumn fx:id="scoreColumn" prefWidth="150.0" text="Sentiment Score" />
+        </columns>
+    </TableView>
+
+    <!-- Save to CSV Button -->
+    <Button fx:id="saveCsvButton" layoutX="780.0" layoutY="530.0" text="Save to CSV" onAction="#saveTableToCSV"/>
+
+</AnchorPane>
+

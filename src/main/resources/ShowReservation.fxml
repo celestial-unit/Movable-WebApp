@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="953.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ShowReservation">
+   <children>
+      <BorderPane prefHeight="400.0" prefWidth="953.0">
+         <center>
+             <ListView fx:id="reservationListView" prefHeight="400" prefWidth="953.0" BorderPane.alignment="CENTER" />
+         </center>
+         <bottom>
+             <Button onAction="#deleteReservation" prefHeight="38.0" prefWidth="131.0" stylesheets="@css/style.css" text="Delete" BorderPane.alignment="CENTER">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color red="1.0" green="0.5849999785423279" blue="0.07777778059244156" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Button>
+         </bottom>
+         <top>
+            <AnchorPane prefHeight="95.0" prefWidth="833.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="108.0" fitWidth="121.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@css/car.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="129.0" layoutY="37.0" text="Reservation Table">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </top>
+      </BorderPane>
+   </children>
+</AnchorPane>

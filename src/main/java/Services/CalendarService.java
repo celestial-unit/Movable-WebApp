@@ -1,5 +1,5 @@
-package services;
-import entities.CalendarActivity;
+package Services;
+import Models.CalendarActivity;
 import utils.myConnection;
 
 import java.sql.Connection;

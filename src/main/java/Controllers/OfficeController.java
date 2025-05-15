@@ -14,7 +14,7 @@ import javafx.scene.layout.HBox;
 import Models.Office;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import services.OfficeService;
+import Services.OfficeService;
 import utils.myConnection;
 
 import java.io.IOException;

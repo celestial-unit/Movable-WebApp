@@ -184,6 +184,7 @@
                                 </ImageView>
                             </graphic>
                         </Button>
+
                         
                         <!-- Add Reclamation Button -->
                         <Button styleClass="button,button-orange,button-with-hover" text="Add Reclamation" fx:id="addReclamationButton" onAction="#handleReclamation">
@@ -195,7 +196,7 @@
                         </Button>
                         
                         <!-- Book Ride Button -->
-                        <Button styleClass="button,button-blue,button-with-hover" text="Book Ride" fx:id="bookRideButton" onAction="#handleBookRide">
+                        <Button styleClass="button,button-blue,button-with-hover" text="Book Ride" fx:id="bookRideButton" onAction="#handleReservations">
                             <graphic>
                                 <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
                                     <Image url="@/ride-icon.png" />
@@ -208,6 +209,20 @@
                             <graphic>
                                 <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
                                     <Image url="@/history-icon.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button styleClass="button,button-orange,button-with-hover" text="Agents" fx:id="ViewAgent" onAction="#handleAgent">
+                            <graphic>
+                                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                                    <Image url="@/reclamation-icon.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button styleClass="button,button-blue,button-with-hover" text="Destinations" fx:id="destinationsButton" onAction="#handleDestinations">
+                            <graphic>
+                                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                                    <Image url="@/ride-icon.png" />
                                 </ImageView>
                             </graphic>
                         </Button>
